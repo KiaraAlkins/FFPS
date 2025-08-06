@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    const numerodanoite = 1;
+    let numerodanoite = 1;
+
+    localStorage.setItem("night", numerodanoite);
 
     const newgame = document.getElementById("menuButtons1");
     const continuenight = document.getElementById("menuButtons2");
