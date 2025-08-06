@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
         
             setTimeout(() => {
                 main.style.display = "none";
-                window.location.href = "gamenight.html";
+                window.location.href = "tutorial.html";
             }, 10000 + (index * 1000));
             
             });

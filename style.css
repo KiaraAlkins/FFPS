@@ -4,6 +4,7 @@
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
 body {
     background-color: black;
@@ -13,6 +14,7 @@ body {
 * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 .mainContainer {
@@ -349,4 +351,134 @@ button {
     to {
         height: 0
     }
+}
+
+/* tela de tutorial */
+
+.containerTutorial {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.containerVideoPlayer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #D4D0C8;
+    width: 850px;
+    height: 850px;
+    border-top: 5px solid #ECE6E6;
+    border-left: 5px solid #ECE6E6;
+    border-right: 5px solid #394345;
+    border-bottom: 5px solid #394345;
+}
+
+.upBar {
+    margin-top: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 98%;
+    height: 40px;
+    background: linear-gradient(90deg,rgba(14, 56, 104, 1) 0%, rgba(29, 111, 206, 1) 100%);
+}
+
+.upBar_title_container {
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    gap: 10px;
+}
+
+.upBar_title {
+    color: #FFFFFF;
+    font-family: "Inter", sans-serif;
+    font-style: "semi-bold";
+    font-weight: 600;
+    font-size: 20px
+}
+
+.containerWindow {
+    display: flex;
+    gap: 2.5px;
+    padding: 5px 15px;
+}
+
+.windowButtons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 25px;
+    height: 25px;
+    background-color: #D4D0C8;
+    border-top: 3.5px solid #ECE6E6;
+    border-left: 3.5px solid #ECE6E6;
+    border-right: 3.5px solid #394345;
+    border-bottom: 3.5px solid #394345;
+}
+
+.listMenuPlayer {
+    display: flex;
+    justify-content: start;
+    gap: 10px;
+    list-style: none;
+    width: 98%;
+}
+
+.listMenuPlayer li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.smallwords {
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    color: #000000;
+    font-family: "Inter", sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 7px 10px;
+    width: 55px;
+}
+
+.bigwords {
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    color: #000000;
+    font-family: "Inter", sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 7px 10px;
+    width: 90px;
+}
+
+.caixadevideo {
+    width: 98%;
+    height: 575px;
+    background-color: black;
+}
+
+.progress-container {
+    margin-top: 20px;
+    width: 95%;
+    height: 15px;
+    background-color: #D4D0C8;
+    border-bottom: 3.5px solid #ECE6E6;
+    border-right: 3.5px solid #ECE6E6;
+    border-top: 3.5px solid #394345;
+    border-left: 3.5px solid #394345;
+  cursor: pointer;
+  position: relative;
+}
+
+.progress-bar {
+  width: 50%;
+  height: 100%;
+  background-color: rgb(32, 33, 97);
 }
