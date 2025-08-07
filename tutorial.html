@@ -16,33 +16,65 @@
                     <p class="upBar_title">Media Player</p>
                 </div>
                 <div class="containerWindow">
-                    <button class="windowButtons">
+                    <button id="minButton" class="windowButtons notpressed">
                         <img src="./assets/minimizar.svg" alt="">
                     </button>
-                    <button class="windowButtons">
+                    <button id="maxButton" class="windowButtons notpressed">
                         <img src="./assets/Maximizar.svg" alt="">
                     </button>
-                    <button class="windowButtons">
+                    <button  id="closeButton" class="windowButtons notpressed">
                         <img src="./assets/Group 13.svg" alt="">     
                     </button>
                 </div>
             </div>
             <ul class="listMenuPlayer">
-                <li><button class="smallwords">File</button></li>
-                <li><button class="smallwords">View</button></li>
-                <li><button class="smallwords">Play</button></li>
-                <li><button class="bigwords">Navigate</button></li>
-                <li><button class="bigwords">Favorite</button></li>
-                <li><button class="smallwords">Help</button></li>
+                <li><button id="buttonMenu1" class="smallwords">File</button></li>
+                <li><button id="buttonMenu2" class="smallwords">View</button></li>
+                <li><button id="buttonMenu3" class="smallwords">Play</button></li>
+                <li><button id="buttonMenu4" class="bigwords">Navigate</button></li>
+                <li><button id="buttonMenu5" class="bigwords">Favorite</button></li>
+                <li><button id="buttonMenu6" class="smallwords">Help</button></li>
             </ul>
-
-            <div class="caixadevideo"></div>
+            <video id="video" src="/assets/TheTutorial.mp3" class="caixadevideo"></video>
             <div class="progress-container" id="progressContainer">
             <div class="progress-bar" id="progressBar"></div>
             </div>
+
+            <div class="containerButtons">
+                <button id="playButton" class="playButton">
+                    <img src="./assets/play.svg" alt="Play">
+                </button>
+                <button id="pauseButton" class="pauseButton">
+                    <img src="./assets/pause.svg" alt="Pause">
+                </button>
+                <button id="stopButton" class="stopButton">
+                    <img src="./assets/stop.svg" alt="Stop">
+                </button>
+                <div class="containerseparador">
+                    <img src="./assets/barraSeparar.svg" alt="">
+                </div>
+                <button class="backButton"><img src="./assets/pularEsquerda.svg" alt=""></button>
+                <button class="backtobutton"><img src="./assets/avancarEsquerda.svg" alt=""></button>
+                <button class="frontbutton"><img src="./assets/avancarDireita.svg" alt=""></button>
+                <button class="nextButton"><img src="./assets/pularDireita.svg" alt=""></button>
+                <div class="containerseparador">
+                    <img src="./assets/barraSeparar.svg" alt="">
+                </div>
+                <button><img src="./assets/advance.svg" alt=""></button>
+                <div class="container-AutoFalante"><img src="./assets/autofalante.svg" alt=""></div>
+                <div class="containerVolume">
+                    <div class="volumeBarContainer">
+                        <div class="triangulo-volume"></div>
+                        <div>
+                            <img src="./assets/progressButtonVolume.svg" alt="" class="progressButtonVolume">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container_blackbar"></div>
             
         </section>
     </main>
-
+    <script src="tutorial.js"></script>
 </body>
 </html>
