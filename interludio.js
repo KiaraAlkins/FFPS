@@ -24,4 +24,10 @@ document.addEventListener("DOMContentLoaded", () => {
             });
             break;
     }
+
+    const audioSlideShow = document.createElement('audio');
+    audioSlideShow.src = './assets/openingSlide.mp3'
+    document.body.appendChild(audioSlideShow)
+    audioSlideShow.play();
+
 });

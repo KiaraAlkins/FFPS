@@ -35,28 +35,31 @@
                 <li><button id="buttonMenu5" class="bigwords">Favorite</button></li>
                 <li><button id="buttonMenu6" class="smallwords">Help</button></li>
             </ul>
-            <video id="video" src="/assets/TheTutorial.mp3" class="caixadevideo"></video>
+            <video id="video" class="caixadevideo">
+                <source src="./assets/tutorialNight1.mp4">
+            </video>
             <div class="progress-container" id="progressContainer">
             <div class="progress-bar" id="progressBar"></div>
+            <img id="progressBarButton" class="progressBarButton" src="./assets/buttonProgressBarNotPressed.svg" alt="">
             </div>
 
             <div class="containerButtons">
                 <button id="playButton" class="playButton">
-                    <img src="./assets/play.svg" alt="Play">
+                    <img id="playButton_img" src="./assets/play.svg" alt="Play">
                 </button>
                 <button id="pauseButton" class="pauseButton">
-                    <img src="./assets/pause.svg" alt="Pause">
+                    <img id="pauseButton_img" src="./assets/pause_deactivated.svg" alt="Pause">
                 </button>
                 <button id="stopButton" class="stopButton">
-                    <img src="./assets/stop.svg" alt="Stop">
+                    <img id="stopButton_img" src="./assets/stop_deactivated.svg" alt="Stop">
                 </button>
                 <div class="containerseparador">
                     <img src="./assets/barraSeparar.svg" alt="">
                 </div>
-                <button class="backButton"><img src="./assets/pularEsquerda.svg" alt=""></button>
-                <button class="backtobutton"><img src="./assets/avancarEsquerda.svg" alt=""></button>
-                <button class="frontbutton"><img src="./assets/avancarDireita.svg" alt=""></button>
-                <button class="nextButton"><img src="./assets/pularDireita.svg" alt=""></button>
+                <button id="jumpLeftButton" class="backButton"><img id="jumpLeft_img" src="./assets/pularEsquerda.svg" alt=""></button>
+                <button id="advanceLeft" class="backtobutton"><img id="advanceLeft_img" src="./assets/avancarEsquerda.svg" alt=""></button>
+                <button id="advanceRight" class="frontbutton"><img id="advanceRight_img" src="./assets/avancarDireita.svg" alt=""></button>
+                <button id="jumpRightButton" class="nextButton"><img id="jumpRight_img" src="./assets/pularDireita.svg" alt=""></button>
                 <div class="containerseparador">
                     <img src="./assets/barraSeparar.svg" alt="">
                 </div>
@@ -65,9 +68,8 @@
                 <div class="containerVolume">
                     <div class="volumeBarContainer">
                         <div class="triangulo-volume"></div>
-                        <div>
-                            <img src="./assets/progressButtonVolume.svg" alt="" class="progressButtonVolume">
-                        </div>
+                        <button id="progressButtonVolume"  class="progressButtonVolume notpressed">
+                        </button>
                     </div>
                 </div>
             </div>

@@ -97,7 +97,7 @@ button {
 
 .mainContainer_interludio {
     display: flex;
-    height: 90%;
+    height: 95%;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -110,6 +110,14 @@ button {
     font-size: 48px;
     font-weight: 100;
     padding: 20px;
+}
+
+.mainContainer_interludio p {
+    color: #FFFFFF;
+    font-family: "inknut-antiqua", serif;
+    font-size: 24px;
+    font-weight: 100;
+    padding: 10px;
 }
 
 .mainContainer_interludio section {
@@ -505,6 +513,15 @@ button {
     background-color: rgb(32, 33, 97);
 }
 
+.progressBarButton {
+    position: absolute;
+    top: -8px;
+    left: 0%;
+    width: 20px;
+    height: 20px;
+    cursor: grab;
+}
+
 .containerButtons {
     display: flex;
     justify-content: start;
@@ -524,7 +541,9 @@ button {
 }
 
 .playButton {
-    padding-left: 15px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
 }
 
 .containerButtons button img {
@@ -623,6 +642,6 @@ button {
     left: 0%;
     transform: translate(-50%, -50%);
     width: 25px;
-    height: 25px;
-    pointer-events: none;
+    height: 50px;
+    background-color: #D4D0C8;
 }

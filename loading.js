@@ -4,13 +4,13 @@
             setTimeout(() => {
                 barra.style.backgroundColor = "#00FF00";
                 barra.style.transition = "background-color 500ms ease-in-out";
-            }, index * 1000);
+            }, index * 500);
             setTimeout(() => {
                 barra.style.backgroundColor = "#ffffff";
                 barra.style.transition = "background-color 500ms ease-in-out";
-            }, (index + 1) * 1000);
+            }, (index + 1) * 500);
         });
 
         setTimeout(() => {
             window.location.href = "prenight.html";
-        }, 10000);
+        }, 5000);
