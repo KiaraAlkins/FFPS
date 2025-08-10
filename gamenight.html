@@ -6,21 +6,76 @@
     <link rel="stylesheet" href="style.css">
     <title>Night</title>
 </head>
-<body>
+<body class="game-night_body">
 
-    <main class="game-night_main">
-        <button class="button_game-night"><div class="seta-esquerda"></div></button>
-        <section class="game-night_section">
-            <div class="game-night-table_container">
-                <img src="./assets/Group 3.svg" alt="">
-            </div>
-            <div class="game-night-terminal_container">
-                <img class="terminalSVG" src="./assets/Group 4.svg" alt="">
-                <div class="container_tela"><div class="telaTerminal"></div></div>
-            </div>
-        </section>
-        <button class="button_game-night"><div class="seta-direita"></div></button>
-    </main>
+        <div class="game-night_slider">
+
+            <section class="gameNightSection-left"><img src="./assets/duct-Left.png" alt=""></section>
+
+            <main class="game-night_main">
+
+                    <div class="container_buttonGameNight">
+                        <button class="buttonGameNight"><img src="./assets/setaButtons-Left.svg" alt=""></button>
+                    </div>
+
+                    <div class="center-content">
+                         <div class="gameNigth_table-container">
+                            <img id="mesaGameNight" src="./assets/mesa.png" alt="">
+                        </div>
+                        <div class="gameNight_terminal-container">
+                            <img class="terminalPNG" src="./assets/terminal.png" alt="">
+                            <div class="container_tela">
+                                <div class="terminal_categories-buttons_container">
+                                    <button class="categories-buttons">Tasks</button>
+                                    <button class="categories-buttons">Heater</button>
+                                    <button class="categories-buttons">Ventilation</button>
+                                    <button class="categories-buttons">Audio</button>
+                                </div>
+                                <div class="tela_linha-horizontal"></div>
+                                <div class="container-tasks">
+                                    <div class="container_order-supplies">
+                                        <button class="buttons-tasks">print flyers</button>
+                                        <button class="buttons-tasks">print postes</button>
+                                        <button class="buttons-tasks">print menus</button>
+                                    </div>
+                                    <div class="tela_linha-vertical"></div>
+                                    <div class="container_advertising">
+                                        <button class="buttons-tasks">order cups</button>
+                                        <button class="buttons-tasks">order plates</button>
+                                        <button class="buttons-tasks">order napkins</button>
+                                        <button class="buttons-tasks">order utensils</button>
+                                        <button class="buttons-tasks">order pizza kits</button>
+                                    </div>
+                                    <div class="tela_linha-vertical"></div>
+                                    <div class="container_maintenance">
+                                        <button class="buttons-tasks">unclog toilets</button>
+                                        <button class="buttons-tasks">clean ovens</button>
+                                        <button class="buttons-tasks">replace bulbs</button>
+                                    </div>
+                                </div>
+                                <div class="container_bottom-buttons">
+                                    <button class="bottom-button"><img src="./assets/arrowBack.svg" alt=""></button>
+                                    <button class="bottom-button deactivated"><img src="./assets/LogOff-button.svg" alt=""></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container_buttonGameNight-horizontal">
+                            <button class="buttonGameNight-horizontal"><img src="./assets/setaButtons-top.svg" alt=""></button>
+                        </div>
+                    </div>
+                    
+                       
+                    <div class="container_buttonGameNight">
+                        <button class="buttonGameNight"><img src="./assets/setaButtons-Right.svg" alt=""></button>
+                    </div>
+            </main>
+
+            <section class="gameNightSection"></section>
+        </div>
+
+
+
+    <script src="./game.js"></script>
 
 </body>
 </html>

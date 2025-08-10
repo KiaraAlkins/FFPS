@@ -172,20 +172,6 @@ document.addEventListener("DOMContentLoaded", () => {
         stopButton.classList.remove('pressed2')
     })
     
-    proButtonVolume.addEventListener('mousedown', () => {
-        proButtonVolume.classList.remove('notpressed')
-        proButtonVolume.classList.add('pressed')
-    })
-    
-    proButtonVolume.addEventListener('mousemove', () => {
-        
-    })
-
-    proButtonVolume.addEventListener('mouseup', () => {
-        proButtonVolume.classList.remove('pressed')
-        proButtonVolume.classList.add('notpressed')
-    })
-    
     const jumpLeftButton = document.getElementById('jumpLeftButton');
     const jumpLeftButton_img = document.getElementById('jumpLeft_img');
     const advanceLeft = document.getElementById('advanceLeft');
@@ -220,15 +206,106 @@ document.addEventListener("DOMContentLoaded", () => {
         atualizarBotaoRetroceder(advanceLeft, advanceLeft_img, './assets/avancarEsquerda_deactivated.svg', './assets/avancarEsquerda.svg');
         atualizarBotaoAvancar(advanceRight, advanceRight_img, './assets/avancarDireita_deactivated.svg', './assets/avancarDireita.svg')
     })
+
+    jumpLeftButton.addEventListener('mousedown', () => {
+        jumpLeftButton.classList.add('pressed')
+    })
+
+    jumpLeftButton.addEventListener('mouseup', () => {
+        jumpLeftButton.classList.remove('pressed')
+    })
+
+    jumpLeftButton.addEventListener('click', () => {
+        window.location.href = "reverseLoading.html"
+    });
+
+    jumpRightButton.addEventListener('mousedown', () => {
+        jumpRightButton.classList.add('pressed')
+    })
+
+    jumpRightButton.addEventListener('mouseup', () => {
+        jumpRightButton.classList.remove('pressed')
+    })
+
+    jumpRightButton.addEventListener('click', () => {
+        window.location.href = "gamenight.html"
+    })
     
     advanceLeft.addEventListener('click', () => {
         if (video.currentTime > 10) {
             video.currentTime = Math.max(video.currentTime - 10, 0);
         }
     })
+
+    advanceLeft.addEventListener('mousedown', () => {
+        advanceLeft.classList.add('pressed')
+    })
+
+    advanceLeft.addEventListener('mouseup', () => {
+        advanceLeft.classList.remove('pressed')
+    })
     
     advanceRight.addEventListener('click', () => {
         video.currentTime = Math.min(video.currentTime + 10, video.duration);
     })
+
+    advanceRight.addEventListener('mousedown', () => {
+        advanceRight.classList.add('pressed')
+    })
+
+    advanceRight.addEventListener('mouseup', () => {
+        advanceRight.classList.remove('pressed')
+    })
 })
 
+const volumeBarContainer = document.getElementById('volumeBarContainer');
+const proButtonVolume = document.getElementById('progressButtonVolume');
+
+    proButtonVolume.addEventListener('mousedown', () => {
+        proButtonVolume.classList.remove('notpressed')
+        proButtonVolume.classList.add('pressed')
+    })
+    
+    proButtonVolume.addEventListener('mousemove', () => {
+        
+    })
+
+    proButtonVolume.addEventListener('mouseup', () => {
+        proButtonVolume.classList.remove('pressed')
+        proButtonVolume.classList.add('notpressed')
+    })
+
+function updateVolumeUI(volume) {
+    let percentage = volume * 100;
+    proButtonVolume.style.left = percentage + '%';
+}
+
+volumeBarContainer.addEventListener('click', (e) => {
+    const rect = volumeBarContainer.getBoundingClientRect();
+    let percentage = (e.clientX - rect.left) / rect.width;
+    percentage = Math.max(0, Math.min(1, percentage));
+    video.volume = percentage;
+    updateVolumeUI(percentage);
+})
+
+let isDragging1;
+
+proButtonVolume.addEventListener('mousedown', () => {
+    isDragging1 = true;
+})
+
+document.addEventListener('mousemove', (e) => {
+    if (isDragging1) {
+        const rect = volumeBarContainer.getBoundingClientRect();
+        let percentage = (e.clientX - rect.left) / rect.width;
+        percentage = Math.max(0, Math.min(1, percentage));
+        video.volume = percentage;
+        updateVolumeUI(percentage);
+    }
+})
+
+proButtonVolume.addEventListener('mouseup', () => {
+    isDragging1 = false;
+})
+
+updateVolumeUI(video.volume)
