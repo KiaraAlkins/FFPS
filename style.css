@@ -576,19 +576,19 @@ body {
 .game-night_slider {
     display: flex;
     height: 100vh;
-    transition: transform 0.2s ease-in-out; /* animação suave */
+    transition: transform 0.1s ease-in-out; /* animação suave */
 }
 
 .game-night_slider > * {
-    background-image: url(./assets/muro.png);
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
     min-width: 100vw;
     flex-shrink: 0;
     height: 100vh;
 }
 
 .game-night_main {
+    background-image: url(./assets/muro.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
     position: relative;
     display: flex;
     justify-content: center;
@@ -597,20 +597,40 @@ body {
 }
 
 .gameNightSection-left {
+    background-image: url(./assets/muro-Left.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
     background-position: center;
     display: flex;
-    align-items: end;
+    align-items: center;
     justify-content: center;
     height: 100%;
     flex: 0 0 100%;
 }
 
 .gameNightSection-right {
+    background-image: url(./assets/muro-Right.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-position: center;
     display: flex;
-    align-items: end;
+    align-items: center;
     justify-content: center;
     height: 100%;
     flex: 0 0 100%;
+    position: relative;
+}
+
+.center-content {
+    background-image: url(./assets/muro.png);
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-position: center;
 }
 
 .gameNight_table-container {
@@ -655,6 +675,90 @@ body {
     gap: 40px;
     width: 80%;
 
+}
+
+.container_tablet-camera {
+    position: absolute;
+    top: 150%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.telatablet-camera {
+    background-color: #1A1F37;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: absolute;
+    top: 10%;
+    left: 8%;
+    width: 84%;
+    height: 80%;
+    z-index: 1;
+}
+
+.linharec {
+    position: absolute;
+}
+
+.esq {
+    left: 5%;
+}
+
+.dir {
+    right: 5%;
+}
+
+.sup {
+    top: 5%;
+}
+
+.inf {
+    bottom: 5%;
+}
+
+.playRec {
+    position: absolute;
+    top: 10%;
+    left: 10%;
+}
+
+.div-CamButtons {
+    display: flex;
+    flex-direction: column;
+    margin: 0 100px;
+    gap: 20px;
+}
+
+.div-PuppetButtons {
+    display: flex;
+    flex-direction: column;
+    margin: 0 100px;
+    gap: 20;
+}
+
+.CamButtons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 32px;
+    width: 115px;
+    border: #FFFFFF 5px solid;
+}
+
+.CamButtons:hover {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 32px;
+    width: 115px;
+    color: #1A1F37;
+    background-color: #FFFFFF;
+    border: #FFFFFF 5px solid;
 }
 
 .categories-buttons {
@@ -736,21 +840,59 @@ body {
 }
 
 .container_buttonGameNight {
-    display: flex;
-    flex-direction: column;
     height: 100%;
-    justify-content: center;
+    width: 100px;
+    background-color: #000000;
+    opacity: 50%;
+    flex-direction: column;
+    display: flex;
     align-items: center;
     margin: 0 100px;
+    justify-content: center;
+}
+
+.container_buttonGameNight-leftScreen {
+    height: 100%;
+    width: 100px;
+    position: absolute;
+    background-color: #000000;
+    opacity: 50%;
+    right: 5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .buttonGameNight {
     display: flex;
     justify-content: center;
     align-items: center;
+    opacity: 100%;
     width: 70px;
     height: 300px;
     border: #FFFFFF 2px solid;
+}
+
+.buttonGameNight-leftScreen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 100%;
+    width: 70px;
+    height: 300px;
+    border: #FFFFFF 2px solid;
+}
+
+.container_buttonGameNight-RightScreen {
+    height: 100%;
+    width: 100px;
+    position: absolute;
+    left: 5%;
+    background-color: #000000;
+    opacity: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .container_buttonGameNight-horizontal {

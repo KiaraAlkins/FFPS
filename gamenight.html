@@ -8,17 +8,23 @@
 </head>
 <body class="game-night_body">
 
-        <div class="game-night_slider">
+        <div class="game-night_slider ">
 
-            <section class="gameNightSection-left"><img src="./assets/duct-Left.png" alt=""></section>
+            <section id="gm-section-left" class="gameNightSection-left"><img src="./assets/duct-Left.png" alt="">
+            <div class="container_buttonGameNight-leftScreen">
+                <button id="setaButton-Left-Lscreen" class="buttonGameNight-leftScreen">
+                    <img src="./assets/setaButtons-Right.svg" alt="">
+                </button>
+            </div>
+            </section>
 
             <main class="game-night_main">
 
                     <div class="container_buttonGameNight">
-                        <button class="buttonGameNight"><img src="./assets/setaButtons-Left.svg" alt=""></button>
+                        <button class="buttonGameNight" id="setaButton-Left"><img src="./assets/setaButtons-Left.svg" alt=""></button>
                     </div>
 
-                    <div class="center-content">
+                    <div id="center-content" class="center-content">
                          <div class="gameNigth_table-container">
                             <img id="mesaGameNight" src="./assets/mesa.png" alt="">
                         </div>
@@ -59,18 +65,46 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="container_buttonGameNight-horizontal">
+                        <div class="container_tablet-camera" id="tablet-camera">
+                            <img src="./assets/tablet-camera.png" alt="">
+                            <div class="telatablet-camera">
+                                <img class="linharec esq sup" src="./assets/linharec3.svg" alt="">
+                                <img class="linharec esq inf" src="./assets/linharec4.svg" alt="">
+                                <img class="linharec dir sup" src="./assets/linharec2.svg" alt="">
+                                <img class="linharec dir inf" src="./assets/linharec1.svg" alt="">
+                                <img class="playRec" src="./assets/playRec.png" alt="">
+
+                                <div class="div-CamButtons">
+                                    <button class="CamButtons">CAM 1</button>
+                                    <button class="CamButtons">CAM 2</button>
+                                </div>
+                                <div class="div-PuppetButtons">
+                                    <button id="musicBox" class="musicBoxMusic"><img id="musicBoxIMG" src="./assets/musicBoxRound/MusicBox5.svg" alt=""></button>
+                                    <button class="controledShock"><img src="./assets/ButtonControledShock.png" alt=""></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="buttonGameNight-horizontal" class="container_buttonGameNight-horizontal">
                             <button class="buttonGameNight-horizontal"><img src="./assets/setaButtons-top.svg" alt=""></button>
                         </div>
                     </div>
                     
                        
                     <div class="container_buttonGameNight">
-                        <button class="buttonGameNight"><img src="./assets/setaButtons-Right.svg" alt=""></button>
+                        <button class="buttonGameNight" id="setaButton-Right"><img src="./assets/setaButtons-Right.svg" alt=""></button>
                     </div>
             </main>
 
-            <section class="gameNightSection"></section>
+        </section>
+        
+        <section id="gm-section-right" class="gameNightSection-right">
+            <img src="./assets/duct-Right.png" alt="">
+            <div class="container_buttonGameNight-RightScreen">
+                <button id="setaButton-Right-Rscreen" class="buttonGameNight-leftScreen">
+                    <img src="./assets/setaButtons-Left.svg" alt="">
+                </button>
+            </div>
+        </section>
         </div>
 
 
