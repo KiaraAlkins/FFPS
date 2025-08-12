@@ -30,44 +30,48 @@
                         </div>
                         <div class="gameNight_terminal-container">
                             <img class="terminalPNG" src="./assets/terminal.png" alt="">
-                            <div class="container_tela">
-                                <div class="terminal_categories-buttons_container">
-                                    <button class="categories-buttons">Tasks</button>
-                                    <button class="categories-buttons">Heater</button>
-                                    <button class="categories-buttons">Ventilation</button>
-                                    <button class="categories-buttons">Audio</button>
+                            <div id="terminal-tela" class="container_tela">
+                                <div id="terminal-categories" class="terminal_categories-buttons_container">
+                                    <button id="cateButton-tasks" class="categories-buttons">Tasks</button>
+                                    <button id="cateButton-heater" class="categories-buttons">Heater</button>
+                                    <button id="cateButton-ventilation" class="categories-buttons">Ventilation</button>
+                                    <button id="cateButton-audio" class="categories-buttons">Audio</button>
                                 </div>
                                 <div class="tela_linha-horizontal"></div>
-                                <div class="container-tasks">
-                                    <div class="container_order-supplies">
-                                        <button class="buttons-tasks">print flyers</button>
-                                        <button class="buttons-tasks">print postes</button>
-                                        <button class="buttons-tasks">print menus</button>
+                                <div id="telaBaixa" class="telaBaixa">
+                                    <div id="telaDeTarefas" class="tela-de-tarefas">
+                                        <div class="container-tasks">
+                                            <div id="advertising" class="container_advertising">
+                                                <button class="buttons-tasks">print flyers</button>
+                                                <button class="buttons-tasks">print postes</button>
+                                                <button class="buttons-tasks">print menus</button>
+                                            </div>
+                                            <div class="tela_linha-vertical"></div>
+                                            <div id="order-suplies" class="container_order-supplies">
+                                                <button class="buttons-tasks">order cups</button>
+                                                <button class="buttons-tasks">order plates</button>
+                                                <button class="buttons-tasks">order napkins</button>
+                                                <button class="buttons-tasks">order utensils</button>
+                                                <button class="buttons-tasks">order pizza kits</button>
+                                            </div>
+                                            <div class="tela_linha-vertical"></div>
+                                            <div id="maintenance" class="container_maintenance">
+                                                <button class="buttons-tasks">unclog toilets</button>
+                                                <button class="buttons-tasks">clean ovens</button>
+                                                <button class="buttons-tasks">replace bulbs</button>
+                                            </div>
+                                        </div>
+                                        <div class="container_bottom-buttons">
+                                            <button class="bottom-button"><img src="./assets/arrowBack.svg" alt=""></button>
+                                            <button id="finalizar" class="bottom-button deactivated"><img src="./assets/LogOff-button.svg" alt=""></button>
+                                        </div>
                                     </div>
-                                    <div class="tela_linha-vertical"></div>
-                                    <div class="container_advertising">
-                                        <button class="buttons-tasks">order cups</button>
-                                        <button class="buttons-tasks">order plates</button>
-                                        <button class="buttons-tasks">order napkins</button>
-                                        <button class="buttons-tasks">order utensils</button>
-                                        <button class="buttons-tasks">order pizza kits</button>
-                                    </div>
-                                    <div class="tela_linha-vertical"></div>
-                                    <div class="container_maintenance">
-                                        <button class="buttons-tasks">unclog toilets</button>
-                                        <button class="buttons-tasks">clean ovens</button>
-                                        <button class="buttons-tasks">replace bulbs</button>
-                                    </div>
-                                </div>
-                                <div class="container_bottom-buttons">
-                                    <button class="bottom-button"><img src="./assets/arrowBack.svg" alt=""></button>
-                                    <button class="bottom-button deactivated"><img src="./assets/LogOff-button.svg" alt=""></button>
                                 </div>
                             </div>
                         </div>
                         <div class="container_tablet-camera" id="tablet-camera">
                             <img src="./assets/tablet-camera.png" alt="">
-                            <div class="telatablet-camera">
+                            <div id="tela-tablet-camera" class="telatablet-camera">
                                 <img class="linharec esq sup" src="./assets/linharec3.svg" alt="">
                                 <img class="linharec esq inf" src="./assets/linharec4.svg" alt="">
                                 <img class="linharec dir sup" src="./assets/linharec2.svg" alt="">
@@ -75,12 +79,36 @@
                                 <img class="playRec" src="./assets/playRec.png" alt="">
 
                                 <div class="div-CamButtons">
-                                    <button class="CamButtons">CAM 1</button>
-                                    <button class="CamButtons">CAM 2</button>
+                                    <button id="CAM-button1" class="CamButtons">CAM 1</button>
+                                    <button id="CAM-button2" class="CamButtons">CAM 2</button>
                                 </div>
-                                <div class="div-PuppetButtons">
+                                <div id="div-PuppetButtons" class="div-PuppetButtons">
                                     <button id="musicBox" class="musicBoxMusic"><img id="musicBoxIMG" src="./assets/musicBoxRound/MusicBox5.svg" alt=""></button>
                                     <button class="controledShock"><img src="./assets/ButtonControledShock.png" alt=""></button>
+                                </div>
+                                <div id="div-BabyButtons" class="div-BabyButtons">
+                                    <div class="divBB-1">
+                                        <div class="divBB-2"><p class="BabyButtons-p">Heater</p><img src="./assets/figures/star.svg" alt=""></div>
+                                        <div class="divBB-2"><p class="BabyButtons-p">Ventilation</p><img src="./assets/figures/polygon4.svg" alt=""></div>
+                                        <div class="divBB-2"><p class="BabyButtons-p">Audio Lure</p><img src="./assets/figures/polygon6.svg" alt=""></div>
+                                    </div>
+                                    <div class="div-BabyButtons-div">
+                                        <button class="minig-buttons"><img src="./assets/figures/star.svg" alt=""></button>
+                                        <button class="minig-buttons"><img src="./assets/figures/polygon4.svg" alt=""></button>
+                                        <button class="minig-buttons"><img src="./assets/figures/polygon6.svg" alt=""></button>
+                                    </div>
+                                    <div class="div-BabyButtons-div">
+                                        <button class="minig-buttons"><img src="./assets/figures/star.svg" alt=""></button>
+                                        <button class="minig-buttons"><img src="./assets/figures/polygon4.svg" alt=""></button>
+                                        <button class="minig-buttons"><img src="./assets/figures/polygon6.svg" alt=""></button>
+                                    </div>
+                                    <div class="div-BabyButtons-div">
+                                        <button class="minig-buttons"><img src="./assets/figures/star.svg" alt=""></button>
+                                        <button class="minig-buttons"><img src="./assets/figures/polygon4.svg" alt=""></button>
+                                        <button class="minig-buttons"><img src="./assets/figures/polygon6.svg" alt=""></button>
+                                    </div>
+
+                                    <button class="minig-resetButton">Reset System</button>
                                 </div>
                             </div>
                         </div>
