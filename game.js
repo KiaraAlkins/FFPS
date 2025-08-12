@@ -1,4 +1,14 @@
 document.addEventListener("DOMContentLoaded", () => {
+
+    const telaPreta = document.getElementById('tela-preta');
+    requestAnimationFrame(() => {
+        telaPreta.style.opacity = '0';
+    })
+
+    setTimeout(() => {
+        telaPreta.remove();
+    }, 5000)
+
     const slider = document.querySelector('.game-night_slider');
 
     // aplica a posição inicial sem animação
@@ -70,6 +80,12 @@ document.addEventListener("DOMContentLoaded", () => {
             telaTablet.style.transition = 'top 0.25 ease';
             telaTablet.style.display = 'flex'
             telaTablet.style.top = '150%'
+            const audioTabletCamera = document.createElement('audio');
+            audioTabletCamera.src = './assets/audio/monitorPulled.mp3';
+            audioTabletCamera.play();
+            setTimeout(() => {
+                audioTabletCamera.remove();
+            }, 3000);
             requestAnimationFrame(() => {
             telaTablet.style.top = '45%'; // posição final (visível)
         })
@@ -229,24 +245,12 @@ document.addEventListener("DOMContentLoaded", () => {
         tarefa2a1: false,
         tarefa2a2: false,
         tarefa2a3: false,
-        tarefa2a4: false,
-        tarefa2a5: false
     }
 
     const tarefaBoolsDiv3 = {
         tarefa3a1: false,
         tarefa3a2: false,
         tarefa3a3: false,
-        tarefa3a4: false,
-        tarefa3a5: false
-    }
-
-    const porcentagensDiv1 = {
-        porcentagem1x1: 0,
-        porcentagem1x2: 0,
-        porcentagem1x3: 0,
-        porcentagem1x4: 0,
-        porcentagem1x5: 0
     }
 
     const nomeDosLotesDiv1 = {
@@ -256,58 +260,72 @@ document.addEventListener("DOMContentLoaded", () => {
         lote1a4: 'order utensils',
         lote1a5: 'order pizza kits'
     }
+
+    const nomeDosLotesDiv2 = {
+        lote2a1: 'print flyers',
+        lote2a2: 'print posters',
+        lote2a3: 'print menus',
+    }
+
+    const nomeDosLotesDiv3 = {
+        lote3a1: 'unclog toilets',
+        lote3a2: 'clean ovens',
+        lote3a3: 'replace bulbs',
+    }
     
     let permissao = false;
     let tarefaAtual = null;
     let currentInterval = null;
     const botoesTarefaDiv1 = {};
 
-    function criarBotaoTarefa_div1(tarefaId, nomeDosLotesID, porcentagemID, finalizar) {
+    function criarBotaoTarefa_div1(tarefaId, nomeDosLotesID, finalizar, tarefaBoolsID) {
         const botao = document.createElement('button')
         botao.classList.add('buttons-tasks');
 
-        if (tarefaBoolsDiv1[tarefaId] != true) {
-            porcentagemID = 0;
-            botao.innerText = `${nomeDosLotesID}`
-        } else {
-            porcentagemID = 100;
+        let porcentagem = 0;
+        let numberLoadingBar = 1;
+        let loadingBar = null;
+
+        if (tarefaBoolsID[tarefaId] === true) {
+            porcentagem = 100;
             botao.display = 'none';
+        } else {
+            botao.innerText = nomeDosLotesID
         }
 
         botao.addEventListener('click', () => {
-            if (tarefaAtual != botao) {
-                if (tarefaAtual && tarefaAtual !== botao) {
-                    console.log(tarefaId);
-                    clearInterval(currentInterval);
-                    tarefaAtual = null;
-                }
+            if (tarefaAtual && tarefaAtual !== botao) {
+                    clearInterval(currentInterval)
+                    const loadingImg = tarefaAtual.querySelector('.loadingButtons');
+                    if (loadingImg) loadingImg.remove();
+                    porcentagem = 0
             }
-            if (!tarefaBoolsDiv1[tarefaId]) {
-                porcentagemID = 0;
-                tarefaAtual = botao;
-                tarefaBoolsDiv1[tarefaId] = false;
 
-                const loadingBar = document.createElement('img') 
+            if (!tarefaBoolsID[tarefaId]) {
+                tarefaAtual = botao;
+                tarefaBoolsID[tarefaId] = false;
+                porcentagem = 0;
+                numberLoadingBar = 1;
+
+                if (!loadingBar) {
+                    loadingBar = document.createElement('img') 
+                    loadingBar.classList.add('loadingButtons')
+                }
+                botao.innerText = nomeDosLotesID
+                botao.appendChild(loadingBar)
 
                 currentInterval = setInterval(() => {
-                    porcentagemID++
-                    botao.innerText = `${nomeDosLotesID}`
-                    let numberLoadingBar = 1;
-                    if (numberLoadingBar > 4) {
-                        numberLoadingBar = 1;
-                    }
-                    numberLoadingBar++
-                    console.log(numberLoadingBar
+                    porcentagem++
+                    numberLoadingBar++;
+                    if (numberLoadingBar > 4) numberLoadingBar = 1;
 
-                        
-                    )
                     loadingBar.src = `./assets/loadingTasks/loading${numberLoadingBar}.png`
-                    botao.appendChild(loadingBar);
 
-                    if (porcentagemID >= 100) {
+                    if (porcentagem >= 100) {
                         clearInterval(currentInterval);
-                        tarefaBoolsDiv1[tarefaId] = true;
+                        tarefaBoolsID[tarefaId] = true;
                         tarefaAtual = null
+                        if (loadingBar) loadingBar.remove();
                         verificaPermissao();
                         mostrarBotaoFinalizar(finalizar);
                     }
@@ -315,7 +333,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
         botoesTarefaDiv1[tarefaId] = botao;
-
         return botao;
     }
 
@@ -345,6 +362,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const telaBaixa = document.getElementById('telaBaixa');
     const teladetarefas = document.getElementById('telaDeTarefas');
 
+    let telaAtiva = null;
+
     function abrirTarefas() {
         while (telaBaixa.firstChild) {
             telaBaixa.removeChild(telaBaixa.firstChild);
@@ -356,19 +375,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const div1 = document.getElementById('order-suplies');
         const div2 = document.getElementById('advertising');
-        const div3 = document.getElementById('maintenance');
-
+        const div3 = document.getElementById('maintenance')
         if (permissao) {
             mostrarBotaoFinalizar(finalizar);
         }
 
-        div1.appendChild(criarBotaoTarefa_div1('tarefa1a1', nomeDosLotesDiv1.lote1a1, 'porcentagem1x1', finalizar));
-        div1.appendChild(criarBotaoTarefa_div1('tarefa1a2', nomeDosLotesDiv1.lote1a1, 'porcentagem1x1', finalizar));
-        div1.appendChild(criarBotaoTarefa_div1('tarefa1a3', nomeDosLotesDiv1.lote1a1, 'porcentagem1x1', finalizar));
-        div1.appendChild(criarBotaoTarefa_div1('tarefa1a4', nomeDosLotesDiv1.lote1a1, 'porcentagem1x1', finalizar));
-        div1.appendChild(criarBotaoTarefa_div1('tarefa1a5', nomeDosLotesDiv1.lote1a1, 'porcentagem1x1', finalizar));
+        div1.appendChild(criarBotaoTarefa_div1('tarefa1a1', nomeDosLotesDiv1.lote1a1, finalizar, tarefaBoolsDiv1));
+        div1.appendChild(criarBotaoTarefa_div1('tarefa1a2', nomeDosLotesDiv1.lote1a2, finalizar, tarefaBoolsDiv1));
+        div1.appendChild(criarBotaoTarefa_div1('tarefa1a3', nomeDosLotesDiv1.lote1a3, finalizar, tarefaBoolsDiv1));
+        div1.appendChild(criarBotaoTarefa_div1('tarefa1a4', nomeDosLotesDiv1.lote1a4, finalizar, tarefaBoolsDiv1));
+        div1.appendChild(criarBotaoTarefa_div1('tarefa1a5', nomeDosLotesDiv1.lote1a5, finalizar, tarefaBoolsDiv1));
+
+        div2.appendChild(criarBotaoTarefa_div1('tarefa2a1', nomeDosLotesDiv2.lote2a1, finalizar, tarefaBoolsDiv2));
+        div2.appendChild(criarBotaoTarefa_div1('tarefa2a2', nomeDosLotesDiv2.lote2a2, finalizar, tarefaBoolsDiv2));
+        div2.appendChild(criarBotaoTarefa_div1('tarefa2a3', nomeDosLotesDiv2.lote2a3, finalizar, tarefaBoolsDiv2));
+
+        div3.appendChild(criarBotaoTarefa_div1('tarefa3a1', nomeDosLotesDiv3.lote3a1, finalizar, tarefaBoolsDiv3));
+        div3.appendChild(criarBotaoTarefa_div1('tarefa3a2', nomeDosLotesDiv3.lote3a2, finalizar, tarefaBoolsDiv3));
+        div3.appendChild(criarBotaoTarefa_div1('tarefa3a3', nomeDosLotesDiv3.lote3a3, finalizar, tarefaBoolsDiv3));
     }
 
-    cateButtons_tasks.addEventListener('click', abrirTarefas)
+    cateButtons_tasks.addEventListener('click', () => {
+        if (telaAtiva != "telaDeTarefas") {
+            abrirTarefas();
+            telaAtiva = "telaDeTarefas";
+        }
+    })
 
 });

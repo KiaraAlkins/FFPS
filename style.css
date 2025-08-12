@@ -565,12 +565,25 @@ CSS DA NOITE - GAME
 */
 
 html, body {
-    height: 100%;
+    height: 100vh;
     margin: 0;
 }
 
 body {
     overflow: hidden;
+}
+
+#tela-preta {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000000;
+    opacity: 1;
+    z-index: 9999;
+    pointer-events: none;
+    transition: opacity 5s ease;
 }
 
 .game-night_slider {
@@ -844,6 +857,11 @@ body {
     padding: 5px;
     border: #FFFFFF 2px solid;
     width: 200px;
+}
+
+.loadingButtons {
+    height: 5px;
+    width: 10px;
 }
 
 .buttons-tasks:hover {
