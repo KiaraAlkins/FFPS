@@ -1,8 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     let numerodanoite = 1;
-
-    localStorage.setItem("night", numerodanoite);
+    let moneyBS = 100;
 
     const newgame = document.getElementById("menuButtons1");
     const continuenight = document.getElementById("menuButtons2");
@@ -29,6 +28,6 @@ document.addEventListener("DOMContentLoaded", () => {
     clickover(customnight);
 
     newgame.addEventListener("click", () => {
-        window.location.href = "loading.html";
+      window.location.href = "loading.html";
     });
 })

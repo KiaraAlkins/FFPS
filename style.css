@@ -852,7 +852,6 @@ body {
     font-size: 16px;
     color: #FFFFFF;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     padding: 5px;
     border: #FFFFFF 2px solid;
@@ -861,18 +860,105 @@ body {
 
 .loadingButtons {
     height: 5px;
-    width: 10px;
+    width: 15px;
 }
 
 .buttons-tasks:hover {
     font-size: 16px;
-    color: #1A1F37;
-    background-color: #FFFFFF;
+    color: #00FF00;
+    background-color: #1A1F37;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     padding: 5px;
     border: #FFFFFF 2px solid;
+    width: 200px;
+}
+
+.buttons-tasks-complete {
+    font-size: 16px;
+    color: #1A1F37;
+    background-color: #FFFFFF;
+    display: flex;
+    justify-content: center;
+    padding: 5px;
+    border: #FFFFFF 2px solid;
+    width: 200px;
+}
+
+.buttons-tasks-complete:hover {
+    font-size: 16px;
+    color: #1A1F37;
+    background-color: #FFFFFF;
+    display: flex;
+    justify-content: center;
+    padding: 5px;
+    border: #FFFFFF 2px solid;
+    width: 200px;
+}
+
+.telaUpgrades {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.container-upgrade-moneys {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.money {
+    font-size: 24px;
+}
+
+.container-upgrade-moneys button {
+    display: flex;
+    justify-content: center;
+    font-size: 16px;
+    border: #ffffff 2px solid;
+    padding: 5px;
+    width: 200px;
+}
+
+.container-upgrade-moneys button:hover {
+    display: flex;
+    justify-content: center;
+    font-size: 16px;
+    color: #00FF00;
+    border: #ffffff 2px solid;
+    padding: 5px;
+    width: 200px;
+}
+
+.backtoTasks {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.backtoTasks button {
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    border: #FFFFFF solid 2px;
+    font-size: 16px;
+    width: 200px;
+}
+
+.backtoTasks button:hover {
+    padding: 5px;
+    display: flex;
+    color: #00FF00;
+    justify-content: center;
+    border: #FFFFFF solid 2px;
+    font-size: 16px;
     width: 200px;
 }
 
@@ -908,7 +994,7 @@ body {
 }
 
 .tela_linha-vertical {
-    height: 90%;
+    width: 90%;
     border: #FFFFFF 2px solid;
 }
 
@@ -1002,7 +1088,103 @@ body {
     align-items: center;
 }
 
+.imgBottom-button {
+    width: 150px;
+}
+
 .deactivated {
     display: none;
     width: 150px;
+}
+
+/* sistema de aquecimento */
+
+.telaHeater {
+    margin-top: 30px;
+    display: flex; 
+    gap: 50px;  
+}
+
+.telaHeater h1 {
+    font-size: 24px;
+    color: #FFFFFF;
+}
+
+.telaVentilation {
+    margin-top: 50px;
+    display: flex; 
+    gap: 50px;  
+}
+
+.telaVentilation h1 {
+    font-size: 24px;
+    color: #FFFFFF;
+}
+
+.telaVentilation-div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 50px;
+}
+
+.telaHeater-div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 50px;
+}
+
+.onOffButton-div {
+    display: flex;
+    align-items: center;
+    width: 200px;
+}
+
+.onOffButton-white {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #FFFFFF;
+    width: 50%;
+    color: #1A1F37;
+    border: #FFFFFF 2px solid;
+    font-size: 24px;
+}
+
+.onOffButton-black {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #1A1F37;
+    width: 50%;
+    color: #FFFFFF;
+    font-size: 24px;
+    border: #FFFFFF 2px solid;
+}
+
+.grid {
+    margin-top: 50px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 60px;
+}
+
+.cell {
+    width: 30px;
+    height: 30px;
+    background-color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.blockedCell {
+    width: 30px;
+    height: 30px;
+    background-color: #1A1F37;
+    border: #FFFFFF 3px solid;
 }

@@ -1,3 +1,7 @@
+localStorage.setItem("night", JSON.stringify(1));
+localStorage.setItem("money", JSON.stringify(100));
+localStorage.setItem("upgradeFunctions", JSON.stringify({ xPrinter: false, hispd: false, handyman: false }));
+
 document.addEventListener("DOMContentLoaded", () => {
 
     const telaPreta = document.getElementById('tela-preta');
@@ -30,6 +34,20 @@ document.addEventListener("DOMContentLoaded", () => {
     const gmSection_left = document.getElementById('gm-section-left');
     const gmSection_center = document.getElementById('center-content')
     const gmSection_right = document.getElementById('gm-section-right');
+
+    const moneyBS = JSON.parse(localStorage.getItem("money"));
+    const containerMoney = document.getElementById('money');
+    containerMoney.innerText = `B$ ${moneyBS},00`
+    
+    const upgradeFunctions = {
+        xPrinter: false,
+        hispd: false,
+        handyman: false,
+    }
+
+    const dadosSalvos = localStorage.getItem("upgradeFunctions");
+    const dadosRecuperado = JSON.parse(dadosSalvos);
+    // para manipular, ex: console.log(dadosRecuperados.xPrinter)
 
     function atualizarPosicao() {
         slider.style.transform = `translateX(-${posicaoAtual * 100}%)`;
@@ -278,7 +296,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentInterval = null;
     const botoesTarefaDiv1 = {};
 
-    function criarBotaoTarefa_div1(tarefaId, nomeDosLotesID, finalizar, tarefaBoolsID) {
+    function criarBotaoTarefa_div1(tarefaId, nomeDosLotesID, finalizar, tarefaBoolsID, numeroPorcentagem) {
         const botao = document.createElement('button')
         botao.classList.add('buttons-tasks');
 
@@ -287,8 +305,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let loadingBar = null;
 
         if (tarefaBoolsID[tarefaId] === true) {
-            porcentagem = 100;
-            botao.display = 'none';
+            porcentagem = numeroPorcentagem;
         } else {
             botao.innerText = nomeDosLotesID
         }
@@ -298,7 +315,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     clearInterval(currentInterval)
                     const loadingImg = tarefaAtual.querySelector('.loadingButtons');
                     if (loadingImg) loadingImg.remove();
-                    porcentagem = 0
+                    porcentagem = 0;
             }
 
             if (!tarefaBoolsID[tarefaId]) {
@@ -314,22 +331,28 @@ document.addEventListener("DOMContentLoaded", () => {
                 botao.innerText = nomeDosLotesID
                 botao.appendChild(loadingBar)
 
+                let loadingBarInterval
+
+                loadingBarInterval = setInterval(() => {
+                    numberLoadingBar++
+                    if (numberLoadingBar > 4) numberLoadingBar = 1;
+                    loadingBar.src = `./assets/loadingTasks/loading${numberLoadingBar}.png`
+                }, 250)
+
                 currentInterval = setInterval(() => {
                     porcentagem++
-                    numberLoadingBar++;
-                    if (numberLoadingBar > 4) numberLoadingBar = 1;
-
-                    loadingBar.src = `./assets/loadingTasks/loading${numberLoadingBar}.png`
-
-                    if (porcentagem >= 100) {
+                    if (porcentagem >= numeroPorcentagem) {
                         clearInterval(currentInterval);
                         tarefaBoolsID[tarefaId] = true;
                         tarefaAtual = null
                         if (loadingBar) loadingBar.remove();
                         verificaPermissao();
                         mostrarBotaoFinalizar(finalizar);
+
+                        botao.classList.remove('buttons-tasks')
+                        botao.classList.add('buttons-tasks-complete')
                     }
-                }, 100)
+                }, 1000)
             }
         });
         botoesTarefaDiv1[tarefaId] = botao;
@@ -361,8 +384,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const telaBaixa = document.getElementById('telaBaixa');
     const teladetarefas = document.getElementById('telaDeTarefas');
+    const bottomButtonBack = document.getElementById('bottom-button-back');
+    const telaUpgrades = document.getElementById('telaUpgrades');
+    const backToTasksButton = document.getElementById('backtoTasks');
+    const telaHeater = document.getElementById('telaHeater');
+    const telaVentilation = document.getElementById('telaVentilation');
+    const telaAudio = document.getElementById('telaAudio');
 
     let telaAtiva = null;
+    let tarefasCriadas = false 
 
     function abrirTarefas() {
         while (telaBaixa.firstChild) {
@@ -370,29 +400,41 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         telaBaixa.appendChild(teladetarefas);
         
+        bottomButtonBack.addEventListener('click', () => {
+            while (telaBaixa.firstChild) {
+                telaBaixa.removeChild(telaBaixa.firstChild);
+            }
+            telaBaixa.appendChild(telaUpgrades);
+            telaAtiva = 'telaUpgrades';
+        })
+        
         const finalizar = document.getElementById('finalizar');
         verificaPermissao();
-
-        const div1 = document.getElementById('order-suplies');
-        const div2 = document.getElementById('advertising');
-        const div3 = document.getElementById('maintenance')
         if (permissao) {
             mostrarBotaoFinalizar(finalizar);
         }
 
-        div1.appendChild(criarBotaoTarefa_div1('tarefa1a1', nomeDosLotesDiv1.lote1a1, finalizar, tarefaBoolsDiv1));
-        div1.appendChild(criarBotaoTarefa_div1('tarefa1a2', nomeDosLotesDiv1.lote1a2, finalizar, tarefaBoolsDiv1));
-        div1.appendChild(criarBotaoTarefa_div1('tarefa1a3', nomeDosLotesDiv1.lote1a3, finalizar, tarefaBoolsDiv1));
-        div1.appendChild(criarBotaoTarefa_div1('tarefa1a4', nomeDosLotesDiv1.lote1a4, finalizar, tarefaBoolsDiv1));
-        div1.appendChild(criarBotaoTarefa_div1('tarefa1a5', nomeDosLotesDiv1.lote1a5, finalizar, tarefaBoolsDiv1));
+        if (!tarefasCriadas) {
+            const div1 = document.getElementById('order-suplies');
+            const div2 = document.getElementById('advertising');
+            const div3 = document.getElementById('maintenance')
+    
+            div1.appendChild(criarBotaoTarefa_div1('tarefa1a1', nomeDosLotesDiv1.lote1a1, finalizar, tarefaBoolsDiv1, 9));
+            div1.appendChild(criarBotaoTarefa_div1('tarefa1a2', nomeDosLotesDiv1.lote1a2, finalizar, tarefaBoolsDiv1, 9));
+            div1.appendChild(criarBotaoTarefa_div1('tarefa1a3', nomeDosLotesDiv1.lote1a3, finalizar, tarefaBoolsDiv1, 9));
+            div1.appendChild(criarBotaoTarefa_div1('tarefa1a4', nomeDosLotesDiv1.lote1a4, finalizar, tarefaBoolsDiv1, 9));
+            div1.appendChild(criarBotaoTarefa_div1('tarefa1a5', nomeDosLotesDiv1.lote1a5, finalizar, tarefaBoolsDiv1, 9));
+    
+            div2.appendChild(criarBotaoTarefa_div1('tarefa2a1', nomeDosLotesDiv2.lote2a1, finalizar, tarefaBoolsDiv2, 16));
+            div2.appendChild(criarBotaoTarefa_div1('tarefa2a2', nomeDosLotesDiv2.lote2a2, finalizar, tarefaBoolsDiv2, 16));
+            div2.appendChild(criarBotaoTarefa_div1('tarefa2a3', nomeDosLotesDiv2.lote2a3, finalizar, tarefaBoolsDiv2, 16));
+    
+            div3.appendChild(criarBotaoTarefa_div1('tarefa3a1', nomeDosLotesDiv3.lote3a1, finalizar, tarefaBoolsDiv3, 13));
+            div3.appendChild(criarBotaoTarefa_div1('tarefa3a2', nomeDosLotesDiv3.lote3a2, finalizar, tarefaBoolsDiv3, 13));
+            div3.appendChild(criarBotaoTarefa_div1('tarefa3a3', nomeDosLotesDiv3.lote3a3, finalizar, tarefaBoolsDiv3, 13));
 
-        div2.appendChild(criarBotaoTarefa_div1('tarefa2a1', nomeDosLotesDiv2.lote2a1, finalizar, tarefaBoolsDiv2));
-        div2.appendChild(criarBotaoTarefa_div1('tarefa2a2', nomeDosLotesDiv2.lote2a2, finalizar, tarefaBoolsDiv2));
-        div2.appendChild(criarBotaoTarefa_div1('tarefa2a3', nomeDosLotesDiv2.lote2a3, finalizar, tarefaBoolsDiv2));
-
-        div3.appendChild(criarBotaoTarefa_div1('tarefa3a1', nomeDosLotesDiv3.lote3a1, finalizar, tarefaBoolsDiv3));
-        div3.appendChild(criarBotaoTarefa_div1('tarefa3a2', nomeDosLotesDiv3.lote3a2, finalizar, tarefaBoolsDiv3));
-        div3.appendChild(criarBotaoTarefa_div1('tarefa3a3', nomeDosLotesDiv3.lote3a3, finalizar, tarefaBoolsDiv3));
+            tarefasCriadas = true;
+        }
     }
 
     cateButtons_tasks.addEventListener('click', () => {
@@ -401,5 +443,118 @@ document.addEventListener("DOMContentLoaded", () => {
             telaAtiva = "telaDeTarefas";
         }
     })
+    backToTasksButton.addEventListener('click', () => {
+        if (telaAtiva != "telaDeTarefas") {
+            abrirTarefas();
+            telaAtiva = "telaDeTarefas";
+        }
+    })
 
+    function abrirAquecedor() {
+        while (telaBaixa.firstChild) {
+            telaBaixa.removeChild(telaBaixa.firstChild);
+        }
+        telaBaixa.appendChild(telaHeater);
+    }
+
+    cateButtons_heater.addEventListener('click', () => {
+        if (telaAtiva != "telaAquecedor") {
+            abrirAquecedor()
+            telaAtiva = "telaAquecedor";
+        }
+    })
+
+    function abrirVentilacao() {
+        while (telaBaixa.firstChild) {
+            telaBaixa.removeChild(telaBaixa.firstChild);
+        }
+        telaBaixa.appendChild(telaVentilation);
+    }
+
+    cateButtons_ventilation.addEventListener('click', () => {
+        if (telaAtiva != "telaVentilacao") {
+            abrirVentilacao();
+            telaAtiva = "telaVentilacao"
+        }
+    })
+
+    function abrirAudio() {
+        while (telaBaixa.firstChild) {
+            telaBaixa.removeChild(telaBaixa.firstChild);
+        }
+        telaBaixa.appendChild(telaAudio);
+    }
+
+    cateButtons_audio.addEventListener('click', () => {
+        if (telaAtiva != "telaAudio") {
+            abrirAudio();
+            telaAtiva = "telaAudio";
+        }
+    })
+
+    const divGrid = document.getElementById('grid');
+    let saladeatracao;
+
+    const gridSizeX = 5;
+    const gridSizeY = 3;
+
+    const blockedCell = [
+        { x: 2, y: 1 }
+    ]
+
+    const grid = [];
+
+    for (let rowIndex = 0; rowIndex < gridSizeY; rowIndex++) {
+        const row = [];
+        for (let cellIndex = 0; cellIndex < gridSizeX; cellIndex++) {
+            const isBlocked = blockedCell.some(cell => cell.x === cellIndex && cell.y === rowIndex);
+            if (isBlocked) {
+                row.push(null)
+            } else {
+                row.push(Math.floor(1));
+            }
+        }
+        grid.push(row)
+    }
+
+    const cellElements = [];
+
+    for (let rowIndex = 0; rowIndex < gridSizeY; rowIndex++) {
+        for(let cellIndex = 0; cellIndex < gridSizeX; cellIndex++) {
+            const isBlocked = blockedCell.some(cell => cell.x === cellIndex && cell.y === rowIndex);
+            if (!isBlocked) {
+                const cellElement = document.createElement('div');
+                cellElement.classList.add('cell');
+                cellElement.classList.add('cell--active');
+                cellElement.style.gridColumn = cellIndex + 1;
+                cellElement.style.gridRow = rowIndex + 1;
+                divGrid.appendChild(cellElement);
+                cellElements.push({ element: cellElement, x: cellIndex, y: rowIndex })
+            } else if (isBlocked) {
+                const blockedElement = document.createElement('div');
+                blockedElement.classList.add('blockedCell');
+                blockedElement.style.gridColumn = cellIndex + 1; 
+                blockedElement.style.gridRow = rowIndex + 1;
+
+                divGrid.appendChild(blockedElement)
+            }
+        }
+        
+    }
+
+    function alterarClasseSala(x, y, novaClasse) {
+        const targetCell = cellElements.find(cell => cell.x === x && cell.y === y);
+        if (targetCell) {
+            targetCell.element.classList.add('novaClasse');
+        } else {
+            console.warn("A célula especificada não foi encontrada!");
+        }
+    }
+
+    
+
+    telaBaixa.removeChild(telaHeater);
+    telaBaixa.removeChild(telaVentilation);
+    telaBaixa.removeChild(telaAudio);
+    telaBaixa.removeChild(telaBaixa.firstElementChild)
 });
