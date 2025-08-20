@@ -1182,9 +1182,36 @@ body {
     justify-content: center;
 }
 
+.cell-player {
+    width: 30px;
+    height: 30px;
+    background-color: #1A1F37;
+    border: #FFEA00 8px solid;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .blockedCell {
     width: 30px;
     height: 30px;
     background-color: #1A1F37;
     border: #FFFFFF 3px solid;
+}
+
+.displayTemperature {
+    position: absolute;
+    top: 90%;
+    left: 20%;
+    height: 50px;
+    width: 200px;
+    background-color: #FFFFFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.textTemperature {
+    font-size: 24px;
+    font-family: 'RetroFont';
 }

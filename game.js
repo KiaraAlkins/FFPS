@@ -470,6 +470,59 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         telaBaixa.appendChild(telaVentilation);
     }
+    
+    let HeaterSystem = false;
+    let VentSystem = true;
+    const butHeaterOn = document.getElementById('buttonHeater-on');
+    const butHeaterOff = document.getElementById('buttonHeater-off');
+    const butVentilationOn = document.getElementById('buttonVentilation-on');
+    const butVentilationOff = document.getElementById('buttonVentilation-off');
+
+    function atualizarBotoes() {
+        if (HeaterSystem) {
+            butHeaterOn.classList.add('onOffButton-black');
+            butHeaterOn.classList.remove('onOffButton-white');
+            butHeaterOff.classList.add('onOffButton-white');
+            butHeaterOff.classList.remove('onOffButton-black');
+
+            butVentilationOn.classList.add('onOffButton-white');
+            butVentilationOn.classList.remove('onOffButton-black');
+            butVentilationOff.classList.add('onOffButton-black');
+            butVentilationOff.classList.remove('onOffButton-white')
+        } else if (VentSystem) {
+            butVentilationOn.classList.add('onOffButton-black');
+            butVentilationOn.classList.remove('onOffButton-white');
+            butVentilationOff.classList.add('onOffButton-white');
+            butVentilationOff.classList.remove('onOffButton-black');
+
+            butHeaterOn.classList.add('onOffButton-white');
+            butHeaterOn.classList.remove('onOffButton-black');
+            butHeaterOff.classList.add('onOffButton-black');
+            butHeaterOff.classList.remove('onOffButton-white');
+        }
+    }
+
+    butHeaterOn.addEventListener('click', () => {
+        HeaterSystem = true; 
+        VentSystem = false;
+        atualizarBotoes(); 
+    })
+    butHeaterOff.addEventListener('click', () => {
+        HeaterSystem = false
+        VentSystem = true;
+        atualizarBotoes();
+    })
+    butVentilationOn.addEventListener('click', () => {
+        VentSystem = true;
+        HeaterSystem = false; 
+        atualizarBotoes(); 
+    })
+    butVentilationOff.addEventListener('click', () => {
+        VentSystem = false;
+        HeaterSystem = true;
+        atualizarBotoes();
+    })
+    atualizarBotoes();
 
     cateButtons_ventilation.addEventListener('click', () => {
         if (telaAtiva != "telaVentilacao") {
@@ -545,11 +598,12 @@ document.addEventListener("DOMContentLoaded", () => {
     function alterarClasseSala(x, y, novaClasse) {
         const targetCell = cellElements.find(cell => cell.x === x && cell.y === y);
         if (targetCell) {
-            targetCell.element.classList.add('novaClasse');
+            targetCell.element.classList.add(novaClasse);
         } else {
             console.warn("A célula especificada não foi encontrada!");
         }
     }
+    alterarClasseSala(2, 2, 'cell-player')
 
     
 
