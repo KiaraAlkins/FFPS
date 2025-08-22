@@ -11,7 +11,7 @@
         <div class="game-night_slider ">
 
             <section id="gm-section-left" class="gameNightSection-left"><img src="./assets/duct-Left.png" alt="">
-                <div class="displayTemperature"><p class="textTemperature">50 C°</p></div>
+                <div class="displayTemperature"><p id="textTemperature-100" class="textTemperature"></p></div>
             <div class="container_buttonGameNight-leftScreen">
                 <button id="setaButton-Left-Lscreen" class="buttonGameNight-leftScreen">
                     <img src="./assets/setaButtons-Right.svg" alt="">
@@ -26,7 +26,7 @@
                     </div>
 
                     <div id="center-content" class="center-content">
-                        <div class="displayTemperature"><p class="textTemperature">50 C°</p></div>
+                        <div class="displayTemperature"><p  id="textTemperature-10" class="textTemperature"></p></div>
                          <div class="gameNigth_table-container">
                             <img id="mesaGameNight" src="./assets/mesa.png" alt="">
                         </div>
@@ -108,36 +108,40 @@
                                 </div>
                                 <div id="div-PuppetButtons" class="div-PuppetButtons">
                                     <button id="musicBox" class="musicBoxMusic"><img id="musicBoxIMG" src="./assets/musicBoxRound/MusicBox5.svg" alt=""></button>
+                                    <div class="alertBox"><img class="imgAlert" src="./assets/alert.svg" alt=""></div>
                                     <button class="controledShock"><img src="./assets/ButtonControledShock.png" alt=""></button>
                                 </div>
                                 <div id="div-BabyButtons" class="div-BabyButtons">
                                     <div class="divBB-1">
-                                        <div class="divBB-2"><p class="BabyButtons-p">Heater</p><img src="./assets/figures/star.svg" alt=""></div>
-                                        <div class="divBB-2"><p class="BabyButtons-p">Ventilation</p><img src="./assets/figures/polygon4.svg" alt=""></div>
-                                        <div class="divBB-2"><p class="BabyButtons-p">Audio Lure</p><img src="./assets/figures/polygon6.svg" alt=""></div>
+                                        <div id="bbButtonsDiv1" class="divBB-2"><p id="bbButtonsP1" class="BabyButtons-p">Temp. syst.</p><img src="./assets/figures/stargreat.svg" alt=""></div>
+                                        <div id="bbButtonsDiv2" class="divBB-2"><p id="bbButtonsP2" class="BabyButtons-p">Tasks syst.</p><img src="./assets/figures/losangle.svg" alt=""></div>
+                                        <div id="bbButtonsDiv3" class="divBB-2"><p id="bbButtonsP3" class="BabyButtons-p">Audio Lures</p><img src="./assets/figures/starfour.svg" alt=""></div>
+                                        <div id="bbButtonsDiv4" class="divBB-2"><p id="bbButtonsP4" class="BabyButtons-p">Music Box</p><img src="./assets/figures/circle.svg" alt=""></div>
                                     </div>
-                                    <div class="div-BabyButtons-div">
-                                        <button class="minig-buttons"><img src="./assets/figures/star.svg" alt=""></button>
-                                        <button class="minig-buttons"><img src="./assets/figures/polygon4.svg" alt=""></button>
-                                        <button class="minig-buttons"><img src="./assets/figures/polygon6.svg" alt=""></button>
+                                    <div id="div-BabyButtons-div" class="div-BabyButtons-div">
+                                        <button class="minig-buttons"><img src="./assets/figures/stargreat.svg" data-figure="stargreat.svg" alt=""></button>
+                                        <button class="minig-buttons"><img src="./assets/figures/losangle.svg" data-figure="losangle.svg" alt=""></button>
+                                        <button class="minig-buttons"><img src="./assets/figures/starfour.svg" data-figure="starfour.svg" alt=""></button>
+                                        <button class="minig-buttons"><img src="./assets/figures/circle.svg" data-figure="circle.svg" alt=""></button>
+                                        <button class="minig-buttons"><img src="./assets/figures/stargreat.svg" data-figure="stargreat.svg" alt=""></button>
+                                        <button class="minig-buttons"><img src="./assets/figures/losangle.svg" data-figure="losangle.svg" alt=""></button>
+                                        <button class="minig-buttons"><img src="./assets/figures/starfour.svg" data-figure="starfour.svg" alt=""></button>
+                                        <button class="minig-buttons"><img src="./assets/figures/circle.svg" data-figure="circle.svg" alt=""></button>
+                                        <button class="minig-buttons"><img src="./assets/figures/stargreat.svg" data-figure="stargreat.svg" alt=""></button>
+                                        <button class="minig-buttons"><img src="./assets/figures/losangle.svg" data-figure="losangle.svg" alt=""></button>
+                                        <button class="minig-buttons"><img src="./assets/figures/starfour.svg" data-figure="starfour.svg" alt=""></button>
+                                        <button class="minig-buttons"><img src="./assets/figures/circle.svg" data-figure="circle.svg" alt=""></button>
+                                        <button class="minig-buttons"><img src="./assets/figures/stargreat.svg" data-figure="stargreat.svg" alt=""></button>
+                                        <button class="minig-buttons"><img src="./assets/figures/losangle.svg" data-figure="losangle.svg" alt=""></button>
+                                        <button class="minig-buttons"><img src="./assets/figures/starfour.svg" data-figure="starfour.svg" alt=""></button>
+                                        <button class="minig-buttons"><img src="./assets/figures/circle.svg" data-figure="circle.svg" alt=""></button>
                                     </div>
-                                    <div class="div-BabyButtons-div">
-                                        <button class="minig-buttons"><img src="./assets/figures/star.svg" alt=""></button>
-                                        <button class="minig-buttons"><img src="./assets/figures/polygon4.svg" alt=""></button>
-                                        <button class="minig-buttons"><img src="./assets/figures/polygon6.svg" alt=""></button>
-                                    </div>
-                                    <div class="div-BabyButtons-div">
-                                        <button class="minig-buttons"><img src="./assets/figures/star.svg" alt=""></button>
-                                        <button class="minig-buttons"><img src="./assets/figures/polygon4.svg" alt=""></button>
-                                        <button class="minig-buttons"><img src="./assets/figures/polygon6.svg" alt=""></button>
-                                    </div>
-
-                                    <button class="minig-resetButton">Reset System</button>
+                                    <button id="reset-system" class="minig-resetButton">Reset System</button>
                                 </div>
                             </div>
                         </div>
-                        <div id="buttonGameNight-horizontal" class="container_buttonGameNight-horizontal">
-                            <button class="buttonGameNight-horizontal"><img src="./assets/setaButtons-top.svg" alt=""></button>
+                        <div class="container_buttonGameNight-horizontal">
+                            <button id="buttonGameNight-horizontal" class="buttonGameNight-horizontal"><img src="./assets/setaButtons-top.svg" alt=""></button>
                         </div>
                     </div>
                     
@@ -150,7 +154,7 @@
         </section>
         
         <section id="gm-section-right" class="gameNightSection-right">
-            <div class="displayTemperature"><p class="textTemperature">50 C°</p></div>
+            <div class="displayTemperature"><p id="textTemperature-1" class="textTemperature"></p></div>
             <img src="./assets/duct-Right.png" alt="">
             <div class="container_buttonGameNight-RightScreen">
                 <button id="setaButton-Right-Rscreen" class="buttonGameNight-leftScreen">

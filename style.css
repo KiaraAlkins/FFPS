@@ -564,10 +564,6 @@ CSS DA NOITE - GAME
 
 */
 
-html, body {
-    height: 100vh;
-    margin: 0;
-}
 
 body {
     overflow: hidden;
@@ -750,6 +746,8 @@ body {
 .div-PuppetButtons {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
     margin: 0 100px;
     gap: 100px;
 }
@@ -764,14 +762,65 @@ body {
 }
 
 .div-BabyButtons-div {
-    display: flex;
+    display: grid;
     gap: 10px;
+    grid-template-columns: repeat(4, 65px);
+    grid-template-rows: repeat(4, 65px);
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 }
+
+.musicBoxMusic {
+    width: 100%;
+}
+
+.controledShock {
+    width: 100%;
+}
+
+.alertBox {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-self: center;
+}
+
+.alertBox img {
+    width: 50px;
+    height: 50px;
+}
+
+.imgAlert {
+    width: 15px;
+    height: 15px;
+}
+
 
 .divBB-1 {
     display: flex;
     justify-content: space-between;
+    gap: 5px;
+    height: 150px;
+}
 
+button {
+    user-select: none;
+    -webkit-user-drag: none;
+    pointer-events: auto;
+}
+
+img {
+    user-select: none;
+    -webkit-user-drag: none;
+    pointer-events: none;
+}
+
+div {
+    user-select: none;
+    -webkit-user-drag: none;
+    pointer-events: none;
 }
 
 .divBB-2 {
@@ -779,23 +828,37 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    width: 150px;
+    width: 125px;
     gap: 20px;
     margin-bottom: 50px;
 }
 
 .BabyButtons-p {
     color: #FFFFFF;
-    font-size: 24px;
+    font-size: 20px;
 }
 
 .minig-buttons {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 60px;
-    width: 135px;
+    height: 65px;
+    width: 65px;
     border: #FFFFFF 2px solid;
+}
+
+.minig-buttons:hover {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 65px;
+    width: 65px;
+    background-color: #515d99;
+    border: #FFFFFF 2px solid;
+}
+
+.minig-buttons.clicado {
+    border-color: gold;
 }
 
 .minig-resetButton {
@@ -1180,6 +1243,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
 }
 
 .cell-player {
@@ -1187,6 +1251,15 @@ body {
     height: 30px;
     background-color: #1A1F37;
     border: #FFEA00 8px solid;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cell-audio-lure {
+    width: 30px;
+    height: 30px;
+    background-color: #c9d2ff;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1215,3 +1288,46 @@ body {
     font-size: 24px;
     font-family: 'RetroFont';
 }
+
+.svg-audio-lure {
+    height: 20px;
+    width: 20px;
+}
+
+.cell-attracted {
+    outline: 2px dashed orange;
+}
+
+.attracted-indicator {
+    width: 20px;
+    height: 20px;
+    background-color: rgb(255, 0, 0);
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+@keyframes moveLeft {
+    from { transform: translateX(0) scale(1); opacity: 1; }
+    to   { transform: translateX(-10px) scale(0.5); opacity: 0.1; }
+}
+
+@keyframes moveRight {
+    from { transform: translateX(0) scale(1); opacity: 1; }
+    to   { transform: translateX(10px) scale(0.5); opacity: 0.1; }
+}
+
+@keyframes moveUp {
+    from { transform: translateY(0) scale(1); opacity: 1; }
+    to   { transform: translateY(-10px) scale(0.5); opacity: 0.1; }
+}
+
+@keyframes moveDown {
+    from { transform: translateY(0) scale(1); opacity: 1; }
+    to   { transform: translateY(10px) scale(0.5); opacity: 0.1; }
+}
+
+.move-left   { animation: moveLeft 1s infinite alternate; }
+.move-right  { animation: moveRight 1s infinite alternate; }
+.move-up     { animation: moveUp 1s infinite alternate; }
+.move-down   { animation: moveDown 1s infinite alternate; }

@@ -38,6 +38,38 @@ document.addEventListener("DOMContentLoaded", () => {
     const moneyBS = JSON.parse(localStorage.getItem("money"));
     const containerMoney = document.getElementById('money');
     containerMoney.innerText = `B$ ${moneyBS},00`
+
+    let ctx, source, buffer, gainNode;
+
+    async function fazerLooping() {
+        if (!ctx) {
+            ctx = new (window.AudioContext || window.webkitAudioContext)();
+            gainNode = ctx.createGain();
+            gainNode.gain.value = 0.1;
+            gainNode.connect(ctx.destination)
+        } 
+        if (!buffer) {
+            const res = await fetch('./assets/audio/ambienceTheme.mp3');
+            const arr = await res.arrayBuffer();
+            buffer = await ctx.decodeAudioData(arr);
+        }
+
+        if (source) {
+            source.stop();
+        }
+
+        source = ctx.createBufferSource();
+        source.buffer = buffer;
+        source.loop = true;
+
+        source.connect(gainNode);
+        source.start(0)
+    }
+
+    document.addEventListener('mouseenter', () => {
+        if (ctx && ctx.state === 'suspended') ctx.resume();
+        fazerLooping()
+    }, { once: true });
     
     const upgradeFunctions = {
         xPrinter: false,
@@ -84,31 +116,228 @@ document.addEventListener("DOMContentLoaded", () => {
     const telaTablet = document.getElementById('tablet-camera')
 
     let telaTabletLigada = false;
+    const audioCamStatic = document.createElement('audio');
+    audioCamStatic.src = './assets/audio/cameraStatic.mp3'
+    const audioTabletCamera = document.createElement('audio');
+    audioTabletCamera.src = './assets/audio/monitorPulled.mp3';
 
     botaoHorizontal.addEventListener('click', () => {
         if (telaTabletLigada) {
             telaTabletLigada = false
             telaTablet.style.transition = 'top 0.25s ease';
             telaTablet.style.top = '150%'
+
+            audioTabletCamera.pause();
+            audioTabletCamera.currentTime = 0;
+            audioCamStatic.pause();
+            audioCamStatic.currentTime = 0;
+
             setTimeout(() => {
                 telaTablet.style.display = 'none'
+                embaralharGrade();
             }, 500)
         } else {
             telaTabletLigada = true;
             telaTablet.style.transition = 'top 0.25 ease';
             telaTablet.style.display = 'flex'
             telaTablet.style.top = '150%'
-            const audioTabletCamera = document.createElement('audio');
-            audioTabletCamera.src = './assets/audio/monitorPulled.mp3';
+
             audioTabletCamera.play();
+            audioCamStatic.play();
+
             setTimeout(() => {
                 audioTabletCamera.remove();
             }, 3000);
             requestAnimationFrame(() => {
             telaTablet.style.top = '45%'; // posição final (visível)
-        })
-        }
+        })}
     })
+
+    // -------------------------- Sistemas em funcionamento 
+
+    let sistemaTemperatura = false;
+    const PbabyButtons_temp = document.getElementById('bbButtonsP1');
+    const bbButtonsDiv_temp = document.getElementById('bbButtonsDiv1');
+    let sistemaTarefas = false;
+    const PbabyButtons_tasks = document.getElementById('bbButtonsP2');
+    const bbButtonsDiv_tasks = document.getElementById('bbButtonsDiv2');
+    let sistemaAudio = false;
+    const PbabyButtons_audio = document.getElementById('bbButtonsP3');
+    const bbButtonsDiv_audio = document.getElementById('bbButtonsDiv3');
+    let sistemaMusicBox = false;
+    const PbabyButtons_musicBox = document.getElementById('bbButtonsP4');
+    const bbButtonsDiv_musicBox = document.getElementById('bbButtonsDiv4');
+
+    function toggleSystems(system) {
+        system = true;
+    }
+
+    function sistemaDesativado(system, pElement, systemName, divElement) {
+        pElement.style.color = '#FF0000';
+        divElement.style.border = '2px solid #FF0000';
+        setTimeout(() => {
+            pElement.style.color = '#FFFFFF';
+            divElement.style.border = 'none';
+        }, 500);
+    }
+
+    setInterval(() => {
+        if (!sistemaTemperatura) {
+            sistemaDesativado(sistemaTemperatura, PbabyButtons_temp, 'Temperatura', bbButtonsDiv_temp);
+            cateButtons_heater.style.color = '#FF0000';
+            setTimeout(() => {
+                cateButtons_heater.style.color = '#FFFFFF';
+            }, 500);
+            cateButtons_ventilation.style.color = '#FF0000';
+            setTimeout(() => {
+                cateButtons_ventilation.style.color = '#FFFFFF';
+            }, 500);
+        }
+        if (!sistemaTarefas) {
+            sistemaDesativado(sistemaTarefas, PbabyButtons_tasks, 'Tarefas', bbButtonsDiv_tasks);
+            cateButtons_tasks.style.color = '#FF0000';
+            setTimeout(() => {
+                cateButtons_tasks.style.color = '#FFFFFF';
+            }, 500);
+        }
+        if (!sistemaAudio) {
+            sistemaDesativado(sistemaAudio, PbabyButtons_audio, 'Audio Lures', bbButtonsDiv_audio);
+            cateButtons_audio.style.color = '#FF0000';
+            setTimeout(() => {
+                cateButtons_audio.style.color = '#FFFFFF';
+            }, 500);
+            desativarAudioLures();
+            saladeatracao = null;
+        }
+        if (!sistemaMusicBox) {
+            sistemaDesativado(sistemaMusicBox, PbabyButtons_musicBox, 'Music Box', bbButtonsDiv_musicBox);
+            const alertBox = document.querySelector('.imgAlert');
+            if (alertBox) alertBox.style.display = 'block';
+            setTimeout(() => {
+                if (alertBox) alertBox.style.display = 'none';
+            }, 500);
+        }
+    }, 1000);
+
+    // Embaralhamento de figuras 
+
+    const contadorDeFiguras = {
+        "stargreat.svg": 0,
+        "losangle.svg": 0,
+        "starfour.svg": 0,
+        "circle.svg": 0,
+    };
+
+    function dispararComando(figuras) {
+        switch (figuras) {
+            case "stargreat.svg":
+                console.log("Comando disparado: stargreat");
+                sistemaTemperatura = true;
+                break;
+            case "losangle.svg":
+                console.log("Comando disparado: Polygon 4");
+                sistemaTarefas = true;
+                break;
+            case "starfour.svg":
+                console.log("Comando disparado: Polygon 6");
+                sistemaAudio = true;
+                break;
+            case "circle.svg":
+                console.log("Comando disparado: Circle");
+                sistemaMusicBox = true;
+                break;
+        }
+    }
+
+    let selectFigure = null;
+    
+    function embaralharGrade() {
+        const container = document.getElementById('div-BabyButtons-div');
+        const botoes = Array.from(container.querySelectorAll('.minig-buttons'));
+
+        for (let i = botoes.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [botoes[i], botoes[j]] = [botoes[j], botoes[i]];
+        }
+
+        botoes.forEach(botao => {
+            botao.disabled = false;
+            botao.classList.remove('clicado');
+
+            botao.onclick = () => {
+                const audioClick = document.createElement('audio');
+                audioClick.src = './assets/audio/rebButton.mp3';
+                audioClick.play();
+                setTimeout(() => {
+                    audioClick.remove();
+                }, 3000);
+                if (botao.classList.contains('clicado')) return;
+                
+                const figura = botao.querySelector('img')?.getAttribute('data-figure');
+                if (!figura) return
+                
+                if (!selectFigure) {
+                    selectFigure = figura;
+                    
+                    botoes.forEach(outroBotao => {
+                        const outraFigura = outroBotao.querySelector('img')?.getAttribute('data-figure');
+                        if (outraFigura !== selectFigure) {
+                            outroBotao.disabled = true;
+                        }
+                    })
+                }
+                if (figura !== selectFigure) return;
+                
+                botao.classList.add('clicado');
+                botao.disabled = true;
+
+                contadorDeFiguras[figura]++;
+                console.warn(`Contador de figuras: ${figura} - ${contadorDeFiguras[figura]}`);
+            }
+        });
+        container.append(...botoes);
+    }
+
+    embaralharGrade();
+
+    const resetButton = document.getElementById('reset-system');
+    resetButton.addEventListener('click', () => {
+        const audioReset = document.createElement('audio');
+        audioReset.src = './assets/audio/reboot.mp3';
+        audioReset.play();
+        setTimeout(() => {
+            audioReset.remove();
+        }, 3000);
+        selectFigure = null;
+        for (const figura in contadorDeFiguras) {
+            if (contadorDeFiguras[figura] === 4) {
+                const botoesClicados = Array.from(document.querySelectorAll('.minig-buttons.clicado'))
+                .filter(botao => {
+                    const img = botao.querySelector('img');
+                    return img && img.getAttribute('data-figure') === figura;
+                });
+
+                if (botoesClicados.length === 4) {
+                    dispararComando(figura);
+                }
+            }
+        }
+        const botoes = document.querySelectorAll('.minig-buttons');
+        botoes.forEach(botao => {
+            botao.classList.remove('clicado');
+            botao.disabled = false;
+        });
+
+        for (let figura in contadorDeFiguras) {
+            contadorDeFiguras[figura] = 0;
+        }
+    
+        embaralharGrade();
+        // const audioReset = document.createElement('audio');
+        // audioReset.src = './assets/audio/systemReset.mp3';
+        // audioReset.play();
+    });
+
 
     setInterval(() => {
         if (posicaoAtual == 0) {
@@ -221,31 +450,41 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     
     musicBox.addEventListener('mousedown', () => {
-        if (intervalID) return;
-        atualizarImagem();
-        intervalID = setInterval(atualizarImagem, 500);
+        if (sistemaMusicBox) {
+            if (intervalID) return;
+            atualizarImagem();
+            intervalID = setInterval(atualizarImagem, 500);
+        }
     });
 
     musicBox.addEventListener('mouseup', () => {
-        clearInterval(intervalID)
-        intervalID = null;
+        if (sistemaMusicBox) {
+            clearInterval(intervalID)
+            intervalID = null;
+        }
     })
 
     musicBox.addEventListener('mouseleave', () => {
-        clearInterval(intervalID)
-        intervalID = null;
+        if (sistemaMusicBox) {
+            clearInterval(intervalID)
+            intervalID = null;
+        }
     })
 
-    musicBox.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        if (intervalID) return;
-        atualizarImagem();
-        intervalID = setInterval(atualizarImagem, 500);
+    musicBox.addEventListener('touchstargreatt', (e) => {
+        if (sistemaMusicBox) {
+            e.preventDefault();
+            if (intervalID) return;
+            atualizarImagem();
+            intervalID = setInterval(atualizarImagem, 500);
+        }
     })
 
     musicBox.addEventListener('touchend', () => {
-        clearInterval(intervalID);
-        intervalID = null;
+        if (sistemaMusicBox) {
+            clearInterval(intervalID);
+            intervalID = null;
+        }
     });
 
 
@@ -294,15 +533,17 @@ document.addEventListener("DOMContentLoaded", () => {
     let permissao = false;
     let tarefaAtual = null;
     let currentInterval = null;
-    const botoesTarefaDiv1 = {};
+    let audioAtual = null;
+    const botoestargreatefaDiv1 = {};
 
-    function criarBotaoTarefa_div1(tarefaId, nomeDosLotesID, finalizar, tarefaBoolsID, numeroPorcentagem) {
+    function criarBotaoTarefa_div1(tarefaId, nomeDosLotesID, finalizar, tarefaBoolsID, numeroPorcentagem, audioTasks) {
         const botao = document.createElement('button')
         botao.classList.add('buttons-tasks');
 
         let porcentagem = 0;
         let numberLoadingBar = 1;
         let loadingBar = null;
+        let loadingBarInterval = null;
 
         if (tarefaBoolsID[tarefaId] === true) {
             porcentagem = numeroPorcentagem;
@@ -311,51 +552,82 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         botao.addEventListener('click', () => {
-            if (tarefaAtual && tarefaAtual !== botao) {
-                    clearInterval(currentInterval)
-                    const loadingImg = tarefaAtual.querySelector('.loadingButtons');
-                    if (loadingImg) loadingImg.remove();
-                    porcentagem = 0;
-            }
+            if (!sistemaTarefas) {
+                const audioError = document.createElement('audio');
+                audioError.src = './assets/audio/buttonFail.mp3';
+                audioError.volume = 0.25;
+                audioError.play();
+                setTimeout(() => audioError.remove(), 3000);
+                return;
+            } else {
+                if (tarefaAtual && tarefaAtual !== botao) {
+                        if (audioTasks && !audioTasks.paused) {
+                            audioTasks.pause();
+                            audioTasks.currentTime = 0;
+                        }
+                        clearInterval(currentInterval)
+                        clearInterval(loadingBarInterval);
 
-            if (!tarefaBoolsID[tarefaId]) {
-                tarefaAtual = botao;
-                tarefaBoolsID[tarefaId] = false;
-                porcentagem = 0;
-                numberLoadingBar = 1;
-
-                if (!loadingBar) {
-                    loadingBar = document.createElement('img') 
-                    loadingBar.classList.add('loadingButtons')
-                }
-                botao.innerText = nomeDosLotesID
-                botao.appendChild(loadingBar)
-
-                let loadingBarInterval
-
-                loadingBarInterval = setInterval(() => {
-                    numberLoadingBar++
-                    if (numberLoadingBar > 4) numberLoadingBar = 1;
-                    loadingBar.src = `./assets/loadingTasks/loading${numberLoadingBar}.png`
-                }, 250)
-
-                currentInterval = setInterval(() => {
-                    porcentagem++
-                    if (porcentagem >= numeroPorcentagem) {
-                        clearInterval(currentInterval);
-                        tarefaBoolsID[tarefaId] = true;
-                        tarefaAtual = null
-                        if (loadingBar) loadingBar.remove();
-                        verificaPermissao();
-                        mostrarBotaoFinalizar(finalizar);
-
-                        botao.classList.remove('buttons-tasks')
-                        botao.classList.add('buttons-tasks-complete')
+                        const loadingImg = tarefaAtual.querySelector('.loadingButtons');
+                        if (loadingImg) loadingImg.remove();
+                        porcentagem = 0;
                     }
-                }, 1000)
+                    
+                    if (!tarefaBoolsID[tarefaId]) {
+                        tarefaAtual = botao;
+                        tarefaBoolsID[tarefaId] = false;
+                        porcentagem = 0;
+                        numberLoadingBar = 1;
+                        
+                        if (!loadingBar) {
+                            loadingBar = document.createElement('img') 
+                            loadingBar.classList.add('loadingButtons')
+                        }
+
+                        botao.innerText = nomeDosLotesID
+                        botao.appendChild(loadingBar)
+                        
+                        if (audioAtual && !audioAtual.paused) {
+                            audioAtual.pause();
+                            audioAtual.currentTime = 0;
+                        }
+
+                        audioAtual = audioTasks;
+                        audioTasks.currentTime = 0;
+                        audioTasks.loop = true;
+                        audioTasks.play();
+    
+                    loadingBarInterval = setInterval(() => {
+                        numberLoadingBar++
+                        if (numberLoadingBar > 4) numberLoadingBar = 1;
+                        loadingBar.src = `./assets/loadingTasks/loading${numberLoadingBar}.png`
+                    }, 250)
+    
+                    currentInterval = setInterval(() => {
+                        porcentagem++
+                        if (porcentagem >= numeroPorcentagem) {
+                            clearInterval(currentInterval);
+                            clearInterval(loadingBarInterval);
+
+                            if (audioAtual) {
+                                audioTasks.pause();
+                                audioTasks.currentInterval = 0;
+                            }
+
+                            tarefaBoolsID[tarefaId] = true;
+                            tarefaAtual = null
+                            if (loadingBar) loadingBar.remove();
+                            verificaPermissao();
+                            mostrarBotaoFinalizar(finalizar);
+    
+                            botao.classList.remove('buttons-tasks')
+                            botao.classList.add('buttons-tasks-complete')
+                        }
+                    }, 1000)
+                }
             }
         });
-        botoesTarefaDiv1[tarefaId] = botao;
+        botoestargreatefaDiv1[tarefaId] = botao;
         return botao;
     }
 
@@ -394,6 +666,13 @@ document.addEventListener("DOMContentLoaded", () => {
     let telaAtiva = null;
     let tarefasCriadas = false 
 
+    const audioPrinting = document.createElement('audio');
+    audioPrinting.src = './assets/audio/printing.mp3';
+    const audioItemOrder = document.createElement('audio')
+    audioItemOrder.src = './assets/audio/itemOrder.mp3';
+    const audioPrintingTwo = document.createElement('audio');
+    audioPrintingTwo.src = './assets/audio/printingtwo.mp3';
+
     function abrirTarefas() {
         while (telaBaixa.firstChild) {
             telaBaixa.removeChild(telaBaixa.firstChild);
@@ -419,19 +698,19 @@ document.addEventListener("DOMContentLoaded", () => {
             const div2 = document.getElementById('advertising');
             const div3 = document.getElementById('maintenance')
     
-            div1.appendChild(criarBotaoTarefa_div1('tarefa1a1', nomeDosLotesDiv1.lote1a1, finalizar, tarefaBoolsDiv1, 9));
-            div1.appendChild(criarBotaoTarefa_div1('tarefa1a2', nomeDosLotesDiv1.lote1a2, finalizar, tarefaBoolsDiv1, 9));
-            div1.appendChild(criarBotaoTarefa_div1('tarefa1a3', nomeDosLotesDiv1.lote1a3, finalizar, tarefaBoolsDiv1, 9));
-            div1.appendChild(criarBotaoTarefa_div1('tarefa1a4', nomeDosLotesDiv1.lote1a4, finalizar, tarefaBoolsDiv1, 9));
-            div1.appendChild(criarBotaoTarefa_div1('tarefa1a5', nomeDosLotesDiv1.lote1a5, finalizar, tarefaBoolsDiv1, 9));
+            div1.appendChild(criarBotaoTarefa_div1('tarefa1a1', nomeDosLotesDiv1.lote1a1, finalizar, tarefaBoolsDiv1, 9, audioItemOrder));
+            div1.appendChild(criarBotaoTarefa_div1('tarefa1a2', nomeDosLotesDiv1.lote1a2, finalizar, tarefaBoolsDiv1, 9, audioItemOrder));
+            div1.appendChild(criarBotaoTarefa_div1('tarefa1a3', nomeDosLotesDiv1.lote1a3, finalizar, tarefaBoolsDiv1, 9, audioItemOrder));
+            div1.appendChild(criarBotaoTarefa_div1('tarefa1a4', nomeDosLotesDiv1.lote1a4, finalizar, tarefaBoolsDiv1, 9, audioItemOrder));
+            div1.appendChild(criarBotaoTarefa_div1('tarefa1a5', nomeDosLotesDiv1.lote1a5, finalizar, tarefaBoolsDiv1, 9, audioItemOrder));
     
-            div2.appendChild(criarBotaoTarefa_div1('tarefa2a1', nomeDosLotesDiv2.lote2a1, finalizar, tarefaBoolsDiv2, 16));
-            div2.appendChild(criarBotaoTarefa_div1('tarefa2a2', nomeDosLotesDiv2.lote2a2, finalizar, tarefaBoolsDiv2, 16));
-            div2.appendChild(criarBotaoTarefa_div1('tarefa2a3', nomeDosLotesDiv2.lote2a3, finalizar, tarefaBoolsDiv2, 16));
+            div2.appendChild(criarBotaoTarefa_div1('tarefa2a1', nomeDosLotesDiv2.lote2a1, finalizar, tarefaBoolsDiv2, 16, audioPrintingTwo));
+            div2.appendChild(criarBotaoTarefa_div1('tarefa2a2', nomeDosLotesDiv2.lote2a2, finalizar, tarefaBoolsDiv2, 16, audioPrintingTwo));
+            div2.appendChild(criarBotaoTarefa_div1('tarefa2a3', nomeDosLotesDiv2.lote2a3, finalizar, tarefaBoolsDiv2, 16, audioPrintingTwo));
     
-            div3.appendChild(criarBotaoTarefa_div1('tarefa3a1', nomeDosLotesDiv3.lote3a1, finalizar, tarefaBoolsDiv3, 13));
-            div3.appendChild(criarBotaoTarefa_div1('tarefa3a2', nomeDosLotesDiv3.lote3a2, finalizar, tarefaBoolsDiv3, 13));
-            div3.appendChild(criarBotaoTarefa_div1('tarefa3a3', nomeDosLotesDiv3.lote3a3, finalizar, tarefaBoolsDiv3, 13));
+            div3.appendChild(criarBotaoTarefa_div1('tarefa3a1', nomeDosLotesDiv3.lote3a1, finalizar, tarefaBoolsDiv3, 13, audioPrinting));
+            div3.appendChild(criarBotaoTarefa_div1('tarefa3a2', nomeDosLotesDiv3.lote3a2, finalizar, tarefaBoolsDiv3, 13, audioPrinting));
+            div3.appendChild(criarBotaoTarefa_div1('tarefa3a3', nomeDosLotesDiv3.lote3a3, finalizar, tarefaBoolsDiv3, 13, audioPrinting));
 
             tarefasCriadas = true;
         }
@@ -471,8 +750,17 @@ document.addEventListener("DOMContentLoaded", () => {
         telaBaixa.appendChild(telaVentilation);
     }
     
-    let HeaterSystem = false;
-    let VentSystem = true;
+    let temperatureOfTheRoom = 15;
+    const minTemp = 15;
+    const maxTemp = 45;
+    const textTemperature = document.getElementById('textTemperature-100');
+    const textTemperature1 = document.getElementById('textTemperature-10');
+    const textTemperature2 = document.getElementById('textTemperature-1');
+    textTemperature.innerText = `${temperatureOfTheRoom} C°`
+    textTemperature1.innerText = `${temperatureOfTheRoom} C°`
+    textTemperature2.innerText = `${temperatureOfTheRoom} C°`
+    let HeaterSystem = true;
+    let VentSystem = false;
     const butHeaterOn = document.getElementById('buttonHeater-on');
     const butHeaterOff = document.getElementById('buttonHeater-off');
     const butVentilationOn = document.getElementById('buttonVentilation-on');
@@ -480,47 +768,87 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function atualizarBotoes() {
         if (HeaterSystem) {
-            butHeaterOn.classList.add('onOffButton-black');
-            butHeaterOn.classList.remove('onOffButton-white');
-            butHeaterOff.classList.add('onOffButton-white');
-            butHeaterOff.classList.remove('onOffButton-black');
-
-            butVentilationOn.classList.add('onOffButton-white');
-            butVentilationOn.classList.remove('onOffButton-black');
-            butVentilationOff.classList.add('onOffButton-black');
-            butVentilationOff.classList.remove('onOffButton-white')
-        } else if (VentSystem) {
-            butVentilationOn.classList.add('onOffButton-black');
-            butVentilationOn.classList.remove('onOffButton-white');
-            butVentilationOff.classList.add('onOffButton-white');
-            butVentilationOff.classList.remove('onOffButton-black');
-
             butHeaterOn.classList.add('onOffButton-white');
             butHeaterOn.classList.remove('onOffButton-black');
             butHeaterOff.classList.add('onOffButton-black');
             butHeaterOff.classList.remove('onOffButton-white');
+
+            butVentilationOn.classList.add('onOffButton-black');
+            butVentilationOn.classList.remove('onOffButton-white');
+            butVentilationOff.classList.add('onOffButton-white');
+            butVentilationOff.classList.remove('onOffButton-black')
+        } else if (VentSystem) {
+            butVentilationOn.classList.add('onOffButton-white');
+            butVentilationOn.classList.remove('onOffButton-black');
+            butVentilationOff.classList.add('onOffButton-black');
+            butVentilationOff.classList.remove('onOffButton-white');
+
+            butHeaterOn.classList.add('onOffButton-black');
+            butHeaterOn.classList.remove('onOffButton-white');
+            butHeaterOff.classList.add('onOffButton-white');
+            butHeaterOff.classList.remove('onOffButton-black');
         }
     }
 
+    function atualizarTemp() {
+        if (VentSystem) {
+            temperatureOfTheRoom--;
+            if (temperatureOfTheRoom < minTemp) {
+                temperatureOfTheRoom = minTemp;
+            }
+        } else if (HeaterSystem) {
+            temperatureOfTheRoom++;
+            if (temperatureOfTheRoom > maxTemp) {
+                temperatureOfTheRoom = maxTemp;
+            }
+        }
+        textTemperature.innerText = `${temperatureOfTheRoom} C°`
+        textTemperature1.innerText = `${temperatureOfTheRoom} C°`
+        textTemperature2.innerText = `${temperatureOfTheRoom} C°`
+
+        const dadoIntervaloTemp = parseInt(Math.random() * 10);
+        if (dadoIntervaloTemp > 5) {
+            intervaloTemp = false
+        } else {
+            intervaloTemp = true
+        }
+        console.log(intervaloTemp)
+        return intervaloTemp
+    }
+
+    let intervaloTemp
+
+    setInterval(() => {
+        atualizarTemp()
+    }, intervaloTemp ? 2500 : 3000);
+
     butHeaterOn.addEventListener('click', () => {
-        HeaterSystem = true; 
-        VentSystem = false;
-        atualizarBotoes(); 
+        if (sistemaTemperatura) {
+            HeaterSystem = true; 
+            VentSystem = false;
+            atualizarBotoes(); 
+        }
     })
     butHeaterOff.addEventListener('click', () => {
-        HeaterSystem = false
-        VentSystem = true;
-        atualizarBotoes();
+        if (sistemaTemperatura){
+            HeaterSystem = false
+            VentSystem = true;
+            atualizarBotoes();
+        }
     })
     butVentilationOn.addEventListener('click', () => {
-        VentSystem = true;
-        HeaterSystem = false; 
-        atualizarBotoes(); 
+        if (sistemaTemperatura) {
+            VentSystem = true;
+            HeaterSystem = false; 
+            atualizarBotoes(); 
+        }
     })
     butVentilationOff.addEventListener('click', () => {
-        VentSystem = false;
-        HeaterSystem = true;
-        atualizarBotoes();
+        if (sistemaTemperatura) {
+            VentSystem = false;
+            HeaterSystem = true;
+            atualizarBotoes();
+        }
     })
     atualizarBotoes();
 
@@ -572,17 +900,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const cellElements = [];
 
+    const salaDoPlayer = { x: 2, y: 2 };
+
     for (let rowIndex = 0; rowIndex < gridSizeY; rowIndex++) {
         for(let cellIndex = 0; cellIndex < gridSizeX; cellIndex++) {
             const isBlocked = blockedCell.some(cell => cell.x === cellIndex && cell.y === rowIndex);
             if (!isBlocked) {
-                const cellElement = document.createElement('div');
+                const cellElement = document.createElement('button');
                 cellElement.classList.add('cell');
-                cellElement.classList.add('cell--active');
                 cellElement.style.gridColumn = cellIndex + 1;
                 cellElement.style.gridRow = rowIndex + 1;
                 divGrid.appendChild(cellElement);
                 cellElements.push({ element: cellElement, x: cellIndex, y: rowIndex })
+
+                cellElement.addEventListener('click', () => {
+                    if (sistemaAudio) {
+                        if (saladeatracao) {
+                            ClassesDeAudioLures(saladeatracao.x, saladeatracao.y, 'cell');
+                        }
+                        if ((cellIndex === salaDoPlayer.x && rowIndex === salaDoPlayer.y)) {
+                            return
+                        }
+                        saladeatracao = { x: cellIndex, y: rowIndex };
+                        ClassesDeAudioLures(cellIndex, rowIndex, 'cell-audio-lure');                        
+                    }
+                })
             } else if (isBlocked) {
                 const blockedElement = document.createElement('div');
                 blockedElement.classList.add('blockedCell');
@@ -605,7 +947,67 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     alterarClasseSala(2, 2, 'cell-player')
 
-    
+    lastCell = [];
+    function ClassesDeAudioLures(x, y, newClass) {
+        lastCell.forEach(cell => {
+            cell.element.classList.remove(newClass);
+            cell.element.classList.add('cell');
+            cell.element.querySelectorAll('.svg-audio-lure, .attracted-indicator').forEach(el => el.remove());
+        })
+        lastCell = [];
+
+        const targetCell = cellElements.find(cell => cell.x === x && cell.y === y);
+        if (targetCell) {
+            const svgAudioLure = document.createElement('img');
+            svgAudioLure.classList.add('svg-audio-lure');
+            svgAudioLure.src = `./assets/volumeLure.svg`;
+            const existingSvg = targetCell.element.querySelector('img');
+            if (existingSvg) existingSvg.remove();
+
+            targetCell.element.appendChild(svgAudioLure);
+            targetCell.element.classList.add(newClass);
+
+            lastCell.push(targetCell);
+        }
+        const adjacentCells = [
+            { dx: -1, dy: 0 }, // esquerda
+            { dx: 1, dy: 0 }, // direita
+            { dx: 0, dy: -1 }, // cima
+            { dx: 0, dy: 1 }  // baixo
+        ];
+
+        adjacentCells.forEach(({ dx, dy }) => {
+            const adjX = x + dx;
+            const adjY = y + dy;
+
+            if (adjX >= 0 && adjX < gridSizeX && adjY >= 0 && adjY < gridSizeY) {
+                const adjCell = cellElements.find(cell => cell.x === adjX && cell.y === adjY);
+                if (adjCell) {
+                    const svgAttracted = document.createElement('div');
+                    svgAttracted.classList.add('attracted-indicator');
+
+                    if (dx === -1) svgAttracted.classList.add('move-right');
+                    if (dx === 1) svgAttracted.classList.add('move-left');
+                    if (dy === -1) svgAttracted.classList.add('move-down');
+                    if (dy === 1) svgAttracted.classList.add('move-up');
+
+                    adjCell.element.appendChild(svgAttracted);
+                    lastCell.push(adjCell);
+                }
+            }
+        })
+    }
+
+    function desativarAudioLures() {
+        lastCell.forEach(cell => {
+            cell.element.classList.remove('cell-audio-lure', 'cell');
+            cell.element.classList.add('cell');
+
+            cell.element.querySelectorAll('.svg-audio-lure, .attracted-indicator').forEach(el => el.remove());
+        });
+        lastCell = [];
+        saladeatracao = null;
+    }
 
     telaBaixa.removeChild(telaHeater);
     telaBaixa.removeChild(telaVentilation);
