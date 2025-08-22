@@ -869,6 +869,20 @@ div {
     color: #FFFFFF;
     font-size: 20px;
     border: #FFFFFF 2px solid;
+    height: 50px;
+    width: 80%;
+}
+
+.minig-resetButton:hover {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #FFFFFF;
+    color: #000000;
+    font-size: 20px;
+    border: #FFFFFF 2px solid;
+    height: 50px;
     width: 80%;
 }
 
@@ -1275,13 +1289,29 @@ div {
 .displayTemperature {
     position: absolute;
     top: 90%;
-    left: 20%;
+    left: 25%;
     height: 50px;
     width: 200px;
     background-color: #FFFFFF;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.displayTurnButton {
+    position: absolute;
+    top: 87.5%;
+    left: 20%;
+    height: 100px;
+    width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.displayTurnButton img {
+    height: 80%;
+    width: 80%;
 }
 
 .textTemperature {

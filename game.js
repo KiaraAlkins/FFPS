@@ -292,7 +292,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 botao.disabled = true;
 
                 contadorDeFiguras[figura]++;
-                console.warn(`Contador de figuras: ${figura} - ${contadorDeFiguras[figura]}`);
             }
         });
         container.append(...botoes);
@@ -333,9 +332,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     
         embaralharGrade();
-        // const audioReset = document.createElement('audio');
-        // audioReset.src = './assets/audio/systemReset.mp3';
-        // audioReset.play();
     });
 
 
@@ -535,8 +531,10 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentInterval = null;
     let audioAtual = null;
     const botoestargreatefaDiv1 = {};
+    const botoestargreatefaDiv2 = {};
+    const botoestargreatefaDiv3 = {};
 
-    function criarBotaoTarefa_div1(tarefaId, nomeDosLotesID, finalizar, tarefaBoolsID, numeroPorcentagem, audioTasks) {
+    function criarBotaoTarefa_div1(tarefaId, nomeDosLotesID, finalizar, tarefaBoolsID, numeroPorcentagem, audioTasks, botoesRef) {
         const botao = document.createElement('button')
         botao.classList.add('buttons-tasks');
 
@@ -627,7 +625,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             }
         });
-        botoestargreatefaDiv1[tarefaId] = botao;
+        botoesRef[tarefaId] = botao;
         return botao;
     }
 
@@ -645,6 +643,34 @@ document.addEventListener("DOMContentLoaded", () => {
         if (todasConcluidasDiv1 && todasConcluidasDiv2 && todasConcluidasDiv3) {
             permissao = true
         }
+    }
+
+    function resetarTarefa() {
+        if (currentInterval) {
+            clearInterval(currentInterval)
+            currentInterval = null;
+        }
+        if (audioAtual && !audioAtual.paused) {
+            audioAtual.pause();
+            audioAtual.currentTime = 0;
+            audioAtual = null;
+        }
+
+        tarefaAtual = null;
+
+        function resetGrupoTasks(tarefaBools, botoesRef, nomeLotes) {
+            for (let tarefaId in tarefaBools) {
+                if (!tarefaBools[tarefaId]) {
+                    const botao = botoesRef[tarefaId];
+                    if (!botao) continue
+                    const loadingImg = botao.querySelector('.loadingButtons');
+                    if (loadingImg) loadingImg.remove()
+                }
+            }
+        }
+        resetGrupoTasks(tarefaBoolsDiv1, botoestargreatefaDiv1, nomeDosLotesDiv1);
+        resetGrupoTasks(tarefaBoolsDiv2, botoestargreatefaDiv2, nomeDosLotesDiv2);
+        resetGrupoTasks(tarefaBoolsDiv3, botoestargreatefaDiv3, nomeDosLotesDiv3);
     }
 
     const terminalTela = document.getElementById('terminal-tela');
@@ -685,6 +711,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             telaBaixa.appendChild(telaUpgrades);
             telaAtiva = 'telaUpgrades';
+            resetarTarefa();
         })
         
         const finalizar = document.getElementById('finalizar');
@@ -698,19 +725,19 @@ document.addEventListener("DOMContentLoaded", () => {
             const div2 = document.getElementById('advertising');
             const div3 = document.getElementById('maintenance')
     
-            div1.appendChild(criarBotaoTarefa_div1('tarefa1a1', nomeDosLotesDiv1.lote1a1, finalizar, tarefaBoolsDiv1, 9, audioItemOrder));
-            div1.appendChild(criarBotaoTarefa_div1('tarefa1a2', nomeDosLotesDiv1.lote1a2, finalizar, tarefaBoolsDiv1, 9, audioItemOrder));
-            div1.appendChild(criarBotaoTarefa_div1('tarefa1a3', nomeDosLotesDiv1.lote1a3, finalizar, tarefaBoolsDiv1, 9, audioItemOrder));
-            div1.appendChild(criarBotaoTarefa_div1('tarefa1a4', nomeDosLotesDiv1.lote1a4, finalizar, tarefaBoolsDiv1, 9, audioItemOrder));
-            div1.appendChild(criarBotaoTarefa_div1('tarefa1a5', nomeDosLotesDiv1.lote1a5, finalizar, tarefaBoolsDiv1, 9, audioItemOrder));
+            div1.appendChild(criarBotaoTarefa_div1('tarefa1a1', nomeDosLotesDiv1.lote1a1, finalizar, tarefaBoolsDiv1, 9, audioItemOrder, botoestargreatefaDiv1));
+            div1.appendChild(criarBotaoTarefa_div1('tarefa1a2', nomeDosLotesDiv1.lote1a2, finalizar, tarefaBoolsDiv1, 9, audioItemOrder, botoestargreatefaDiv1));
+            div1.appendChild(criarBotaoTarefa_div1('tarefa1a3', nomeDosLotesDiv1.lote1a3, finalizar, tarefaBoolsDiv1, 9, audioItemOrder, botoestargreatefaDiv1));
+            div1.appendChild(criarBotaoTarefa_div1('tarefa1a4', nomeDosLotesDiv1.lote1a4, finalizar, tarefaBoolsDiv1, 9, audioItemOrder, botoestargreatefaDiv1));
+            div1.appendChild(criarBotaoTarefa_div1('tarefa1a5', nomeDosLotesDiv1.lote1a5, finalizar, tarefaBoolsDiv1, 9, audioItemOrder, botoestargreatefaDiv1));
     
-            div2.appendChild(criarBotaoTarefa_div1('tarefa2a1', nomeDosLotesDiv2.lote2a1, finalizar, tarefaBoolsDiv2, 16, audioPrintingTwo));
-            div2.appendChild(criarBotaoTarefa_div1('tarefa2a2', nomeDosLotesDiv2.lote2a2, finalizar, tarefaBoolsDiv2, 16, audioPrintingTwo));
-            div2.appendChild(criarBotaoTarefa_div1('tarefa2a3', nomeDosLotesDiv2.lote2a3, finalizar, tarefaBoolsDiv2, 16, audioPrintingTwo));
+            div2.appendChild(criarBotaoTarefa_div1('tarefa2a1', nomeDosLotesDiv2.lote2a1, finalizar, tarefaBoolsDiv2, 16, audioPrintingTwo, botoestargreatefaDiv2));
+            div2.appendChild(criarBotaoTarefa_div1('tarefa2a2', nomeDosLotesDiv2.lote2a2, finalizar, tarefaBoolsDiv2, 16, audioPrintingTwo, botoestargreatefaDiv2));
+            div2.appendChild(criarBotaoTarefa_div1('tarefa2a3', nomeDosLotesDiv2.lote2a3, finalizar, tarefaBoolsDiv2, 16, audioPrintingTwo, botoestargreatefaDiv2));
     
-            div3.appendChild(criarBotaoTarefa_div1('tarefa3a1', nomeDosLotesDiv3.lote3a1, finalizar, tarefaBoolsDiv3, 13, audioPrinting));
-            div3.appendChild(criarBotaoTarefa_div1('tarefa3a2', nomeDosLotesDiv3.lote3a2, finalizar, tarefaBoolsDiv3, 13, audioPrinting));
-            div3.appendChild(criarBotaoTarefa_div1('tarefa3a3', nomeDosLotesDiv3.lote3a3, finalizar, tarefaBoolsDiv3, 13, audioPrinting));
+            div3.appendChild(criarBotaoTarefa_div1('tarefa3a1', nomeDosLotesDiv3.lote3a1, finalizar, tarefaBoolsDiv3, 13, audioPrinting, botoestargreatefaDiv3));
+            div3.appendChild(criarBotaoTarefa_div1('tarefa3a2', nomeDosLotesDiv3.lote3a2, finalizar, tarefaBoolsDiv3, 13, audioPrinting, botoestargreatefaDiv3));
+            div3.appendChild(criarBotaoTarefa_div1('tarefa3a3', nomeDosLotesDiv3.lote3a3, finalizar, tarefaBoolsDiv3, 13, audioPrinting, botoestargreatefaDiv3));
 
             tarefasCriadas = true;
         }
@@ -734,6 +761,7 @@ document.addEventListener("DOMContentLoaded", () => {
             telaBaixa.removeChild(telaBaixa.firstChild);
         }
         telaBaixa.appendChild(telaHeater);
+        resetarTarefa();
     }
 
     cateButtons_heater.addEventListener('click', () => {
@@ -748,6 +776,7 @@ document.addEventListener("DOMContentLoaded", () => {
             telaBaixa.removeChild(telaBaixa.firstChild);
         }
         telaBaixa.appendChild(telaVentilation);
+        resetarTarefa();
     }
     
     let temperatureOfTheRoom = 15;
@@ -812,7 +841,6 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
             intervaloTemp = true
         }
-        console.log(intervaloTemp)
         return intervaloTemp
     }
 
@@ -820,7 +848,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     setInterval(() => {
         atualizarTemp()
-    }, intervaloTemp ? 2500 : 3000);
+    }, intervaloTemp ? 2500 : 3250);
 
     butHeaterOn.addEventListener('click', () => {
         if (sistemaTemperatura) {
@@ -864,6 +892,7 @@ document.addEventListener("DOMContentLoaded", () => {
             telaBaixa.removeChild(telaBaixa.firstChild);
         }
         telaBaixa.appendChild(telaAudio);
+        resetarTarefa();
     }
 
     cateButtons_audio.addEventListener('click', () => {
@@ -1013,4 +1042,45 @@ document.addEventListener("DOMContentLoaded", () => {
     telaBaixa.removeChild(telaVentilation);
     telaBaixa.removeChild(telaAudio);
     telaBaixa.removeChild(telaBaixa.firstElementChild)
+
+    // Botões para mudar o terminal de ligado para desligado
+
+    let terminalLigado = true
+
+    const displayTurnButtonsAll = document.querySelectorAll('.displayTurnButton');
+    const DTBimg = document.querySelectorAll('.DTB-img');
+    
+    document.addEventListener('keydown', (event) => {
+        if (event.key.toLowerCase() === 'x') {
+            if (terminalLigado) {
+                terminalLigado = false
+                DTBimg.forEach(img => img.src = './assets/turnOnTerminalButton.svg')
+                terminalTela.style.display = 'none'
+                resetarTarefa()
+            } else {
+                terminalLigado = true
+                DTBimg.forEach(img => img.src = './assets/turnOffTerminalButton.svg');
+                terminalTela.style.display = 'flex';
+                resetarTarefa()
+            }
+        }
+    })
+
+    displayTurnButtonsAll.forEach((button) => {
+
+        button.addEventListener('click', () => {
+            if (terminalLigado) {
+                terminalLigado = false
+                DTBimg.forEach(img => img.src = './assets/turnOnTerminalButton.svg')
+                terminalTela.style.display = 'none'
+                resetarTarefa()
+            } else {
+                terminalLigado = true
+                DTBimg.forEach(img => img.src = './assets/turnOffTerminalButton.svg');
+                terminalTela.style.display = 'flex';
+                resetarTarefa()
+            }
+        })
+    })
+
 });
