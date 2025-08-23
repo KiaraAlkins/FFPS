@@ -582,6 +582,22 @@ body {
     transition: opacity 5s ease;
 }
 
+#telaPreta_two {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgb(0,0,0,0.7);
+    z-index: 5;
+}
+
+.gameNight_table-container,
+.container_tablet-camera {
+    position: relative;
+    z-index: 20;
+}
+
 .game-night_slider {
     display: flex;
     height: 100vh;
@@ -797,7 +813,6 @@ body {
     width: 15px;
     height: 15px;
 }
-
 
 .divBB-1 {
     display: flex;
@@ -1410,3 +1425,204 @@ div:not(.progress-container, .progressBarButton, .progressButtonVolume, .volumeB
 .move-right  { animation: moveRight 1s infinite alternate; }
 .move-up     { animation: moveUp 1s infinite alternate; }
 .move-down   { animation: moveDown 1s infinite alternate; }
+
+/* Savage Buttons */
+
+.main_savage {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.container_savage {
+    display: flex;
+    height: 80%;
+    width: 80%;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.containerForvideo {
+    width: 100%;
+    height: 75%;
+    margin-top: 50px;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+
+}
+
+.savage_containervideo { 
+    display: flex;
+    border: #ffffff 5px solid;
+    width: 70%;
+    height: 100%;
+    position: relative;
+}
+
+.bottomButtons_savage {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.lineBar {
+    border: #ffffff 5px solid;
+    border-radius: 50px;
+    height: 5px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.savage_shock { 
+    margin-top: 30px;
+    border: #FFFFFF 5px solid;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 250px;
+    height: 80px;
+}
+
+.savage_shock:hover { 
+    margin-top: 30px;
+    border: #FFFFFF 5px solid;
+    background-color: red;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 250px;
+    height: 80px;
+}
+
+.centerPlayButton {
+    height: 200px;
+    width: 200px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.centerPlayButton img { 
+    height: 100%;
+    width: 100%;
+}
+
+.savage_list-button-open {
+    height: 500px;
+    width: 1000px;
+    background-color: #000000;
+    border: #ffffff 10px solid;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.savage_list-button {
+    height: 50px;
+    width: 50px;
+    background-color: #00FF00;
+    position: absolute;
+    bottom: 50px;
+    left: 50px;
+}
+
+.BSList_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.BSList_container div {
+    display: flex;
+    gap: 25px;
+}
+
+.BSList_container p {
+    color: #00FF00;
+    font-family: "RetroFont";
+    align-items: center;
+    gap: 10px;
+}
+
+.BSList-div {
+    display: flex;
+    gap: 20px;
+}
+
+.BSList-div-1 {
+    display: flex;
+    margin-left: 120px;
+    gap: 50px;
+}
+
+.BSList {
+    background-color: #ffffff;
+    width: 40px;
+    height: 40px;
+}
+
+.BSList-check {
+    border: 10px #ffffff solid;
+    background-color: #0000A8;
+    width: 40px;
+    height: 40px;
+}
+
+@keyframes fecharDiv {
+    from {
+        height: 500px;
+        width: 1000px;
+        background-color: #000000;
+        border: #ffffff 10px solid;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    } to {
+        height: 50px;
+        width: 50px;
+        background-color: #00FF00;
+        border: none;
+        top: auto;
+        bottom: 50px;
+        transform: none;
+        left: 50px;
+    }
+}
+
+@keyframes abrirDiv {
+    from {
+        height: 50px;
+        width: 50px;
+        background-color: #00FF00;
+        border: none;
+        top: auto;
+        bottom: 50px;
+        transform: none;
+        left: 50px;
+    } to {
+        height: 500px;
+        width: 1000px;
+        background-color: #000000;
+        border: #ffffff 10px solid;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+}

@@ -44,6 +44,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const audioPressingButtonTwo = document.createElement('audio');
     audioPressingButtonTwo.src = "./assets/audio/pressingButtonTwo.mp3"
 
+    const audioHeater = document.createElement('audio');
+    audioHeater.src = "./assets/audio/heater.mp3";
+    audioHeater.loop = true
+    audioHeater.volume = 0.50;
+    const audioVent = document.createElement('audio')
+    audioVent.src = "./assets/audio/ventilation.mp3";
+    audioVent.loop = true
+    audioVent.volume = 0.50;
+
     let ctx, source, buffer, gainNode;
 
     async function fazerLooping() {
@@ -337,66 +346,27 @@ document.addEventListener("DOMContentLoaded", () => {
         embaralharGrade();
     });
 
+    const telaPretaTwo = document.getElementById('telaPreta_two');
 
     let telaPiscando = setInterval(() => {
-        if (posicaoAtual == 0) {
                 const dadoLuz = (Math.floor(Math.random() * 10) + 1)
                 if (dadoLuz < 4) {
-                    gmSection_left.style.opacity = '75%'
+                    telaPretaTwo.style.opacity = '75%'
                     setTimeout(() => {
-                        gmSection_left.style.opacity = '100%';
+                        telaPretaTwo.style.opacity = '0%';
                     }, 100);
                 } else if (dadoLuz < 7) {
-                    gmSection_left.style.opacity = '50%';
+                    telaPretaTwo.style.opacity = '50%';
                     setTimeout(() => {
-                        gmSection_left.style.opacity = '100%';
+                        telaPretaTwo.style.opacity = '0%';
                     }, 100)
                     setTimeout(() => {
-                        gmSection_left.style.opacity = '50%'
+                        telaPretaTwo.style.opacity = '50%'
                     }, 500)
                     setTimeout(() => {
-                        gmSection_left.style.opacity = '100%'
+                        telaPretaTwo.style.opacity = '0%'
                     }, 600)
                 }
-        } else if (posicaoAtual == 2) {
-                const dadoLuz = (Math.floor(Math.random() * 10) + 1)
-                if (dadoLuz < 4) {
-                    gmSection_right.style.opacity = '75%'
-                    setTimeout(() => {
-                        gmSection_right.style.opacity = '100%';
-                    }, 100);
-                } else if (dadoLuz < 7) {
-                    gmSection_right.style.opacity = '50%';
-                    setTimeout(() => {
-                        gmSection_right.style.opacity = '100%';
-                    }, 100)
-                    setTimeout(() => {
-                        gmSection_right.style.opacity = '50%'
-                    }, 500)
-                    setTimeout(() => {
-                        gmSection_right.style.opacity = '100%'
-                    }, 600)
-                }
-        } else if (posicaoAtual == 1) {
-                const dadoLuz = (Math.floor(Math.random() * 10) + 1)
-                if (dadoLuz < 4) {
-                    gmSection_center.style.opacity = '75%'
-                    setTimeout(() => {
-                        gmSection_center.style.opacity = '100%';
-                    }, 100);
-                } else if (dadoLuz < 7) {
-                    gmSection_center.style.opacity = '50%';
-                    setTimeout(() => {
-                        gmSection_center.style.opacity = '100%';
-                    }, 100)
-                    setTimeout(() => {
-                        gmSection_center.style.opacity = '50%'
-                    }, 500)
-                    setTimeout(() => {
-                        gmSection_center.style.opacity = '100%'
-                    }, 600)
-                }
-        }
     }, 1000)
 
 
@@ -766,19 +736,19 @@ document.addEventListener("DOMContentLoaded", () => {
             const div2 = document.getElementById('advertising');
             const div3 = document.getElementById('maintenance')
     
-            div1.appendChild(criarBotaoTarefa_div1('tarefa1a1', nomeDosLotesDiv1.lote1a1, finalizar, tarefaBoolsDiv1, 1, audioItemOrder, botoestargreatefaDiv1));
-            div1.appendChild(criarBotaoTarefa_div1('tarefa1a2', nomeDosLotesDiv1.lote1a2, finalizar, tarefaBoolsDiv1, 1, audioItemOrder, botoestargreatefaDiv1));
-            div1.appendChild(criarBotaoTarefa_div1('tarefa1a3', nomeDosLotesDiv1.lote1a3, finalizar, tarefaBoolsDiv1, 1, audioItemOrder, botoestargreatefaDiv1));
-            div1.appendChild(criarBotaoTarefa_div1('tarefa1a4', nomeDosLotesDiv1.lote1a4, finalizar, tarefaBoolsDiv1, 1, audioItemOrder, botoestargreatefaDiv1));
-            div1.appendChild(criarBotaoTarefa_div1('tarefa1a5', nomeDosLotesDiv1.lote1a5, finalizar, tarefaBoolsDiv1, 1, audioItemOrder, botoestargreatefaDiv1));
+            div1.appendChild(criarBotaoTarefa_div1('tarefa1a1', nomeDosLotesDiv1.lote1a1, finalizar, tarefaBoolsDiv1, 9, audioItemOrder, botoestargreatefaDiv1));
+            div1.appendChild(criarBotaoTarefa_div1('tarefa1a2', nomeDosLotesDiv1.lote1a2, finalizar, tarefaBoolsDiv1, 9, audioItemOrder, botoestargreatefaDiv1));
+            div1.appendChild(criarBotaoTarefa_div1('tarefa1a3', nomeDosLotesDiv1.lote1a3, finalizar, tarefaBoolsDiv1, 9, audioItemOrder, botoestargreatefaDiv1));
+            div1.appendChild(criarBotaoTarefa_div1('tarefa1a4', nomeDosLotesDiv1.lote1a4, finalizar, tarefaBoolsDiv1, 9, audioItemOrder, botoestargreatefaDiv1));
+            div1.appendChild(criarBotaoTarefa_div1('tarefa1a5', nomeDosLotesDiv1.lote1a5, finalizar, tarefaBoolsDiv1, 9, audioItemOrder, botoestargreatefaDiv1));
     
-            div2.appendChild(criarBotaoTarefa_div1('tarefa2a1', nomeDosLotesDiv2.lote2a1, finalizar, tarefaBoolsDiv2, 1, audioPrintingTwo, botoestargreatefaDiv2));
-            div2.appendChild(criarBotaoTarefa_div1('tarefa2a2', nomeDosLotesDiv2.lote2a2, finalizar, tarefaBoolsDiv2, 1, audioPrintingTwo, botoestargreatefaDiv2));
-            div2.appendChild(criarBotaoTarefa_div1('tarefa2a3', nomeDosLotesDiv2.lote2a3, finalizar, tarefaBoolsDiv2, 1, audioPrintingTwo, botoestargreatefaDiv2));
+            div2.appendChild(criarBotaoTarefa_div1('tarefa2a1', nomeDosLotesDiv2.lote2a1, finalizar, tarefaBoolsDiv2, 16, audioPrintingTwo, botoestargreatefaDiv2));
+            div2.appendChild(criarBotaoTarefa_div1('tarefa2a2', nomeDosLotesDiv2.lote2a2, finalizar, tarefaBoolsDiv2, 16, audioPrintingTwo, botoestargreatefaDiv2));
+            div2.appendChild(criarBotaoTarefa_div1('tarefa2a3', nomeDosLotesDiv2.lote2a3, finalizar, tarefaBoolsDiv2, 16, audioPrintingTwo, botoestargreatefaDiv2));
     
-            div3.appendChild(criarBotaoTarefa_div1('tarefa3a1', nomeDosLotesDiv3.lote3a1, finalizar, tarefaBoolsDiv3, 1, audioPrinting, botoestargreatefaDiv3));
-            div3.appendChild(criarBotaoTarefa_div1('tarefa3a2', nomeDosLotesDiv3.lote3a2, finalizar, tarefaBoolsDiv3, 1, audioPrinting, botoestargreatefaDiv3));
-            div3.appendChild(criarBotaoTarefa_div1('tarefa3a3', nomeDosLotesDiv3.lote3a3, finalizar, tarefaBoolsDiv3, 1, audioPrinting, botoestargreatefaDiv3));
+            div3.appendChild(criarBotaoTarefa_div1('tarefa3a1', nomeDosLotesDiv3.lote3a1, finalizar, tarefaBoolsDiv3, 13, audioPrinting, botoestargreatefaDiv3));
+            div3.appendChild(criarBotaoTarefa_div1('tarefa3a2', nomeDosLotesDiv3.lote3a2, finalizar, tarefaBoolsDiv3, 13, audioPrinting, botoestargreatefaDiv3));
+            div3.appendChild(criarBotaoTarefa_div1('tarefa3a3', nomeDosLotesDiv3.lote3a3, finalizar, tarefaBoolsDiv3, 13, audioPrinting, botoestargreatefaDiv3));
 
             tarefasCriadas = true;
         }
@@ -839,8 +809,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const butVentilationOn = document.getElementById('buttonVentilation-on');
     const butVentilationOff = document.getElementById('buttonVentilation-off');
 
+    let terminalLigado = true
+
     function atualizarBotoes() {
         if (HeaterSystem) {
+            audioVent.pause()
+            audioHeater.play()
             butHeaterOn.classList.add('onOffButton-white');
             butHeaterOn.classList.remove('onOffButton-black');
             butHeaterOff.classList.add('onOffButton-black');
@@ -851,6 +825,8 @@ document.addEventListener("DOMContentLoaded", () => {
             butVentilationOff.classList.add('onOffButton-white');
             butVentilationOff.classList.remove('onOffButton-black')
         } else if (VentSystem) {
+            audioHeater.pause()
+            audioVent.play()
             butVentilationOn.classList.add('onOffButton-white');
             butVentilationOn.classList.remove('onOffButton-black');
             butVentilationOff.classList.add('onOffButton-black');
@@ -905,6 +881,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.log('poco')
             }, 5000)
         } else {
+            if (HeaterSystem && terminalLigado) {
+                audioHeater.play();    
+            } else if (VentSystem && terminalLigado) {
+                audioVent.play();
+            }
             clearInterval(loopTemperatura)
             loopTemperatura = null
             loopTemperatura = setInterval(() => {
@@ -1117,8 +1098,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Botões para mudar o terminal de ligado para desligado
 
-    let terminalLigado = true
-
     const displayTurnButtonsAll = document.querySelectorAll('.displayTurnButton');
     const DTBimg = document.querySelectorAll('.DTB-img');
     const audioTurnOn = document.createElement('audio');
@@ -1130,12 +1109,14 @@ document.addEventListener("DOMContentLoaded", () => {
         if (event.key.toLowerCase() === 'x') {
             if (terminalLigado) {
                 terminalLigado = false
+                audioHeater.pause()
+                audioVent.pause()
                 audioTurnOff.play()
                 audioTurnOff.volume = 0.25
                 DTBimg.forEach(img => img.src = './assets/turnOnTerminalButton.svg')
                 terminalTela.style.animation = 'desligarTela 250ms forwards';
+                temperaturaResidual = true
                 resetarTarefa()
-                temperaturaResidual = false
                 temperaturaAmbiente();
             } else {
                 terminalLigado = true
@@ -1143,8 +1124,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 audioTurnOn.volume = 0.25
                 DTBimg.forEach(img => img.src = './assets/turnOffTerminalButton.svg');
                 terminalTela.style.animation = 'ligarTela 250ms forwards'
+                temperaturaResidual = false
                 resetarTarefa()
-                temperaturaResidual = true
                 temperaturaAmbiente();
             }
         }
@@ -1155,18 +1136,24 @@ document.addEventListener("DOMContentLoaded", () => {
         button.addEventListener('click', () => {
             if (terminalLigado) {
                 terminalLigado = false
+                audioHeater.pause()
+                audioVent.pause()
                 audioTurnOff.play()
                 audioTurnOff.volume = 0.25
                 DTBimg.forEach(img => img.src = './assets/turnOnTerminalButton.svg')
                 terminalTela.style.animation = 'desligarTela 250ms forwards';
+                temperaturaResidual = true
                 resetarTarefa()
+                temperaturaAmbiente();
             } else {
                 terminalLigado = true
-                audioTurnOn.play();
+                audioTurnOn.play()
                 audioTurnOn.volume = 0.25
                 DTBimg.forEach(img => img.src = './assets/turnOffTerminalButton.svg');
                 terminalTela.style.animation = 'ligarTela 250ms forwards'
+                temperaturaResidual = false
                 resetarTarefa()
+                temperaturaAmbiente();
             }
         })
     })
@@ -1179,6 +1166,11 @@ document.addEventListener("DOMContentLoaded", () => {
         clearInterval(currentInterval);
         clearInterval(intervaloTemp)
         clearInterval(loopTemperatura)
+        let night = JSON.parse(localStorage.getItem("night")) || 0;
+        night++;
+        localStorage.setItem("night", JSON.stringify(night));
+
+
         slider.style.animation = 'jogoGanho 2s forwards'
         document.querySelectorAll('audio').forEach(audio => {
             audio.pause();
@@ -1192,7 +1184,6 @@ document.addEventListener("DOMContentLoaded", () => {
             slider.remove()
             window.location.href = "shiftcomplete.html";
         }, 2100)
-        console.log('GameWin')
     })
 
 });
