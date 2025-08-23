@@ -39,6 +39,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const containerMoney = document.getElementById('money');
     containerMoney.innerText = `B$ ${moneyBS},00`
 
+    const audioPressingButton = document.createElement('audio');
+    audioPressingButton.src = "./assets/audio/pressingButton.mp3"
+    const audioPressingButtonTwo = document.createElement('audio');
+    audioPressingButtonTwo.src = "./assets/audio/pressingButtonTwo.mp3"
+
     let ctx, source, buffer, gainNode;
 
     async function fazerLooping() {
@@ -131,6 +136,7 @@ document.addEventListener("DOMContentLoaded", () => {
             audioTabletCamera.currentTime = 0;
             audioCamStatic.pause();
             audioCamStatic.currentTime = 0;
+            musicBox_audio.pause()
 
             setTimeout(() => {
                 telaTablet.style.display = 'none'
@@ -144,6 +150,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             audioTabletCamera.play();
             audioCamStatic.play();
+            musicBox_audio.play()
 
             setTimeout(() => {
                 audioTabletCamera.remove();
@@ -155,22 +162,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // -------------------------- Sistemas em funcionamento 
 
-    let sistemaTemperatura = false;
+    let sistemaTemperatura = true;
     const PbabyButtons_temp = document.getElementById('bbButtonsP1');
     const bbButtonsDiv_temp = document.getElementById('bbButtonsDiv1');
-    let sistemaTarefas = false;
+    let sistemaTarefas = true;
     const PbabyButtons_tasks = document.getElementById('bbButtonsP2');
     const bbButtonsDiv_tasks = document.getElementById('bbButtonsDiv2');
-    let sistemaAudio = false;
+    let sistemaAudio = true;
     const PbabyButtons_audio = document.getElementById('bbButtonsP3');
     const bbButtonsDiv_audio = document.getElementById('bbButtonsDiv3');
-    let sistemaMusicBox = false;
+    let sistemaMusicBox = true;
     const PbabyButtons_musicBox = document.getElementById('bbButtonsP4');
     const bbButtonsDiv_musicBox = document.getElementById('bbButtonsDiv4');
-
-    function toggleSystems(system) {
-        system = true;
-    }
 
     function sistemaDesativado(system, pElement, systemName, divElement) {
         pElement.style.color = '#FF0000';
@@ -181,7 +184,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 500);
     }
 
-    setInterval(() => {
+    let oscilandoButtons = setInterval(() => {
         if (!sistemaTemperatura) {
             sistemaDesativado(sistemaTemperatura, PbabyButtons_temp, 'Temperatura', bbButtonsDiv_temp);
             cateButtons_heater.style.color = '#FF0000';
@@ -335,7 +338,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
-    setInterval(() => {
+    let telaPiscando = setInterval(() => {
         if (posicaoAtual == 0) {
                 const dadoLuz = (Math.floor(Math.random() * 10) + 1)
                 if (dadoLuz < 4) {
@@ -408,10 +411,34 @@ document.addEventListener("DOMContentLoaded", () => {
     const musicBox = document.getElementById('musicBox');
     const musicBoxIMG = document.getElementById('musicBoxIMG');
 
+    const controledShock = document.getElementById('controledShock');
+    const controledShockIMG = controledShock.querySelector('img');
+
     const divPuppetButtons = document.getElementById('div-PuppetButtons');
     const divBabyButtons = document.getElementById('div-BabyButtons');
     divTabletCamera.removeChild(divBabyButtons)
     divTabletCamera.appendChild(divPuppetButtons)
+
+    // controled shock ---------------------------------------
+
+    const audioControledShock = document.createElement('audio');
+    audioControledShock.src = './assets/audio/eletricShock.mp3'
+
+    controledShock.addEventListener('click', () => {
+        audioControledShock.play()
+        controledShockIMG.src = './assets/ButtonControledShock_pressed.png';
+        controledShock.disabled = true;
+        setTimeout(() => {
+            controledShockIMG.src = './assets/ButtonControledShock.png'
+            controledShock.disabled = false
+        }, 500);
+    })
+
+    // audio music box ---------------------------------------
+
+    const musicBox_audio = document.createElement('audio');
+    musicBox_audio.src = './assets/audio/musicBoxtiny.mp3'
+    musicBox_audio.loop = true;
 
     cam1.addEventListener('click', () => {
         if (numeroCamera != 0) {
@@ -419,6 +446,7 @@ document.addEventListener("DOMContentLoaded", () => {
             divTabletCamera.appendChild(divPuppetButtons);
             numeroCamera = 0;
             console.log(numeroCamera);
+            musicBox_audio.play();
         }
     })
 
@@ -428,19 +456,32 @@ document.addEventListener("DOMContentLoaded", () => {
             divTabletCamera.appendChild(divBabyButtons);
             numeroCamera = 1;
             console.log(numeroCamera);
+            musicBox_audio.pause()
         }
     })
 
-    let indexofMusicBox = 5;
-    const totalImages = 24;
+    let indexofMusicBox = 7;
+    const totalImages = 25;
 
     let intervalID = null;
+    let reverseInterval = null;
+    
+    reverseInterval = setInterval(() => {
+        indexofMusicBox--;
+        if (indexofMusicBox < 0) {
+            indexofMusicBox = 0
+        }
+        musicBoxIMG.src = `./assets/musicBoxRound/MusicBox${indexofMusicBox}.svg`;
+    }, 3000)
 
     function atualizarImagem() {
         indexofMusicBox++
     
+        if (indexofMusicBox == totalImages) {
+            clearInterval(reverseInterval)
+        }
         if (indexofMusicBox > totalImages) {
-            indexofMusicBox = 1;
+            indexofMusicBox = 25;
         }
         musicBoxIMG.src = `./assets/musicBoxRound/MusicBox${indexofMusicBox}.svg`;
     }
@@ -698,6 +739,7 @@ document.addEventListener("DOMContentLoaded", () => {
     audioItemOrder.src = './assets/audio/itemOrder.mp3';
     const audioPrintingTwo = document.createElement('audio');
     audioPrintingTwo.src = './assets/audio/printingtwo.mp3';
+    const finalizar = document.getElementById('finalizar');
 
     function abrirTarefas() {
         while (telaBaixa.firstChild) {
@@ -714,7 +756,6 @@ document.addEventListener("DOMContentLoaded", () => {
             resetarTarefa();
         })
         
-        const finalizar = document.getElementById('finalizar');
         verificaPermissao();
         if (permissao) {
             mostrarBotaoFinalizar(finalizar);
@@ -725,19 +766,19 @@ document.addEventListener("DOMContentLoaded", () => {
             const div2 = document.getElementById('advertising');
             const div3 = document.getElementById('maintenance')
     
-            div1.appendChild(criarBotaoTarefa_div1('tarefa1a1', nomeDosLotesDiv1.lote1a1, finalizar, tarefaBoolsDiv1, 9, audioItemOrder, botoestargreatefaDiv1));
-            div1.appendChild(criarBotaoTarefa_div1('tarefa1a2', nomeDosLotesDiv1.lote1a2, finalizar, tarefaBoolsDiv1, 9, audioItemOrder, botoestargreatefaDiv1));
-            div1.appendChild(criarBotaoTarefa_div1('tarefa1a3', nomeDosLotesDiv1.lote1a3, finalizar, tarefaBoolsDiv1, 9, audioItemOrder, botoestargreatefaDiv1));
-            div1.appendChild(criarBotaoTarefa_div1('tarefa1a4', nomeDosLotesDiv1.lote1a4, finalizar, tarefaBoolsDiv1, 9, audioItemOrder, botoestargreatefaDiv1));
-            div1.appendChild(criarBotaoTarefa_div1('tarefa1a5', nomeDosLotesDiv1.lote1a5, finalizar, tarefaBoolsDiv1, 9, audioItemOrder, botoestargreatefaDiv1));
+            div1.appendChild(criarBotaoTarefa_div1('tarefa1a1', nomeDosLotesDiv1.lote1a1, finalizar, tarefaBoolsDiv1, 1, audioItemOrder, botoestargreatefaDiv1));
+            div1.appendChild(criarBotaoTarefa_div1('tarefa1a2', nomeDosLotesDiv1.lote1a2, finalizar, tarefaBoolsDiv1, 1, audioItemOrder, botoestargreatefaDiv1));
+            div1.appendChild(criarBotaoTarefa_div1('tarefa1a3', nomeDosLotesDiv1.lote1a3, finalizar, tarefaBoolsDiv1, 1, audioItemOrder, botoestargreatefaDiv1));
+            div1.appendChild(criarBotaoTarefa_div1('tarefa1a4', nomeDosLotesDiv1.lote1a4, finalizar, tarefaBoolsDiv1, 1, audioItemOrder, botoestargreatefaDiv1));
+            div1.appendChild(criarBotaoTarefa_div1('tarefa1a5', nomeDosLotesDiv1.lote1a5, finalizar, tarefaBoolsDiv1, 1, audioItemOrder, botoestargreatefaDiv1));
     
-            div2.appendChild(criarBotaoTarefa_div1('tarefa2a1', nomeDosLotesDiv2.lote2a1, finalizar, tarefaBoolsDiv2, 16, audioPrintingTwo, botoestargreatefaDiv2));
-            div2.appendChild(criarBotaoTarefa_div1('tarefa2a2', nomeDosLotesDiv2.lote2a2, finalizar, tarefaBoolsDiv2, 16, audioPrintingTwo, botoestargreatefaDiv2));
-            div2.appendChild(criarBotaoTarefa_div1('tarefa2a3', nomeDosLotesDiv2.lote2a3, finalizar, tarefaBoolsDiv2, 16, audioPrintingTwo, botoestargreatefaDiv2));
+            div2.appendChild(criarBotaoTarefa_div1('tarefa2a1', nomeDosLotesDiv2.lote2a1, finalizar, tarefaBoolsDiv2, 1, audioPrintingTwo, botoestargreatefaDiv2));
+            div2.appendChild(criarBotaoTarefa_div1('tarefa2a2', nomeDosLotesDiv2.lote2a2, finalizar, tarefaBoolsDiv2, 1, audioPrintingTwo, botoestargreatefaDiv2));
+            div2.appendChild(criarBotaoTarefa_div1('tarefa2a3', nomeDosLotesDiv2.lote2a3, finalizar, tarefaBoolsDiv2, 1, audioPrintingTwo, botoestargreatefaDiv2));
     
-            div3.appendChild(criarBotaoTarefa_div1('tarefa3a1', nomeDosLotesDiv3.lote3a1, finalizar, tarefaBoolsDiv3, 13, audioPrinting, botoestargreatefaDiv3));
-            div3.appendChild(criarBotaoTarefa_div1('tarefa3a2', nomeDosLotesDiv3.lote3a2, finalizar, tarefaBoolsDiv3, 13, audioPrinting, botoestargreatefaDiv3));
-            div3.appendChild(criarBotaoTarefa_div1('tarefa3a3', nomeDosLotesDiv3.lote3a3, finalizar, tarefaBoolsDiv3, 13, audioPrinting, botoestargreatefaDiv3));
+            div3.appendChild(criarBotaoTarefa_div1('tarefa3a1', nomeDosLotesDiv3.lote3a1, finalizar, tarefaBoolsDiv3, 1, audioPrinting, botoestargreatefaDiv3));
+            div3.appendChild(criarBotaoTarefa_div1('tarefa3a2', nomeDosLotesDiv3.lote3a2, finalizar, tarefaBoolsDiv3, 1, audioPrinting, botoestargreatefaDiv3));
+            div3.appendChild(criarBotaoTarefa_div1('tarefa3a3', nomeDosLotesDiv3.lote3a3, finalizar, tarefaBoolsDiv3, 1, audioPrinting, botoestargreatefaDiv3));
 
             tarefasCriadas = true;
         }
@@ -748,12 +789,14 @@ document.addEventListener("DOMContentLoaded", () => {
             abrirTarefas();
             telaAtiva = "telaDeTarefas";
         }
+        audioPressingButton.play()
     })
     backToTasksButton.addEventListener('click', () => {
         if (telaAtiva != "telaDeTarefas") {
             abrirTarefas();
             telaAtiva = "telaDeTarefas";
         }
+        audioPressingButton.play()
     })
 
     function abrirAquecedor() {
@@ -769,6 +812,7 @@ document.addEventListener("DOMContentLoaded", () => {
             abrirAquecedor()
             telaAtiva = "telaAquecedor";
         }
+        audioPressingButton.play()
     })
 
     function abrirVentilacao() {
@@ -845,16 +889,38 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     let intervaloTemp
+    let temperaturaResidual = false;
+    let loopTemperatura 
 
-    setInterval(() => {
-        atualizarTemp()
-    }, intervaloTemp ? 2500 : 3250);
+    function temperaturaAmbiente() {
+        if (temperaturaResidual) {
+            clearInterval(loopTemperatura)
+            loopTemperatura = null
+            loopTemperatura = setInterval(() => {
+                temperatureOfTheRoom += 1;
+                if (temperatureOfTheRoom > maxTemp) temperatureOfTheRoom = maxTemp;
+                textTemperature.innerText  = `${temperatureOfTheRoom.toFixed(1)} C°`;
+                textTemperature1.innerText = `${temperatureOfTheRoom.toFixed(1)} C°`;
+                textTemperature2.innerText = `${temperatureOfTheRoom.toFixed(1)} C°`;
+                console.log('poco')
+            }, 5000)
+        } else {
+            clearInterval(loopTemperatura)
+            loopTemperatura = null
+            loopTemperatura = setInterval(() => {
+                atualizarTemp()
+                console.log('ponto')
+            }, intervaloTemp ? 2000 : 2500)
+        }
+    }
+    temperaturaAmbiente();
 
     butHeaterOn.addEventListener('click', () => {
         if (sistemaTemperatura) {
             HeaterSystem = true; 
             VentSystem = false;
-            atualizarBotoes(); 
+            atualizarBotoes();
+            audioPressingButtonTwo.play()
         }
     })
     butHeaterOff.addEventListener('click', () => {
@@ -862,6 +928,7 @@ document.addEventListener("DOMContentLoaded", () => {
             HeaterSystem = false
             VentSystem = true;
             atualizarBotoes();
+            audioPressingButtonTwo.play()
         }
     })
     butVentilationOn.addEventListener('click', () => {
@@ -869,6 +936,7 @@ document.addEventListener("DOMContentLoaded", () => {
             VentSystem = true;
             HeaterSystem = false; 
             atualizarBotoes(); 
+            audioPressingButtonTwo.play()
         }
     })
     butVentilationOff.addEventListener('click', () => {
@@ -876,6 +944,7 @@ document.addEventListener("DOMContentLoaded", () => {
             VentSystem = false;
             HeaterSystem = true;
             atualizarBotoes();
+            audioPressingButtonTwo.play()
         }
     })
     atualizarBotoes();
@@ -885,6 +954,7 @@ document.addEventListener("DOMContentLoaded", () => {
             abrirVentilacao();
             telaAtiva = "telaVentilacao"
         }
+        audioPressingButton.play()
     })
 
     function abrirAudio() {
@@ -900,6 +970,7 @@ document.addEventListener("DOMContentLoaded", () => {
             abrirAudio();
             telaAtiva = "telaAudio";
         }
+        audioPressingButton.play()
     })
 
     const divGrid = document.getElementById('grid');
@@ -943,6 +1014,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 cellElements.push({ element: cellElement, x: cellIndex, y: rowIndex })
 
                 cellElement.addEventListener('click', () => {
+                    audioPressingButtonTwo.play()
                     if (sistemaAudio) {
                         if (saladeatracao) {
                             ClassesDeAudioLures(saladeatracao.x, saladeatracao.y, 'cell');
@@ -1049,19 +1121,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const displayTurnButtonsAll = document.querySelectorAll('.displayTurnButton');
     const DTBimg = document.querySelectorAll('.DTB-img');
+    const audioTurnOn = document.createElement('audio');
+    audioTurnOn.src = './assets/audio/turnOnTerminal.mp3'
+    const audioTurnOff = document.createElement('audio');
+    audioTurnOff.src = './assets/audio/turnOffTerminal.mp3'
     
     document.addEventListener('keydown', (event) => {
         if (event.key.toLowerCase() === 'x') {
             if (terminalLigado) {
                 terminalLigado = false
+                audioTurnOff.play()
+                audioTurnOff.volume = 0.25
                 DTBimg.forEach(img => img.src = './assets/turnOnTerminalButton.svg')
-                terminalTela.style.display = 'none'
+                terminalTela.style.animation = 'desligarTela 250ms forwards';
                 resetarTarefa()
+                temperaturaResidual = false
+                temperaturaAmbiente();
             } else {
                 terminalLigado = true
+                audioTurnOn.play()
+                audioTurnOn.volume = 0.25
                 DTBimg.forEach(img => img.src = './assets/turnOffTerminalButton.svg');
-                terminalTela.style.display = 'flex';
+                terminalTela.style.animation = 'ligarTela 250ms forwards'
                 resetarTarefa()
+                temperaturaResidual = true
+                temperaturaAmbiente();
             }
         }
     })
@@ -1071,16 +1155,44 @@ document.addEventListener("DOMContentLoaded", () => {
         button.addEventListener('click', () => {
             if (terminalLigado) {
                 terminalLigado = false
+                audioTurnOff.play()
+                audioTurnOff.volume = 0.25
                 DTBimg.forEach(img => img.src = './assets/turnOnTerminalButton.svg')
-                terminalTela.style.display = 'none'
+                terminalTela.style.animation = 'desligarTela 250ms forwards';
                 resetarTarefa()
             } else {
                 terminalLigado = true
+                audioTurnOn.play();
+                audioTurnOn.volume = 0.25
                 DTBimg.forEach(img => img.src = './assets/turnOffTerminalButton.svg');
-                terminalTela.style.display = 'flex';
+                terminalTela.style.animation = 'ligarTela 250ms forwards'
                 resetarTarefa()
             }
         })
+    })
+
+    finalizar.addEventListener('click', () => {
+        clearInterval(oscilandoButtons);
+        clearInterval(telaPiscando);
+        clearInterval(intervalID)
+        clearInterval(reverseInterval)
+        clearInterval(currentInterval);
+        clearInterval(intervaloTemp)
+        clearInterval(loopTemperatura)
+        slider.style.animation = 'jogoGanho 2s forwards'
+        document.querySelectorAll('audio').forEach(audio => {
+            audio.pause();
+            audio.currentTime = 0
+            audio.muted = true;
+        })
+        if (source) {
+            source.stop();
+        }
+        setTimeout(() => {
+            slider.remove()
+            window.location.href = "shiftcomplete.html";
+        }, 2100)
+        console.log('GameWin')
     })
 
 });

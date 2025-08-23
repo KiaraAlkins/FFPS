@@ -793,6 +793,7 @@ body {
 }
 
 .imgAlert {
+    display: none;
     width: 15px;
     height: 15px;
 }
@@ -805,19 +806,19 @@ body {
     height: 150px;
 }
 
-button {
+button:not(.progress-container, .progressBarButton, .progressButtonVolume, .volumeBarContainer, .volumeprogressBar, .progressButtonVolume, .triangulo-volume, .containerVolume) {
     user-select: none;
     -webkit-user-drag: none;
     pointer-events: auto;
 }
 
-img {
+img:not(.progress-container, .progressBarButton, .progressButtonVolume, .volumeBarContainer, .volumeprogressBar, .progressButtonVolume, .triangulo-volume, .containerVolume) {
     user-select: none;
     -webkit-user-drag: none;
     pointer-events: none;
 }
 
-div {
+div:not(.progress-container, .progressBarButton, .progressButtonVolume, .volumeBarContainer, .volumeprogressBar, .progressButtonVolume, .triangulo-volume, .containerVolume) {
     user-select: none;
     -webkit-user-drag: none;
     pointer-events: none;
@@ -1336,6 +1337,54 @@ div {
     top: 5px;
     right: 5px;
 }
+
+.section-gameWin {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.section-gameWin video {
+    height: 80%;
+    width: 80%;
+}
+
+#terminalTela {
+    transform-origin: center center;
+}
+
+@keyframes desligarTela {
+    from {
+        transform: scaleY(1);
+        visibility: visible;
+    } to {
+        transform: scaleY(0);
+        background-color: #FFFFFF;
+        visibility: hidden;
+    }
+}
+
+@keyframes ligarTela {
+    from {
+        transform: scaleY(0);
+        background-color: #FFFFFF;
+        visibility: hidden;
+    } to {
+        transform: scaleY(1);
+        visibility: visible;
+    }
+}
+
+@keyframes jogoGanho {
+    from {
+        opacity: 1;
+    } to {
+        opacity: 0;
+    }
+}
+
 
 @keyframes moveLeft {
     from { transform: translateX(0) scale(1); opacity: 1; }
