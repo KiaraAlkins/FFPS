@@ -5,22 +5,54 @@ const listButton = document.getElementById('list-button');
 const divList = document.getElementById('savageListDiv');
 const savageContainer = document.querySelector('.BSList_container');
 const savageShock = document.getElementById('savageShock');
+const videoSavage = document.getElementById('videoSavage');
 
-console.log(money)
+console.log(money);
 
 divList.style.display = 'none'
 
 let divListaAberta = false
 let videoPausado = true;
+let tempoDeVideo = null;
+
+let numeroMexido = 1
 
 centerPlayButton.addEventListener('click', () => {
     centerPlayButton.style.display = 'none'
     videoPausado = false;
+    tempoDeVideo = setInterval(() => {
+        animatronicoSeMexeu()
+    }, 1000);
 })
+
+function animatronicoSeMexeu() {
+    let dadoSavage = Math.floor(Math.random() * 10);
+    if (dadoSavage > 5) {
+        numeroMexido++
+    }
+    if (numeroMexido == 1) {
+        videoSavage.style.backgroundColor = 'red'
+    } else if (numeroMexido == 2) {
+        videoSavage.style.backgroundColor = 'blue'
+    } else if (numeroMexido == 3) {
+        videoSavage.style.backgroundColor = 'green'
+    }
+    console.log(dadoSavage)
+}
 
 savageShock.addEventListener('click', () => {
     videoPausado = true;
     centerPlayButton.style.display = 'flex';
+    clearInterval(tempoDeVideo)
+    tempoDeVideo = null;
+    numeroMexido = 1
+    if (numeroMexido == 1) {
+        videoSavage.style.backgroundColor = 'red'
+    } else if (numeroMexido == 2) {
+        videoSavage.style.backgroundColor = 'blue'
+    } else if (numeroMexido == 3) {
+        videoSavage.style.backgroundColor = 'green'
+    }
     if (divListaAberta) {
         savageContainer.style.display = 'none';
         divListaAberta = false;

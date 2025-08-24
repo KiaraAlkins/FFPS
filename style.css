@@ -1461,6 +1461,8 @@ div:not(.progress-container, .progressBarButton, .progressButtonVolume, .volumeB
 .savage_containervideo { 
     display: flex;
     border: #ffffff 5px solid;
+    align-items: center;
+    justify-content: center;
     width: 70%;
     height: 100%;
     position: relative;
@@ -1583,6 +1585,13 @@ div:not(.progress-container, .progressBarButton, .progressButtonVolume, .volumeB
     background-color: #0000A8;
     width: 40px;
     height: 40px;
+}
+
+.videoSavage {
+    display: flex;
+    background-color: #eb0000;
+    height: 500px;
+    width: 700px;
 }
 
 @keyframes fecharDiv {
