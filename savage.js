@@ -20,14 +20,14 @@ let numeroMexido = 1
 centerPlayButton.addEventListener('click', () => {
     centerPlayButton.style.display = 'none'
     videoPausado = false;
-    tempoDeVideo = setInterval(() => {
+    tempoDeVideo = setTimeout(() => {
         animatronicoSeMexeu()
     }, 1000);
 })
 
 function animatronicoSeMexeu() {
-    let dadoSavage = Math.floor(Math.random() * 10);
-    if (dadoSavage > 5) {
+    let riscoSavage = 0.4;
+    if (Math.random() < riscoSavage) {
         numeroMexido++
     }
     if (numeroMexido == 1) {
@@ -36,23 +36,21 @@ function animatronicoSeMexeu() {
         videoSavage.style.backgroundColor = 'blue'
     } else if (numeroMexido == 3) {
         videoSavage.style.backgroundColor = 'green'
+    } else if (numeroMexido >= 4) {
+        console.log('Game Over!');
     }
     console.log(dadoSavage)
 }
 
+let usedShock = 0;
 savageShock.addEventListener('click', () => {
+    usedShock++
     videoPausado = true;
     centerPlayButton.style.display = 'flex';
     clearInterval(tempoDeVideo)
     tempoDeVideo = null;
     numeroMexido = 1
-    if (numeroMexido == 1) {
-        videoSavage.style.backgroundColor = 'red'
-    } else if (numeroMexido == 2) {
-        videoSavage.style.backgroundColor = 'blue'
-    } else if (numeroMexido == 3) {
-        videoSavage.style.backgroundColor = 'green'
-    }
+    videoSavage.style.backgroundColor = 'red'
     if (divListaAberta) {
         savageContainer.style.display = 'none';
         divListaAberta = false;
@@ -75,6 +73,9 @@ listButton.addEventListener('click', () => {
                     savageContainer.style.display = 'flex';
                 }, 350);
         }
+        tempoDeVideo = setTimeout(() => {
+        animatronicoSeMexeu()
+        }, 500);
     } else {
         savageContainer.style.display = 'none';
         divListaAberta = false;

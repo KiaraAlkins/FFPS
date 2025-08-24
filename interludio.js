@@ -1,7 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     let numerodanoite = parseInt(localStorage.getItem("night")) || 1;
-    localStorage.setItem("night", numerodanoite);
+
+    console.log(numerodanoite)
 
     switch (numerodanoite) {
         case 1:
@@ -19,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
             setTimeout(() => {
                 main.style.display = "none";
                 window.location.href = "tutorial.html";
-            }, 10000 + (index * 1000));
+            }, evidences.length * 1000 + 10000);
             
             });
             break;

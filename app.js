@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    let numerodanoite = 1;
     let moneyBS = 100;
 
     const newgame = document.getElementById("menuButtons1");
@@ -28,6 +27,21 @@ document.addEventListener("DOMContentLoaded", () => {
     clickover(customnight);
 
     newgame.addEventListener("click", () => {
+        localStorage.setItem("night", JSON.stringify(1)); 
+        localStorage.setItem("money", JSON.stringify(100)); 
+        localStorage.setItem("upgradeFunctions", JSON.stringify({ 
+          xPrinter: false, 
+          hispd: false, 
+          handyman: false 
+        })); 
+      console.log(JSON.parse(localStorage.getItem("night")));
       window.location.href = "loading.html";
     });
+    continuenight.addEventListener("click", () => {
+        let nightNumber = parseInt(localStorage.getItem("night"))
+        let moneyNumber = parseInt(localStorage.getItem("money"))
+        let upgradeFunctions = JSON.parse(localStorage.getItem("upgradeFunctions"));
+        console.log(nightNumber);
+        
+    })
 })
