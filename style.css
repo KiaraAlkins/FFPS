@@ -1486,7 +1486,6 @@ div:not(.progress-container, .progressBarButton, .progressButtonVolume, .volumeB
 }
 
 .savage_shock { 
-    margin-top: 30px;
     border: #FFFFFF 5px solid;
     display: flex;
     align-items: center;
@@ -1496,7 +1495,6 @@ div:not(.progress-container, .progressBarButton, .progressButtonVolume, .volumeB
 }
 
 .savage_shock:hover { 
-    margin-top: 30px;
     border: #FFFFFF 5px solid;
     background-color: red;
     display: flex;
@@ -1538,9 +1536,22 @@ div:not(.progress-container, .progressBarButton, .progressButtonVolume, .volumeB
     height: 50px;
     width: 50px;
     background-color: #00FF00;
+    border: #ffffff 10px solid;
     position: absolute;
     bottom: 50px;
     left: 50px;
+    z-index: 999;
+}
+
+.savage_list-button:hover {
+    height: 50px;
+    width: 50px;
+    background-color: #000000;
+    border: #00FF00 10px solid;
+    position: absolute;
+    bottom: 50px;
+    left: 50px;
+    z-index: 999;
 }
 
 .BSList_container {
@@ -1592,6 +1603,26 @@ div:not(.progress-container, .progressBarButton, .progressButtonVolume, .volumeB
     background-color: #eb0000;
     height: 500px;
     width: 700px;
+}
+
+.divMoneys {
+    display: flex;
+    margin-top: 30px;
+    width: 50%;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.divMoneys p {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 150px;
+    color: #ffffff;
+    height: 50px;
+    font-family: "RetroFont";
+    text-align: center;
 }
 
 @keyframes fecharDiv {
