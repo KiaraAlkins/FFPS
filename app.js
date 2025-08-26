@@ -91,6 +91,14 @@ document.addEventListener("DOMContentLoaded", () => {
         moneyNumber = parseInt(localStorage.getItem("money"))
         upgradeFunctions = JSON.parse(localStorage.getItem("upgradeFunctions"));
         console.log(nightNumber);
-        window.location.href = "loading.html";
+        midnightMotorist.pause();
+        document.body.appendChild(telaAviso);
+        divWarning.style.animation = 'none';
+        telaAviso.appendChild(divWarning);
+        divWarning.appendChild(videoTVAnalog);
+        videoTVAnalog.play();
+        setTimeout(() => {
+          window.location.href = "loading.html";
+        }, 1000);
     })
 })

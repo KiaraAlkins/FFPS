@@ -373,6 +373,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Funções de tablet
 
     let numeroCamera = 0;
+    let nivelDeBarulho = 0;
 
     const divTabletCamera = document.getElementById('tela-tablet-camera');
     const cam1 = document.getElementById('CAM-button1');
@@ -860,30 +861,32 @@ document.addEventListener("DOMContentLoaded", () => {
     let terminalLigado = true
 
     function atualizarBotoes() {
+
+        audioHeater.pause();
+        audioVent.pause();
+
+        butHeaterOn.classList.add('onOffButton-black');
+        butHeaterOn.classList.remove('onOffButton-white');
+        butHeaterOff.classList.add('onOffButton-white');
+        butHeaterOff.classList.remove('onOffButton-black');
+
+        butVentilationOn.classList.add('onOffButton-black');
+        butVentilationOn.classList.remove('onOffButton-white');
+        butVentilationOff.classList.add('onOffButton-white');
+        butVentilationOff.classList.remove('onOffButton-black') 
+
         if (HeaterSystem) {
-            audioVent.pause()
             audioHeater.play()
             butHeaterOn.classList.add('onOffButton-white');
             butHeaterOn.classList.remove('onOffButton-black');
             butHeaterOff.classList.add('onOffButton-black');
             butHeaterOff.classList.remove('onOffButton-white');
-
-            butVentilationOn.classList.add('onOffButton-black');
-            butVentilationOn.classList.remove('onOffButton-white');
-            butVentilationOff.classList.add('onOffButton-white');
-            butVentilationOff.classList.remove('onOffButton-black')
         } else if (VentSystem) {
-            audioHeater.pause()
-            audioVent.play()
+            audioVent.play();
             butVentilationOn.classList.add('onOffButton-white');
             butVentilationOn.classList.remove('onOffButton-black');
             butVentilationOff.classList.add('onOffButton-black');
             butVentilationOff.classList.remove('onOffButton-white');
-
-            butHeaterOn.classList.add('onOffButton-black');
-            butHeaterOn.classList.remove('onOffButton-white');
-            butHeaterOff.classList.add('onOffButton-white');
-            butHeaterOff.classList.remove('onOffButton-black');
         }
     }
 
@@ -955,7 +958,6 @@ document.addEventListener("DOMContentLoaded", () => {
     butHeaterOff.addEventListener('click', () => {
         if (sistemaTemperatura){
             HeaterSystem = false
-            VentSystem = true;
             atualizarBotoes();
             audioPressingButtonTwo.play()
         }
@@ -971,7 +973,6 @@ document.addEventListener("DOMContentLoaded", () => {
     butVentilationOff.addEventListener('click', () => {
         if (sistemaTemperatura) {
             VentSystem = false;
-            HeaterSystem = true;
             atualizarBotoes();
             audioPressingButtonTwo.play()
         }
@@ -985,6 +986,17 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         audioPressingButton.play()
     })
+
+    function atualizarBarulho() {
+        nivelDeBarulho = 0;
+
+        if (terminalLigado) nivelDeBarulho += 1;
+        if (HeaterSystem) nivelDeBarulho =+ 1;
+        if (tarefaAtual) nivelDeBarulho += 3;
+        if (VentSystem) nivelDeBarulho =+ 2;
+
+        if (nivelDeBarulho > 7) nivelDeBarulho = 7;
+    }
 
     function abrirAudio() {
         while (telaBaixa.firstChild) {
@@ -1005,11 +1017,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const divGrid = document.getElementById('grid');
     let salaDeAtracao;
 
-    const gridSizeX = 5;
+    const gridSizeX = 7;
     const gridSizeY = 3;
 
     const blockedCell = [
-        { x: 2, y: 1 }
+        { x: 3, y: 1 }
     ]
 
     const grid = [];
@@ -1028,8 +1040,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const cellElements = [];
-
-    const salaDoPlayer = { x: 2, y: 2 };
+    const salaDoPlayer = { x: 3, y: 2 };
 
     for (let rowIndex = 0; rowIndex < gridSizeY; rowIndex++) {
         for(let cellIndex = 0; cellIndex < gridSizeX; cellIndex++) {
@@ -1043,6 +1054,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 cellElements.push({ element: cellElement, x: cellIndex, y: rowIndex })
 
                 cellElement.addEventListener('click', () => {
+                    if (cellElement.classList.contains('cell-attack')) return;
                     audioPressingButtonTwo.play()
                     if (sistemaAudio) {
                         if (salaDeAtracao) {
@@ -1064,7 +1076,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 divGrid.appendChild(blockedElement)
             }
         }
-        
     }
 
     function alterarClasseSala(x, y, novaClasse) {
@@ -1075,7 +1086,13 @@ document.addEventListener("DOMContentLoaded", () => {
             console.warn("A célula especificada não foi encontrada!");
         }
     }
-    alterarClasseSala(2, 2, 'cell-player')
+    alterarClasseSala(salaDoPlayer.x, salaDoPlayer.y, 'cell-player')
+    alterarClasseSala(2, 0, 'cell-attack')
+    alterarClasseSala(4, 0, 'cell-attack')
+    alterarClasseSala(2, 1, 'displayNone');
+    alterarClasseSala(4, 1, 'displayNone')
+    alterarClasseSala(2, 2, 'cell-attack')
+    alterarClasseSala(4, 2, 'cell-attack')
 
     lastCell = [];
     function ClassesDeAudioLures(x, y, newClass) {
@@ -1107,32 +1124,41 @@ document.addEventListener("DOMContentLoaded", () => {
         ];
 
         adjacentCells.forEach(({ dx, dy }) => {
-            const adjX = x + dx;
-            const adjY = y + dy;
+            let alcance = 1; 
 
-            if (adjX >= 0 && adjX < gridSizeX && adjY >= 0 && adjY < gridSizeY) {
-                const adjCell = cellElements.find(cell => cell.x === adjX && cell.y === adjY);
-                if (adjCell) {
-                    const svgAttracted = document.createElement('div');
-                    svgAttracted.classList.add('attracted-indicator');
-
-                    if (dx === -1) svgAttracted.classList.add('move-right');
-                    if (dx === 1) svgAttracted.classList.add('move-left');
-                    if (dy === -1) svgAttracted.classList.add('move-down');
-                    if (dy === 1) svgAttracted.classList.add('move-up');
-
-                    adjCell.element.appendChild(svgAttracted);
-                    lastCell.push(adjCell);
-                }
+            if (x === 3 && y === 0 && (dx === -1 || dx === 1)) {
+                alcance = 2
             }
-        })
+
+            
+            for (let i = 1; i <= alcance; i++) {
+                const adjX = x + dx * i;
+                const adjY = y + dy * i;
+
+                if (adjX >= 0 && adjX < gridSizeX && adjY >= 0 && adjY < gridSizeY) {
+                    const adjCell = cellElements.find(cell => cell.x === adjX && cell.y === adjY);
+                    if (adjCell && !adjCell.element.classList.contains('cell-attack')) {
+                        const svgAttracted = document.createElement('div');
+                        svgAttracted.classList.add('attracted-indicator');
+
+                        if (dx === -1) svgAttracted.classList.add('move-right');
+                        if (dx === 1) svgAttracted.classList.add('move-left');
+                        if (dy === -1) svgAttracted.classList.add('move-down');
+                        if (dy === 1) svgAttracted.classList.add('move-up');
+
+                        adjCell.element.appendChild(svgAttracted);
+                        lastCell.push(adjCell);
+                    }}}})
+
+        setTimeout(() => {
+            desativarAudioLures();
+        }, 6000);
     }
 
     function desativarAudioLures() {
         lastCell.forEach(cell => {
             cell.element.classList.remove('cell-audio-lure', 'cell');
             cell.element.classList.add('cell');
-
             cell.element.querySelectorAll('.svg-audio-lure, .attracted-indicator').forEach(el => el.remove());
         });
         lastCell = [];
@@ -1142,7 +1168,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let MoltenFreddyPosition = { x: 0, y: 0 };
     const MoltenFreddy = document.createElement('div');
     MoltenFreddy.classList.add('player');
-    let SpringTrapPosition = { x: 4, y: 0 }
+    let SpringTrapPosition = { x: 6, y: 0 }
     const SpringTrap = document.createElement('div');
     SpringTrap.classList.add('player1')
 
@@ -1153,9 +1179,41 @@ document.addEventListener("DOMContentLoaded", () => {
         springtrap: { ...SpringTrapPosition }
     }
 
+    function getBlockedCells() {
+        const blocked = [...blockedCell];
+        cellElements.forEach(cellObj => {
+            const { x, y, element } = cellObj;
+
+            if (element.classList.contains('displayNone')) {
+                blocked.push({x, y})
+            } else if (element.classList.contains('cell-attack')){
+                const finais = [
+                    { x: 2, y: 2 },
+                    { x: 4, y: 2}
+                ]
+
+                const pulaveis = [
+                    { x: 2, y: 0 },
+                    { x: 4, y: 0 }
+                ]
+
+                const isFinal = finais.some(c => c.x === x && c.y === y);
+                const isPulavel = pulaveis.some(c => c.x === x && c.y === y)
+
+                if (!isFinal && !isPulavel) blocked.push({ x, y });
+            }
+        });
+        return blocked;
+    }
+
     function encontrarCaminho(start, end, gridSizeX, gridSizeY, blockedCell) {
         const fila = [[start]];
         const visitados = new Set([`${start.x},${start.y}`]);
+
+            const pulaveis = [
+                { x: 2, y: 0 },
+                { x: 4, y: 0 }
+            ];
 
         while (fila.length > 0) {
             const caminho = fila.shift();
@@ -1170,15 +1228,25 @@ document.addEventListener("DOMContentLoaded", () => {
                 { x, y: y - 1 }
             ]
 
-            for (const prox of direcoes) {
+            for (let dir of direcoes) {
+
+                let stepX = dir.x
+                let stepY = dir.y;
+
+                if (pulaveis.some(c => c.x === stepX && c.y === stepY)) {
+                    if (stepY === y) {
+                        stepX = stepX + (stepX > x ? 1 : -1);
+                    }
+                }
+
                 if (
-                    prox.x >= 0 && prox.x < gridSizeX &&
-                    prox.y >= 0 && prox.y < gridSizeY &&
-                    !blockedCell.some(cell => cell.x === prox.x && cell.y === prox.y) &&
-                    !visitados.has(`${prox.x},${prox.y}`)
+                    stepX >= 0 && stepX < gridSizeX &&
+                    stepY >= 0 && stepY < gridSizeY &&
+                    !blockedCell.some(cell => cell.x === stepX && cell.y === stepY) &&
+                    !visitados.has(`${stepX},${stepY}`)
                 ) {
-                    visitados.add(`${prox.x},${prox.y}`);
-                    fila.push([...caminho, prox]);
+                    visitados.add(`${stepX},${stepY}`);
+                    fila.push([...caminho, { x: stepX, y: stepY }]);
                 }
             }
         }
@@ -1190,6 +1258,8 @@ document.addEventListener("DOMContentLoaded", () => {
             let newX = animatronicPosition.x;
             let newY = animatronicPosition.y;
             const dadoMov = Math.floor(Math.random() * 20);
+
+            const blocked = getBlockedCells();
 
             if (salaDeAtracao) {
                     const adjacente =
@@ -1203,14 +1273,14 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
             }
             
-            const caminho = encontrarCaminho(animatronicPosition, salaDoPlayer, gridSizeX, gridSizeY, blockedCell);
+            const caminho = encontrarCaminho(animatronicPosition, salaDoPlayer, gridSizeX, gridSizeY, blocked);
 
             // Molten Freddy
         if (type === "molten" && caminho && caminho.length > 1) {
             if (HeaterSystem) {
                 // afastar do player com chance baixa
-                if (dadoMov < 5) {
-                    const caminhoAfastar = encontrarCaminho(animatronicPosition, posicoesIniciais.molten, gridSizeX, gridSizeY, blockedCell);
+                if (dadoMov < 10) {
+                    const caminhoAfastar = encontrarCaminho(animatronicPosition, posicoesIniciais.molten, gridSizeX, gridSizeY, blocked);
                     if (caminhoAfastar && caminhoAfastar.length > 1) {
                         newX = caminhoAfastar[1].x;
                         newY = caminhoAfastar[1].y;
@@ -1225,23 +1295,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Springtrap
         if (type === "springtrap" && caminho && caminho.length > 1) {
-            if (tarefaAtual) {
+            atualizarBarulho();
+            const chanceDeAproximar = nivelDeBarulho * 2;
                 // aproximar se estiver havendo tarefa
-                if (dadoMov < 14) {
+                if (dadoMov < chanceDeAproximar) {
                     newX = caminho[1].x;
                     newY = caminho[1].y;
                 } else if (dadoMov < 2) {
-                    // afastar ocasionalmente mesmo com tarefa
-                    const caminhoAfastar = encontrarCaminho(animatronicPosition, posicoesIniciais.springtrap, gridSizeX, gridSizeY, blockedCell);
+                    // afastar ocasionalmente
+                    const caminhoAfastar = encontrarCaminho(animatronicPosition, posicoesIniciais.springtrap, gridSizeX, gridSizeY, blocked);
                     if (caminhoAfastar && caminhoAfastar.length > 1) {
                         newX = caminhoAfastar[1].x;
                         newY = caminhoAfastar[1].y;
                     }
-                }
             } else {
                 // afastar com chance muito baixa
                 if (dadoMov < 2) {
-                    const caminhoAfastar = encontrarCaminho(animatronicPosition, posicoesIniciais.springtrap, gridSizeX, gridSizeY, blockedCell);
+                    const caminhoAfastar = encontrarCaminho(animatronicPosition, posicoesIniciais.springtrap, gridSizeX, gridSizeY, blocked);
                     if (caminhoAfastar && caminhoAfastar.length > 1) {
                         newX = caminhoAfastar[1].x;
                         newY = caminhoAfastar[1].y;
@@ -1250,7 +1320,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-            if (!blockedCell.some(cell => cell.x === newX && cell.y === newY)) {
+            if (!blocked.some(cell => cell.x === newX && cell.y === newY)) {
                 // Atualiza a posição do animatrônico se a nova posição for válida
                 animatronicPosition.x = newX;
                 animatronicPosition.y = newY;
@@ -1259,14 +1329,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 updateanimatronicPosition();
         }, 1000);
 
-        updateanimatronicPosition();
-
         function updateanimatronicPosition() {
             const previousCell = cellElements.find(cell => cell.x === animatronicPosition.oldX && cell.y === animatronicPosition.oldY);
-                if (previousCell) {
-                    previousCell.element.removeChild(animatronic);
-                }
-            if (blockedCell.some(cell => cell.x === animatronicPosition.x && cell.y === animatronicPosition.y)) {
+                if (previousCell) previousCell.element.removeChild(animatronic);
+
+                const blocked = getBlockedCells();
+            if (blocked.some(cell => cell.x === animatronicPosition.x && cell.y === animatronicPosition.y)) {
                 console.error("O animatrônico não poderá se mover para esta posição bloqueada!");
                 return;
             }
@@ -1289,8 +1357,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 case 'a': if (animatronicPosition.x > 0) newX--; break;
                 case 'd': if (animatronicPosition.x < gridSizeX - 1) newX++; break;
             }
-    
-            if (!blockedCell.some(cell => cell.x === newX && cell.y === newY)) {
+
+            const blocked = getBlockedCells();
+            const pulaveis = [
+                { x: 2, y: 0},
+                { x: 4, y: 0}
+            ];
+
+            if (pulaveis.some(c => c.x === newX && c.y === newY)) {
+                if (newY === animatronicPosition.y) newX = newX + (newX > animatronicPosition.x ? 1 : -1);
+            }
+
+            if (!blocked.some(cell => cell.x === newX && cell.y === newY)) {
                     animatronicPosition.x = newX;
                     animatronicPosition.y = newY;
                     updateanimatronicPosition();

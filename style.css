@@ -1331,9 +1331,10 @@ div:not(.progress-container, .progressBarButton, .progressButtonVolume, .volumeB
 .grid {
     margin-top: 50px;
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    align-items: center;
+    grid-template-columns: 30px 30px 15px 30px 15px 30px 30px;
     grid-template-rows: repeat(3, 1fr);
-    gap: 60px;
+    gap: 30px;
 }
 
 .player {
@@ -1362,6 +1363,18 @@ div:not(.progress-container, .progressBarButton, .progressButtonVolume, .volumeB
     align-items: center;
     justify-content: center;
     position: relative;
+}
+
+.displayNone {
+    display: none;
+}
+
+.cell-attack {
+    background-color: rgb(255, 255, 255);
+    justify-self: center;
+    width: 30px;
+    height: 15px;
+
 }
 
 .cell-player {
