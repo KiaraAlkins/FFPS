@@ -17,6 +17,76 @@ body {
     box-sizing: border-box;
 }
 
+.telaAviso {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000000;
+    opacity: 1;
+    z-index: 9999;
+    pointer-events: none;
+    transition: opacity 5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.telaAviso-glitch {
+    position: absolute;
+    top: 20%;
+    left: 20%;
+    width: 100%;
+    height: 100%;
+    background-color: #000000;
+    opacity: 1;
+    z-index: 9999;
+    pointer-events: none;
+    transition: opacity 5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.divWarning {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 80%;
+}
+
+.videoGlitch {
+    position: absolute;
+    height: 100%;
+    left: 50%;
+    top: 10%;
+}
+
+.videoTVAnalog {
+    height: 1000px;
+}
+
+.telaAviso h2 {
+    color: #ffffff;
+    font-size: 48px;
+}
+
+.telaAviso p {
+    font-size: 24px ;
+    text-align: center;
+    color: #ffffff;
+}
+
+@keyframes acenderOpacidade {
+    from {
+        opacity: 0;
+    } to {
+        opacity: 1;
+    }
+}
+
 .mainContainer {
     display: flex;
     height: 90%;
@@ -1264,6 +1334,24 @@ div:not(.progress-container, .progressBarButton, .progressButtonVolume, .volumeB
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(3, 1fr);
     gap: 60px;
+}
+
+.player {
+    width: 15px;
+    height: 15px;
+    background-color: goldenrod;
+}
+
+.player1 {
+    width: 15px;
+    height: 15px;
+    background-color: #eb0000;
+}
+
+.player2 {
+    width: 15px;
+    height: 15px;
+    background-color:blueviolet;
 }
 
 .cell {

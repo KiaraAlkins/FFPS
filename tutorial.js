@@ -33,6 +33,10 @@ document.addEventListener("DOMContentLoaded", () => {
     pressing(minButton);
     pressing(maxButton);
     pressing(closeButton);
+
+    closeButton.addEventListener('click', () => {
+        window.location.href = "gamenight.html"
+    })
     
     const buttonMenu1 = document.getElementById('buttonMenu1');
     const buttonMenu2 = document.getElementById('buttonMenu2');

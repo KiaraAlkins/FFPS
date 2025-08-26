@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
         videoPausado = false;
         tempoDeVideo = setTimeout(() => {
         }, audioSavage1.duration);
-    } else if (audioPrompt => 2 && audioPrompt < 5) {
+    } else if (audioPrompt >= 2 && audioPrompt < 5) {
         centerPlayButton.style.display = 'none'
         videoPausado = false;
         tempoDeVideo = setTimeout(() => {
@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
             audioSavage2.pause()
             break;
         case 5: 
-            audioSavage2.pause();
+            audioSavage3.pause();
     
         default:
             break;
@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     function animatronicoSeMexeu() {
-    let riscoSavage = 0.6;
+    let riscoSavage = 0.7;
     if (Math.random() < riscoSavage) {
         if (Math.random() < 0.3) {
             if (numeroMexido == 2) {
@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     function mudarTela() {
-    window.location.href = "index";
+        window.location.href = "index.html";
     }
     
     function atualizarTela() {
@@ -180,8 +180,8 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log(proximoEstado)
     proximoEstado = null;
     }
-    
     let usedShock = 0;
+    
     savageShock.addEventListener('click', () => {
     usedShock++
     pausarAudios();
@@ -238,7 +238,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 audioSavage4.currentTime = 0;
                 audioSavage4.play();
                 console.log('sugarCrash')
-                audioSavage4.onended = mudarTela()
+                audioSavage4.onended = mudarTela;
             }, 350);
         }
     }

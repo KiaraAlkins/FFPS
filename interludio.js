@@ -23,12 +23,18 @@ document.addEventListener("DOMContentLoaded", () => {
             }, evidences.length * 1000 + 10000);
             
             });
+            const audioSlideShow = document.createElement('audio');
+            audioSlideShow.src = './assets/openingSlide.mp3'
+            document.body.appendChild(audioSlideShow)
+            audioSlideShow.play();
+
+            break
+        case 2:
+            setTimeout(() => {
+                window.location.href = "tutorial.html";
+            }, 1000);
             break;
     }
 
-    const audioSlideShow = document.createElement('audio');
-    audioSlideShow.src = './assets/openingSlide.mp3'
-    document.body.appendChild(audioSlideShow)
-    audioSlideShow.play();
 
 });

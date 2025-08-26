@@ -1,6 +1,6 @@
-localStorage.setItem("night", JSON.stringify(1));
-localStorage.setItem("money", JSON.stringify(100));
-localStorage.setItem("upgradeFunctions", JSON.stringify({ xPrinter: false, hispd: false, handyman: false }));
+let nightNumber = parseInt(localStorage.getItem("night"))
+let moneyNumber = parseInt(localStorage.getItem("money"))
+let upgrades = JSON.parse(localStorage.getItem("upgradeFunctions"));
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -219,7 +219,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 cateButtons_audio.style.color = '#FFFFFF';
             }, 500);
             desativarAudioLures();
-            saladeatracao = null;
+            salaDeAtracao = null;
         }
         if (!sistemaMusicBox) {
             sistemaDesativado(sistemaMusicBox, PbabyButtons_musicBox, 'Music Box', bbButtonsDiv_musicBox);
@@ -560,6 +560,11 @@ document.addEventListener("DOMContentLoaded", () => {
             botao.innerText = nomeDosLotesID
         }
 
+        const resolverTempo = () => {
+            return (typeof numeroPorcentagem === 'function')
+            ? numeroPorcentagem() : numeroPorcentagem;
+        }
+
         botao.addEventListener('click', () => {
             if (!sistemaTarefas) {
                 const audioError = document.createElement('audio');
@@ -584,9 +589,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     
                     if (!tarefaBoolsID[tarefaId]) {
                         tarefaAtual = botao;
-                        tarefaBoolsID[tarefaId] = false;
                         porcentagem = 0;
                         numberLoadingBar = 1;
+                        tarefaBoolsID[tarefaId] = false;
                         
                         if (!loadingBar) {
                             loadingBar = document.createElement('img') 
@@ -614,13 +619,14 @@ document.addEventListener("DOMContentLoaded", () => {
     
                     currentInterval = setInterval(() => {
                         porcentagem++
-                        if (porcentagem >= numeroPorcentagem) {
+                        const limite = resolverTempo();
+                        if (porcentagem >= limite) {
                             clearInterval(currentInterval);
                             clearInterval(loadingBarInterval);
 
                             if (audioAtual) {
                                 audioTasks.pause();
-                                audioTasks.currentInterval = 0;
+                                audioTasks.currentTime = 0;
                             }
 
                             tarefaBoolsID[tarefaId] = true;
@@ -684,12 +690,54 @@ document.addEventListener("DOMContentLoaded", () => {
         resetGrupoTasks(tarefaBoolsDiv3, botoestargreatefaDiv3, nomeDosLotesDiv3);
     }
 
+    function toggleUpgrade(name) {
+        let upgrades = JSON.parse(localStorage.getItem("upgradeFunctions"));
+        upgrades[name] = !upgrades[name];
+        localStorage.setItem("upgradeFunctions", JSON.stringify(upgrades));
+        console.log(upgrades);
+        return upgrades;
+    }
+
     const terminalTela = document.getElementById('terminal-tela');
 
     const cateButtons_tasks = document.getElementById('cateButton-tasks');
     const cateButtons_heater = document.getElementById('cateButton-heater');
     const cateButtons_ventilation = document.getElementById('cateButton-ventilation');
     const cateButtons_audio = document.getElementById('cateButton-audio');
+
+    const buttonUpgrades1 = document.getElementById('buttonUpgrades1');
+    if (upgrades.xPrinter) buttonUpgrades1.style.display = 'none';
+    const buttonUpgrades2 = document.getElementById('buttonUpgrades2');
+    if (upgrades.hispd) buttonUpgrades2.style.display = 'none';
+    const buttonUpgrades3 = document.getElementById('buttonUpgrades3');
+    if (upgrades.handyman) buttonUpgrades3.style.display = 'none';
+
+    buttonUpgrades1.addEventListener('click', () => {
+        toggleUpgrade("xPrinter");
+        buttonUpgrades1.style.display = 'none';
+    })
+    buttonUpgrades2.addEventListener('click', () => {
+        toggleUpgrade("hispd");
+        buttonUpgrades2.style.display = 'none';
+    })
+    buttonUpgrades3.addEventListener('click', () => {
+        toggleUpgrade("handyman");
+        buttonUpgrades3.style.display = 'none';
+    })
+
+    const TEMPO_BASE = { t1: 9, t2: 16, t3: 13 };
+    const tempoTarefa1 = () => {
+        const up = JSON.parse(localStorage.getItem("upgradeFunctions"))
+        return up.xPrinter ? 1 : TEMPO_BASE.t1;
+    }
+    const tempoTarefa2 = () => {
+        const up = JSON.parse(localStorage.getItem("upgradeFunctions"))
+        return up.hispd ? 1 : TEMPO_BASE.t2;
+    }
+    const tempoTarefa3 = () => {
+        const up = JSON.parse(localStorage.getItem("upgradeFunctions"))
+        return up.handyman ? 1 : TEMPO_BASE.t3;
+    }
 
     const telaBaixa = document.getElementById('telaBaixa');
     const teladetarefas = document.getElementById('telaDeTarefas');
@@ -736,19 +784,19 @@ document.addEventListener("DOMContentLoaded", () => {
             const div2 = document.getElementById('advertising');
             const div3 = document.getElementById('maintenance')
     
-            div1.appendChild(criarBotaoTarefa_div1('tarefa1a1', nomeDosLotesDiv1.lote1a1, finalizar, tarefaBoolsDiv1, 1, audioItemOrder, botoestargreatefaDiv1));
-            div1.appendChild(criarBotaoTarefa_div1('tarefa1a2', nomeDosLotesDiv1.lote1a2, finalizar, tarefaBoolsDiv1, 1, audioItemOrder, botoestargreatefaDiv1));
-            div1.appendChild(criarBotaoTarefa_div1('tarefa1a3', nomeDosLotesDiv1.lote1a3, finalizar, tarefaBoolsDiv1, 1, audioItemOrder, botoestargreatefaDiv1));
-            div1.appendChild(criarBotaoTarefa_div1('tarefa1a4', nomeDosLotesDiv1.lote1a4, finalizar, tarefaBoolsDiv1, 1, audioItemOrder, botoestargreatefaDiv1));
-            div1.appendChild(criarBotaoTarefa_div1('tarefa1a5', nomeDosLotesDiv1.lote1a5, finalizar, tarefaBoolsDiv1, 1, audioItemOrder, botoestargreatefaDiv1));
+            div1.appendChild(criarBotaoTarefa_div1('tarefa1a1', nomeDosLotesDiv1.lote1a1, finalizar, tarefaBoolsDiv1, tempoTarefa2, audioItemOrder, botoestargreatefaDiv1));
+            div1.appendChild(criarBotaoTarefa_div1('tarefa1a2', nomeDosLotesDiv1.lote1a2, finalizar, tarefaBoolsDiv1, tempoTarefa2, audioItemOrder, botoestargreatefaDiv1));
+            div1.appendChild(criarBotaoTarefa_div1('tarefa1a3', nomeDosLotesDiv1.lote1a3, finalizar, tarefaBoolsDiv1, tempoTarefa2, audioItemOrder, botoestargreatefaDiv1));
+            div1.appendChild(criarBotaoTarefa_div1('tarefa1a4', nomeDosLotesDiv1.lote1a4, finalizar, tarefaBoolsDiv1, tempoTarefa2, audioItemOrder, botoestargreatefaDiv1));
+            div1.appendChild(criarBotaoTarefa_div1('tarefa1a5', nomeDosLotesDiv1.lote1a5, finalizar, tarefaBoolsDiv1, tempoTarefa2, audioItemOrder, botoestargreatefaDiv1));
     
-            div2.appendChild(criarBotaoTarefa_div1('tarefa2a1', nomeDosLotesDiv2.lote2a1, finalizar, tarefaBoolsDiv2, 1, audioPrintingTwo, botoestargreatefaDiv2));
-            div2.appendChild(criarBotaoTarefa_div1('tarefa2a2', nomeDosLotesDiv2.lote2a2, finalizar, tarefaBoolsDiv2, 1, audioPrintingTwo, botoestargreatefaDiv2));
-            div2.appendChild(criarBotaoTarefa_div1('tarefa2a3', nomeDosLotesDiv2.lote2a3, finalizar, tarefaBoolsDiv2, 1, audioPrintingTwo, botoestargreatefaDiv2));
+            div2.appendChild(criarBotaoTarefa_div1('tarefa2a1', nomeDosLotesDiv2.lote2a1, finalizar, tarefaBoolsDiv2, tempoTarefa1, audioPrintingTwo, botoestargreatefaDiv2));
+            div2.appendChild(criarBotaoTarefa_div1('tarefa2a2', nomeDosLotesDiv2.lote2a2, finalizar, tarefaBoolsDiv2, tempoTarefa1, audioPrintingTwo, botoestargreatefaDiv2));
+            div2.appendChild(criarBotaoTarefa_div1('tarefa2a3', nomeDosLotesDiv2.lote2a3, finalizar, tarefaBoolsDiv2, tempoTarefa1, audioPrintingTwo, botoestargreatefaDiv2));
     
-            div3.appendChild(criarBotaoTarefa_div1('tarefa3a1', nomeDosLotesDiv3.lote3a1, finalizar, tarefaBoolsDiv3, 1, audioPrinting, botoestargreatefaDiv3));
-            div3.appendChild(criarBotaoTarefa_div1('tarefa3a2', nomeDosLotesDiv3.lote3a2, finalizar, tarefaBoolsDiv3, 1, audioPrinting, botoestargreatefaDiv3));
-            div3.appendChild(criarBotaoTarefa_div1('tarefa3a3', nomeDosLotesDiv3.lote3a3, finalizar, tarefaBoolsDiv3, 1, audioPrinting, botoestargreatefaDiv3));
+            div3.appendChild(criarBotaoTarefa_div1('tarefa3a1', nomeDosLotesDiv3.lote3a1, finalizar, tarefaBoolsDiv3, tempoTarefa3, audioPrinting, botoestargreatefaDiv3));
+            div3.appendChild(criarBotaoTarefa_div1('tarefa3a2', nomeDosLotesDiv3.lote3a2, finalizar, tarefaBoolsDiv3, tempoTarefa3, audioPrinting, botoestargreatefaDiv3));
+            div3.appendChild(criarBotaoTarefa_div1('tarefa3a3', nomeDosLotesDiv3.lote3a3, finalizar, tarefaBoolsDiv3, tempoTarefa3, audioPrinting, botoestargreatefaDiv3));
 
             tarefasCriadas = true;
         }
@@ -955,7 +1003,7 @@ document.addEventListener("DOMContentLoaded", () => {
     })
 
     const divGrid = document.getElementById('grid');
-    let saladeatracao;
+    let salaDeAtracao;
 
     const gridSizeX = 5;
     const gridSizeY = 3;
@@ -997,13 +1045,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 cellElement.addEventListener('click', () => {
                     audioPressingButtonTwo.play()
                     if (sistemaAudio) {
-                        if (saladeatracao) {
-                            ClassesDeAudioLures(saladeatracao.x, saladeatracao.y, 'cell');
+                        if (salaDeAtracao) {
+                            ClassesDeAudioLures(salaDeAtracao.x, salaDeAtracao.y, 'cell');
                         }
                         if ((cellIndex === salaDoPlayer.x && rowIndex === salaDoPlayer.y)) {
                             return
                         }
-                        saladeatracao = { x: cellIndex, y: rowIndex };
+                        salaDeAtracao = { x: cellIndex, y: rowIndex };
                         ClassesDeAudioLures(cellIndex, rowIndex, 'cell-audio-lure');                        
                     }
                 })
@@ -1088,8 +1136,174 @@ document.addEventListener("DOMContentLoaded", () => {
             cell.element.querySelectorAll('.svg-audio-lure, .attracted-indicator').forEach(el => el.remove());
         });
         lastCell = [];
-        saladeatracao = null;
+        salaDeAtracao = null;
     }
+
+    let MoltenFreddyPosition = { x: 0, y: 0 };
+    const MoltenFreddy = document.createElement('div');
+    MoltenFreddy.classList.add('player');
+    let SpringTrapPosition = { x: 4, y: 0 }
+    const SpringTrap = document.createElement('div');
+    SpringTrap.classList.add('player1')
+
+    //posições de animatrônicos
+
+    const posicoesIniciais = {
+        molten: { ...MoltenFreddyPosition },
+        springtrap: { ...SpringTrapPosition }
+    }
+
+    function encontrarCaminho(start, end, gridSizeX, gridSizeY, blockedCell) {
+        const fila = [[start]];
+        const visitados = new Set([`${start.x},${start.y}`]);
+
+        while (fila.length > 0) {
+            const caminho = fila.shift();
+            const { x, y } = caminho[caminho.length - 1];
+
+            if (x === end.x && y === end.y) return caminho;
+
+            const direcoes = [
+                { x: x + 1, y },
+                { x: x - 1, y },
+                { x, y: y + 1 },
+                { x, y: y - 1 }
+            ]
+
+            for (const prox of direcoes) {
+                if (
+                    prox.x >= 0 && prox.x < gridSizeX &&
+                    prox.y >= 0 && prox.y < gridSizeY &&
+                    !blockedCell.some(cell => cell.x === prox.x && cell.y === prox.y) &&
+                    !visitados.has(`${prox.x},${prox.y}`)
+                ) {
+                    visitados.add(`${prox.x},${prox.y}`);
+                    fila.push([...caminho, prox]);
+                }
+            }
+        }
+        return null;
+    }
+
+    function createAnimatronics(animatronic, animatronicPosition, gridSizeX, gridSizeY, type) {
+        const intervaloAnimatronic = setInterval(() => {
+            let newX = animatronicPosition.x;
+            let newY = animatronicPosition.y;
+            const dadoMov = Math.floor(Math.random() * 20);
+
+            if (salaDeAtracao) {
+                    const adjacente =
+                         Math.abs(animatronicPosition.x - salaDeAtracao.x) + Math.abs(animatronicPosition.y - salaDeAtracao.y) === 1;
+                    if (adjacente) {
+                        let chanceAtracao = type === "springtrap" ? 18 : 12;
+                        if (Math.random() < chanceAtracao && !blockedCell.some(cell => cell.x === salaDeAtracao.x && cell.y === salaDeAtracao.y)) {
+                            newX = salaDeAtracao.x;
+                            newY = salaDeAtracao.y;
+                        }
+                    }
+            }
+            
+            const caminho = encontrarCaminho(animatronicPosition, salaDoPlayer, gridSizeX, gridSizeY, blockedCell);
+
+            // Molten Freddy
+        if (type === "molten" && caminho && caminho.length > 1) {
+            if (HeaterSystem) {
+                // afastar do player com chance baixa
+                if (dadoMov < 5) {
+                    const caminhoAfastar = encontrarCaminho(animatronicPosition, posicoesIniciais.molten, gridSizeX, gridSizeY, blockedCell);
+                    if (caminhoAfastar && caminhoAfastar.length > 1) {
+                        newX = caminhoAfastar[1].x;
+                        newY = caminhoAfastar[1].y;
+                    }
+                }
+            } else if (dadoMov < 10) {
+                newX = caminho[1].x;
+                newY = caminho[1].y;
+                // aproximar do player normalmente
+            }
+        }
+
+        // Springtrap
+        if (type === "springtrap" && caminho && caminho.length > 1) {
+            if (tarefaAtual) {
+                // aproximar se estiver havendo tarefa
+                if (dadoMov < 14) {
+                    newX = caminho[1].x;
+                    newY = caminho[1].y;
+                } else if (dadoMov < 2) {
+                    // afastar ocasionalmente mesmo com tarefa
+                    const caminhoAfastar = encontrarCaminho(animatronicPosition, posicoesIniciais.springtrap, gridSizeX, gridSizeY, blockedCell);
+                    if (caminhoAfastar && caminhoAfastar.length > 1) {
+                        newX = caminhoAfastar[1].x;
+                        newY = caminhoAfastar[1].y;
+                    }
+                }
+            } else {
+                // afastar com chance muito baixa
+                if (dadoMov < 2) {
+                    const caminhoAfastar = encontrarCaminho(animatronicPosition, posicoesIniciais.springtrap, gridSizeX, gridSizeY, blockedCell);
+                    if (caminhoAfastar && caminhoAfastar.length > 1) {
+                        newX = caminhoAfastar[1].x;
+                        newY = caminhoAfastar[1].y;
+                    }
+                }
+            }
+        }
+
+            if (!blockedCell.some(cell => cell.x === newX && cell.y === newY)) {
+                // Atualiza a posição do animatrônico se a nova posição for válida
+                animatronicPosition.x = newX;
+                animatronicPosition.y = newY;
+            }
+        
+                updateanimatronicPosition();
+        }, 1000);
+
+        updateanimatronicPosition();
+
+        function updateanimatronicPosition() {
+            const previousCell = cellElements.find(cell => cell.x === animatronicPosition.oldX && cell.y === animatronicPosition.oldY);
+                if (previousCell) {
+                    previousCell.element.removeChild(animatronic);
+                }
+            if (blockedCell.some(cell => cell.x === animatronicPosition.x && cell.y === animatronicPosition.y)) {
+                console.error("O animatrônico não poderá se mover para esta posição bloqueada!");
+                return;
+            }
+
+            const targetCell = cellElements.find(cell => cell.x === animatronicPosition.x && cell.y === animatronicPosition.y)
+            if (targetCell) targetCell.element.appendChild(animatronic);
+
+            animatronicPosition.oldX = animatronicPosition.x;
+            animatronicPosition.oldY = animatronicPosition.y;
+
+            console.log(`Posição do animatrônico: (${animatronicPosition.x}, ${animatronicPosition.y})`);
+        }
+        function moverAnimatronico(event) {
+            let newX = animatronicPosition.x;
+            let newY = animatronicPosition.y;
+    
+            switch (event.key) {
+                case 'w': if (animatronicPosition.y > 0) newY--; break;
+                case 's': if (animatronicPosition.y < gridSizeY - 1) newY++; break;
+                case 'a': if (animatronicPosition.x > 0) newX--; break;
+                case 'd': if (animatronicPosition.x < gridSizeX - 1) newX++; break;
+            }
+    
+            if (!blockedCell.some(cell => cell.x === newX && cell.y === newY)) {
+                    animatronicPosition.x = newX;
+                    animatronicPosition.y = newY;
+                    updateanimatronicPosition();
+            }
+        }
+        document.addEventListener('keydown', moverAnimatronico);
+    }
+    
+    
+    createAnimatronics(MoltenFreddy, MoltenFreddyPosition, gridSizeX, gridSizeY, "molten");
+    createAnimatronics(SpringTrap, SpringTrapPosition, gridSizeX, gridSizeY, "springtrap");
+
+
 
     telaBaixa.removeChild(telaHeater);
     telaBaixa.removeChild(telaVentilation);
