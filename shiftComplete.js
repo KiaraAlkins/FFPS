@@ -12,7 +12,7 @@ video.addEventListener("loadedmetadata", () => {
     });
 
 function mudarTela() {
-    window.location.href = "savage.html";
+    window.location.href = "savageas.html";
 }
 
 video.onended = mudarTela;

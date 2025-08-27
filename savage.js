@@ -1,4 +1,5 @@
-let money = JSON.parse(localStorage.getItem("money") || 0);
+let money = parseInt(localStorage.getItem("money") || 0);
+let nightNumber = parseInt(localStorage.getItem("night"));
 
 document.addEventListener('DOMContentLoaded', () => {
     
@@ -42,6 +43,28 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log("Duração total:", audioSavage4.duration, "segundos");
     });
     
+    const videoEstagio1 = document.createElement('video');
+    videoEstagio1.loop = true;
+    const videoEstagio2 = document.createElement('video');
+    videoEstagio2.loop = true;
+    const videoEstagio3 = document.createElement('video');
+    videoEstagio3.loop = true;
+
+    switch (nightNumber) {
+        case 2:
+            videoEstagio1.src = "./assets/video/savagePrompt/moltenFreddy-Stage-1.mp4"
+            videoEstagio2.src = "./assets/video/savagePrompt/moltenFreddy-Stage-2.mp4"
+            videoEstagio3.src = "./assets/video/savagePrompt/moltenFreddy-Stage-3.mp4"
+            break;
+        case 2:
+
+        default:
+            break;
+    }
+    
+    let videoAtual = videoEstagio1;
+    videoSavage.appendChild(videoAtual)
+    videoAtual.classList.add("videoAtual")
     
     account.innerHTML = `your account: <br> B$ ${money},00`;
     
@@ -70,18 +93,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     centerPlayButton.addEventListener('click', () => {
-    tocarAudios()
-    if (audioPrompt == 1) {
-        centerPlayButton.style.display = 'none'
-        videoPausado = false;
-        tempoDeVideo = setTimeout(() => {
-        }, audioSavage1.duration);
-    } else if (audioPrompt >= 2 && audioPrompt < 5) {
-        centerPlayButton.style.display = 'none'
-        videoPausado = false;
-        tempoDeVideo = setTimeout(() => {
-        }, audioSavage2.duration);
-    }
+        tocarAudios()
+        if (audioPrompt == 1) {
+            centerPlayButton.style.display = 'none'
+            videoPausado = false;
+            videoAtual.play();
+            tempoDeVideo = setTimeout(() => {
+            }, audioSavage1.duration);
+        } else if (audioPrompt >= 2 && audioPrompt < 5) {
+            centerPlayButton.style.display = 'none'
+            videoPausado = false;
+            videoAtual.play()
+            tempoDeVideo = setTimeout(() => {
+            }, audioSavage2.duration);
+        }
     })
     
     function tocarAudios() {
@@ -144,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     function animatronicoSeMexeu() {
-    let riscoSavage = 0.7;
+    let riscoSavage = 0.9;
     if (Math.random() < riscoSavage) {
         if (Math.random() < 0.3) {
             if (numeroMexido == 2) {
@@ -167,41 +192,42 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     function atualizarTela() {
-    if (proximoEstado === null) return;
-    if (proximoEstado == 1) {
-        videoSavage.style.backgroundColor = 'red'
-    } else if (proximoEstado == 2) {
-        videoSavage.style.backgroundColor = 'blue'
-    } else if (proximoEstado == 3) {
-        videoSavage.style.backgroundColor = 'green'
-    } else if (proximoEstado >= 4) {
-        console.log('Game Over!');
-    }
-    console.log(proximoEstado)
-    proximoEstado = null;
+        if (proximoEstado === null) return;
+        videoSavage.innerHTML = "";
+        if (proximoEstado == 1) {
+        videoAtual = videoEstagio1
+        } else if (proximoEstado == 2) {
+            videoAtual = videoEstagio2
+        } else if (proximoEstado == 3) {
+            videoAtual = videoEstagio3;
+        } else if (proximoEstado >= 4) {
+            console.log('Game Over!');
+        }
+        console.log(proximoEstado)
+        proximoEstado = null;
     }
     let usedShock = 0;
     
     savageShock.addEventListener('click', () => {
-    usedShock++
-    pausarAudios();
-    videoPausado = true;
-    centerPlayButton.style.display = 'flex';
-    clearInterval(tempoDeVideo)
-    tempoDeVideo = null;
-    numeroMexido = 1
-    proximoEstado = 1;
-    atualizarTela();
-    if (divListaAberta) {
-        savageContainer.style.display = 'none';
-        divListaAberta = false;
-        setTimeout(() => {
-            divList.style.animation = 'fecharDiv 250ms forwards'
-        }, 100);
-        setTimeout(() => {
-            divList.style.display = 'none';
-        }, 350);
-    }
+        usedShock++
+        pausarAudios();
+        videoPausado = true;
+        centerPlayButton.style.display = 'flex';
+        clearInterval(tempoDeVideo)
+        tempoDeVideo = null;
+        numeroMexido = 1
+        proximoEstado = 1;
+        atualizarTela();
+        if (divListaAberta) {
+            savageContainer.style.display = 'none';
+            divListaAberta = false;
+            setTimeout(() => {
+                divList.style.animation = 'fecharDiv 250ms forwards'
+            }, 100);
+            setTimeout(() => {
+                divList.style.display = 'none';
+            }, 350);
+        }
     })
     
     listButton.addEventListener('click', () => {

@@ -1529,130 +1529,150 @@ div:not(.progress-container, .progressBarButton, .progressButtonVolume, .volumeB
 
 /* Savage Buttons */
 
-.main_savage {
+.sa_Container {
     display: flex;
+    align-items: end;
+    justify-content: center;
     height: 100%;
     width: 100%;
-    align-items: center;
-    justify-content: center;
-
+    background-image: url(./assets/savage/backgroundSavage.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 65%;
 }
 
-.container_savage {
+.divTerminal_sa {
+    height: 90%;
+    position: relative;
     display: flex;
-    height: 80%;
-    width: 80%;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+}
+
+.divTerminal_sa img {
+    height: 100%;
+}
+
+.telaPainel_sa {
+    height: 60%;
+    width: 82.5%;
+    top: 17.5%;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.container_sa_button {
+    display: flex;
     flex-direction: column;
-}
-
-.containerForvideo {
-    width: 100%;
-    height: 75%;
-    margin-top: 50px;
-    margin-bottom: 25px;
-    display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 30px;
-
-}
-
-.savage_containervideo { 
-    display: flex;
-    border: #ffffff 5px solid;
-    align-items: center;
-    justify-content: center;
-    width: 70%;
+    justify-content: space-between;
     height: 100%;
+    width: 15%;
+}
+
+.exaustor_sa {
+    height: 45%;
+}
+
+.buttonShock_sa {
+    height: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.buttonShock_sa img {
+    width: 100%;
+    height: 100%;
+}
+
+.telaVideo_sa {
+    height: 100%;
+    width: 82.5%;
+    background-color: #000000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: relative;
 }
 
-.bottomButtons_savage {
-    width: 80%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.lineBar {
-    border: #ffffff 5px solid;
-    border-radius: 50px;
-    height: 5px;
+.displayDoVideo{
+    height: 100%;
     width: 100%;
-    display: flex;
-    align-items: center;
+    background-color: #000000;
+    position: relative;
+    overflow: hidden;
 }
 
-.savage_shock { 
-    border: #FFFFFF 5px solid;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 250px;
-    height: 80px;
-}
-
-.savage_shock:hover { 
-    border: #FFFFFF 5px solid;
-    background-color: red;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 250px;
-    height: 80px;
-}
-
-.centerPlayButton {
-    height: 200px;
-    width: 200px;
+.centerPlayButton_sa {
+    width: 100px;
+    height: 100px;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
 
-.centerPlayButton img { 
+.videoAtual {
     height: 100%;
     width: 100%;
+}
+
+.videoGlitch {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 9999;
+    background-color: #000000;
+    display: block;
+    pointer-events: none;
+}
+
+.camButtons_sa {
+    position: absolute;
+    width: 100px;
+    height: 50px;
+    left: 25px;
+    top: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #FFFFFF;
+    color: #000000;
+    font-size: 16px;
+    z-index: 10;
+}
+
+.camButtons_sa:hover {
+    position: absolute;
+    width: 100px;
+    height: 50px;
+    left: 25px;
+    top: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #000000;
+    border: #ffffff 2px solid;
+    color: #FFFFFF;
+    font-size: 16px;
+    z-index: 10;
 }
 
 .savage_list-button-open {
     height: 500px;
-    width: 1000px;
+    width: 600px;
     background-color: #000000;
     border: #ffffff 10px solid;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.savage_list-button {
-    height: 50px;
-    width: 50px;
-    background-color: #00FF00;
-    border: #ffffff 10px solid;
-    position: absolute;
-    bottom: 50px;
-    left: 50px;
-    z-index: 999;
-}
-
-.savage_list-button:hover {
-    height: 50px;
-    width: 50px;
-    background-color: #000000;
-    border: #00FF00 10px solid;
-    position: absolute;
-    bottom: 50px;
-    left: 50px;
-    z-index: 999;
 }
 
 .BSList_container {
@@ -1697,33 +1717,6 @@ div:not(.progress-container, .progressBarButton, .progressButtonVolume, .volumeB
     background-color: #0000A8;
     width: 40px;
     height: 40px;
-}
-
-.videoSavage {
-    display: flex;
-    background-color: #eb0000;
-    height: 500px;
-    width: 700px;
-}
-
-.divMoneys {
-    display: flex;
-    margin-top: 30px;
-    width: 50%;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-}
-
-.divMoneys p {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 150px;
-    color: #ffffff;
-    height: 50px;
-    font-family: "RetroFont";
-    text-align: center;
 }
 
 @keyframes fecharDiv {
