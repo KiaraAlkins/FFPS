@@ -35,9 +35,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const gmSection_center = document.getElementById('center-content')
     const gmSection_right = document.getElementById('gm-section-right');
 
-    const moneyBS = JSON.parse(localStorage.getItem("money"));
     const containerMoney = document.getElementById('money');
-    containerMoney.innerText = `B$ ${moneyBS},00`
+    containerMoney.innerText = `B$ ${moneyNumber},00`
 
     const audioPressingButton = document.createElement('audio');
     audioPressingButton.src = "./assets/audio/pressingButton.mp3"
@@ -373,7 +372,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // Funções de tablet
 
     let numeroCamera = 0;
-    let nivelDeBarulho = 0;
 
     const divTabletCamera = document.getElementById('tela-tablet-camera');
     const cam1 = document.getElementById('CAM-button1');
@@ -695,6 +693,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let upgrades = JSON.parse(localStorage.getItem("upgradeFunctions"));
         upgrades[name] = !upgrades[name];
         localStorage.setItem("upgradeFunctions", JSON.stringify(upgrades));
+        containerMoney.innerText = `B$ ${moneyNumber},00`
         console.log(upgrades);
         return upgrades;
     }
@@ -714,16 +713,27 @@ document.addEventListener("DOMContentLoaded", () => {
     if (upgrades.handyman) buttonUpgrades3.style.display = 'none';
 
     buttonUpgrades1.addEventListener('click', () => {
-        toggleUpgrade("xPrinter");
-        buttonUpgrades1.style.display = 'none';
+        if (moneyNumber >= 500) {
+            moneyNumber -= 500;
+            localStorage.setItem("money", moneyNumber);
+            toggleUpgrade("xPrinter");
+            buttonUpgrades1.style.display = 'none';
+        }
     })
     buttonUpgrades2.addEventListener('click', () => {
-        toggleUpgrade("hispd");
-        buttonUpgrades2.style.display = 'none';
+        if (moneyNumber >= 500) {
+            moneyNumber -= 500;
+            localStorage.setItem("money", moneyNumber);
+            toggleUpgrade("hispd");
+            buttonUpgrades2.style.display = 'none';
+        }
     })
     buttonUpgrades3.addEventListener('click', () => {
-        toggleUpgrade("handyman");
-        buttonUpgrades3.style.display = 'none';
+        if (moneyNumber >= 900) {
+            moneyNumber -= 900;
+            localStorage.setItem("money", moneyNumber);
+            toggleUpgrade("handyman");
+        }
     })
 
     const TEMPO_BASE = { t1: 9, t2: 16, t3: 13 };
@@ -841,6 +851,8 @@ document.addEventListener("DOMContentLoaded", () => {
         telaBaixa.appendChild(telaVentilation);
         resetarTarefa();
     }
+
+    let nivelDeBarulho = 0;
     
     let temperatureOfTheRoom = 15;
     const minTemp = 15;
@@ -851,8 +863,8 @@ document.addEventListener("DOMContentLoaded", () => {
     textTemperature.innerText = `${temperatureOfTheRoom} C°`
     textTemperature1.innerText = `${temperatureOfTheRoom} C°`
     textTemperature2.innerText = `${temperatureOfTheRoom} C°`
-    let HeaterSystem = true;
-    let VentSystem = false;
+    let HeaterSystem = false;
+    let VentSystem = true;
     const butHeaterOn = document.getElementById('buttonHeater-on');
     const butHeaterOff = document.getElementById('buttonHeater-off');
     const butVentilationOn = document.getElementById('buttonVentilation-on');
@@ -986,16 +998,22 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         audioPressingButton.play()
     })
-
+    
     function atualizarBarulho() {
         nivelDeBarulho = 0;
 
         if (terminalLigado) nivelDeBarulho += 1;
-        if (HeaterSystem) nivelDeBarulho =+ 1;
-        if (tarefaAtual) nivelDeBarulho += 3;
-        if (VentSystem) nivelDeBarulho =+ 2;
+        if (HeaterSystem) nivelDeBarulho += 1;
+        if (tarefaAtual) nivelDeBarulho += 4;
+        if (VentSystem) nivelDeBarulho += 1;
 
         if (nivelDeBarulho > 7) nivelDeBarulho = 7;
+
+        const noiseBars = document.querySelectorAll(".noiseBar");
+        noiseBars.forEach((bar, index) => {
+            if (index < nivelDeBarulho) bar.classList.add("activeNoise");
+            else bar.classList.remove("activeNoise");
+        })
     }
 
     function abrirAudio() {
@@ -1078,6 +1096,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    setInterval(()=> {
+        atualizarBarulho();
+    }, 100)
+
     function alterarClasseSala(x, y, novaClasse) {
         const targetCell = cellElements.find(cell => cell.x === x && cell.y === y);
         if (targetCell) {
@@ -1152,7 +1174,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         setTimeout(() => {
             desativarAudioLures();
-        }, 6000);
+        }, 10000);
     }
 
     function desativarAudioLures() {
@@ -1253,14 +1275,70 @@ document.addEventListener("DOMContentLoaded", () => {
         return null;
     }
 
+    const salasObservaveis = {
+        0: { x: 2, y: 2 },
+        1: { x: 3, y: 3 },
+        2: { x: 4, y: 2 }
+    };
+
+    const audioMap = {
+        molten: {
+            left: new Audio("./assets/audio/savageAudioPrompt/audioMoltenFreddy-left-1.mp3"),
+            right: new Audio("./assets/audio/savageAudioPrompt/audioMoltenFreddy-right-1.mp3")
+        },
+        springtrap: {
+            left: new Audio("./assets/audio/savageAudioPrompt/generalAudios/audioGeneral-2-left"),
+            right: new Audio("./assets/audio/savageAudioPrompt/generalAudios/audioGeneral-2-right")
+        }
+    }
+
+    for (const anim in audioMap) {
+        for (const lado in audioMap[anim]) {
+            audioMap[anim][lado].volume = 0.8; // ajusta volume
+            audioMap[anim][lado].preload = "auto"; // carrega antes para evitar delay
+        }
+    }
+
+    function playVentSound(type, side) {
+        const audio = audioMap[type]?.[side];
+        if (audio) {
+            audio.currentTime = 0;
+            audio.play().catch(err => console.error("erro ao reproduzir audio:", err));
+        }
+        console.log(audio);
+    }
+
     function createAnimatronics(animatronic, animatronicPosition, gridSizeX, gridSizeY, type) {
         const intervaloAnimatronic = setInterval(() => {
+
             let newX = animatronicPosition.x;
             let newY = animatronicPosition.y;
             const dadoMov = Math.floor(Math.random() * 20);
-
             const blocked = getBlockedCells();
 
+            const salaObservada = salasObservaveis[posicaoAtual];
+            let movimentoFeito = false;
+
+            if (salaObservada &&
+                animatronicPosition.x === salaObservada.x &&
+                animatronicPosition.y === salaObservada.y
+            ) {
+                const chanceDeFuga = Math.max(0, 20 - nivelDeBarulho * 2);
+                const dadoInvasao = Math.floor(Math.round() * 20);
+                if (dadoMov < chanceDeFuga && dadoInvasao !== 0) {
+                    const caminhoAfastar = encontrarCaminho(animatronicPosition, posicoesIniciais[type], gridSizeX, gridSizeY, blocked);
+                    if (caminhoAfastar && caminhoAfastar.length > 2) {
+                        newX = caminhoAfastar[2].x;
+                        newY = caminhoAfastar[2].y;
+                        movimentoFeito = true;
+                    }
+                } else if (dadoInvasao === 0) {
+                    newX = salaDoPlayer.x;
+                    newY - salaDoPlayer.y;
+                    movimentoFeito = true;
+                }
+            }
+            
             if (salaDeAtracao) {
                     const adjacente =
                          Math.abs(animatronicPosition.x - salaDeAtracao.x) + Math.abs(animatronicPosition.y - salaDeAtracao.y) === 1;
@@ -1272,53 +1350,63 @@ document.addEventListener("DOMContentLoaded", () => {
                         }
                     }
             }
+
+            if (!movimentoFeito) {
+                const caminho = encontrarCaminho(animatronicPosition, salaDoPlayer, gridSizeX, gridSizeY, blocked);
+                    // Molten Freddy
+                if (type === "molten" && caminho && caminho.length > 1) {
+                    if (HeaterSystem) {
+                        // afastar do player com chance baixa
+                        if (dadoMov < 15) {
+                            const caminhoAfastar = encontrarCaminho(animatronicPosition, posicoesIniciais.molten, gridSizeX, gridSizeY, blocked);
+                            if (caminhoAfastar && caminhoAfastar.length > 1) {
+                                newX = caminhoAfastar[1].x;
+                                newY = caminhoAfastar[1].y;
+                            }
+                        }
+                    } else if (dadoMov < 10) {
+                        if (Math.random() < 0.3) {
+                            const caminhoAfastar = encontrarCaminho(animatronicPosition, posicoesIniciais.molten, gridSizeX, gridSizeY, blocked);
+                            if (caminhoAfastar && caminhoAfastar.length > 1) {
+                                newX = caminhoAfastar[1].x;
+                                newY = caminhoAfastar[1].y;
+                            }
+                        } else {
+                            newX = caminho[1].x;
+                            newY = caminho[1].y;
+                            // aproximar do player normalmente
+                        }
+                    }
+                }
+        
+                // Springtrap
+                if (type === "springtrap" && caminho && caminho.length > 1) {
+                    const chanceDeAproximar = nivelDeBarulho * 2;
+                        // aproximar se estiver havendo tarefa
+                        if (dadoMov < chanceDeAproximar) {
+                            newX = caminho[1].x;
+                            newY = caminho[1].y;
+                        } else if (dadoMov < 5) {
+                            // afastar ocasionalmente
+                            const caminhoAfastar = encontrarCaminho(animatronicPosition, posicoesIniciais.springtrap, gridSizeX, gridSizeY, blocked);
+                            if (caminhoAfastar && caminhoAfastar.length > 1) {
+                                newX = caminhoAfastar[1].x;
+                                newY = caminhoAfastar[1].y;
+                            }
+                    } else {
+                        // afastar com chance muito baixa
+                        if (dadoMov < 8) {
+                            const caminhoAfastar = encontrarCaminho(animatronicPosition, posicoesIniciais.springtrap, gridSizeX, gridSizeY, blocked);
+                            if (caminhoAfastar && caminhoAfastar.length > 1) {
+                                newX = caminhoAfastar[1].x;
+                                newY = caminhoAfastar[1].y;
+                            }
+                        }
+                    }
+                }
+            }
             
-            const caminho = encontrarCaminho(animatronicPosition, salaDoPlayer, gridSizeX, gridSizeY, blocked);
 
-            // Molten Freddy
-        if (type === "molten" && caminho && caminho.length > 1) {
-            if (HeaterSystem) {
-                // afastar do player com chance baixa
-                if (dadoMov < 10) {
-                    const caminhoAfastar = encontrarCaminho(animatronicPosition, posicoesIniciais.molten, gridSizeX, gridSizeY, blocked);
-                    if (caminhoAfastar && caminhoAfastar.length > 1) {
-                        newX = caminhoAfastar[1].x;
-                        newY = caminhoAfastar[1].y;
-                    }
-                }
-            } else if (dadoMov < 10) {
-                newX = caminho[1].x;
-                newY = caminho[1].y;
-                // aproximar do player normalmente
-            }
-        }
-
-        // Springtrap
-        if (type === "springtrap" && caminho && caminho.length > 1) {
-            atualizarBarulho();
-            const chanceDeAproximar = nivelDeBarulho * 2;
-                // aproximar se estiver havendo tarefa
-                if (dadoMov < chanceDeAproximar) {
-                    newX = caminho[1].x;
-                    newY = caminho[1].y;
-                } else if (dadoMov < 2) {
-                    // afastar ocasionalmente
-                    const caminhoAfastar = encontrarCaminho(animatronicPosition, posicoesIniciais.springtrap, gridSizeX, gridSizeY, blocked);
-                    if (caminhoAfastar && caminhoAfastar.length > 1) {
-                        newX = caminhoAfastar[1].x;
-                        newY = caminhoAfastar[1].y;
-                    }
-            } else {
-                // afastar com chance muito baixa
-                if (dadoMov < 2) {
-                    const caminhoAfastar = encontrarCaminho(animatronicPosition, posicoesIniciais.springtrap, gridSizeX, gridSizeY, blocked);
-                    if (caminhoAfastar && caminhoAfastar.length > 1) {
-                        newX = caminhoAfastar[1].x;
-                        newY = caminhoAfastar[1].y;
-                    }
-                }
-            }
-        }
 
             if (!blocked.some(cell => cell.x === newX && cell.y === newY)) {
                 // Atualiza a posição do animatrônico se a nova posição for válida
@@ -1327,11 +1415,11 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         
                 updateanimatronicPosition();
-        }, 1000);
+        }, 3000);
 
         function updateanimatronicPosition() {
             const previousCell = cellElements.find(cell => cell.x === animatronicPosition.oldX && cell.y === animatronicPosition.oldY);
-                if (previousCell) previousCell.element.removeChild(animatronic);
+                if (previousCell && previousCell.element.contains(animatronic)) previousCell.element.removeChild(animatronic);
 
                 const blocked = getBlockedCells();
             if (blocked.some(cell => cell.x === animatronicPosition.x && cell.y === animatronicPosition.y)) {
@@ -1341,6 +1429,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const targetCell = cellElements.find(cell => cell.x === animatronicPosition.x && cell.y === animatronicPosition.y)
             if (targetCell) targetCell.element.appendChild(animatronic);
+
+            if (animatronicPosition.x == salaDoPlayer.x && animatronicPosition.y == salaDoPlayer.y) {
+                // if (type !== "circusBaby") {
+                //     circusBabyEspecial()
+                // }
+                gameOver()
+            }
+
+            if (animatronicPosition.y === salaDoPlayer.y) { 
+                if (animatronicPosition.x === salaDoPlayer.x - 1) {
+                    playVentSound(type, "left");
+                } else if (animatronicPosition.x === salaDoPlayer.x + 1) {
+                    playVentSound(type, "right");
+                }
+            }
 
             animatronicPosition.oldX = animatronicPosition.x;
             animatronicPosition.oldY = animatronicPosition.y;
@@ -1408,6 +1511,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 DTBimg.forEach(img => img.src = './assets/turnOnTerminalButton.svg')
                 terminalTela.style.animation = 'desligarTela 250ms forwards';
                 temperaturaResidual = true
+                HeaterSystem = false;
+                VentSystem = false;
                 resetarTarefa()
                 temperaturaAmbiente();
             } else {
@@ -1477,5 +1582,30 @@ document.addEventListener("DOMContentLoaded", () => {
             window.location.href = "shiftcomplete.html";
         }, 2100)
     })
+
+    function gameOver() {
+        const gameOverScreen = document.getElementById("gameOverScreen");
+        gameOverScreen.classList.add("active");
+
+        clearInterval(oscilandoButtons);
+        clearInterval(telaPiscando);
+        clearInterval(intervalID)
+        clearInterval(reverseInterval)
+        clearInterval(currentInterval);
+        clearInterval(intervaloTemp)
+        clearInterval(loopTemperatura)
+
+        document.querySelectorAll('audio').forEach(audio => {
+            audio.pause();
+            audio.currentTime = 0
+            audio.muted = true;
+        })
+        if (source) {
+            source.stop();
+        }
+        setTimeout(() => {
+            window.location.href = 'index.html'
+        }, 2100)
+    }
 
 });

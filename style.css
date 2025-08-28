@@ -1415,6 +1415,38 @@ div:not(.progress-container, .progressBarButton, .progressButtonVolume, .volumeB
     align-items: center;
 }
 
+.displayNoise {
+    position: absolute;
+    top: 90%;
+    right: 25%;
+    height: 50px;
+    width: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    color: #ffffff;
+    flex-direction: column;
+}
+
+.containerNoise {
+    border: #ffffff 5px solid;
+    height: 80%;
+    width: 90%;
+    display: flex;
+    align-items: center;
+}
+
+.noiseBar {
+    height: 18px;
+    background-color: transparent;
+    width: 14px;
+    margin: 0 5px;
+}
+
+.activeNoise {
+    background-color: #FFFFFF;
+}
+
 .displayTurnButton {
     position: absolute;
     top: 87.5%;
@@ -1760,3 +1792,31 @@ div:not(.progress-container, .progressBarButton, .progressButtonVolume, .volumeB
         transform: translate(-50%, -50%);
     }
 }
+
+#gameOverScreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.5 ease;
+    pointer-events: none;
+}
+
+#gameOverScreen img {
+    max-width: 90%;
+    max-height: 90%;
+}
+
+#gameOverScreen.active {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: all;
+}
+

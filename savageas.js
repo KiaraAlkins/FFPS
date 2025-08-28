@@ -44,7 +44,17 @@ document.addEventListener('DOMContentLoaded', () => {
             videoEstagio1.src = "./assets/video/savagePrompt/scrapBaby-stage-1.mp4";
             videoEstagio2.src = "./assets/video/savagePrompt/scrapBaby-stage-2.mp4";
             videoEstagio3.src = "./assets/video/savagePrompt/scrapBaby-stage-3.mp4";
-            break
+            break;
+        case 4:
+            videoEstagio1.src = "./assets/video/savagePrompt/springTrap-stage-1.mp4";
+            videoEstagio2.src = "./assets/video/savagePrompt/springTrap-stage-2.mp4";
+            videoEstagio3.src = "./assets/video/savagePrompt/springTrap-stage-3.mp4";
+            break;
+        case 5:
+            videoEstagio1.src = "./assets/video/savagePrompt/Lefty-Stage-1.mp4";
+            videoEstagio2.src = "./assets/video/savagePrompt/Lefty-Stage-2.mp4";
+            videoEstagio3.src = "./assets/video/savagePrompt/Lefty-Stage-3.mp4";
+            break;
         default:
             break;
     }
@@ -120,6 +130,8 @@ document.addEventListener('DOMContentLoaded', () => {
         toogleButton.style.pointerEvents = "auto";
     }
 
+    travarLista();
+
     playButton.addEventListener('click', () => {
         playButton.style.display = 'none'
         videoAtual.play();
@@ -183,7 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
     function animatronicoSeMexeu() {
-        let riscoSavage = 0.9;
+        let riscoSavage = 0.6
         if (Math.random() < riscoSavage) {
             if (Math.random() < 0.3) {
                 if (numeroMexido == 2) {
