@@ -252,6 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 divList.style.display = 'none';
                 animatronicoSeMexeu()
                 tocarAudios();
+                
             }, 350);
         } else if (audioPrompt === 5) {
             savageContainer.style.display = 'none';

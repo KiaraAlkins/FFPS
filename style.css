@@ -17,6 +17,18 @@ body {
     box-sizing: border-box;
 }
 
+#overlayVideo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    opacity: 0.3;
+    pointer-events: none;
+    z-index: 99999;
+}
+
 .telaAviso {
     position: fixed;
     top: 0;
@@ -1417,30 +1429,33 @@ div:not(.progress-container, .progressBarButton, .progressButtonVolume, .volumeB
 
 .displayNoise {
     position: absolute;
-    top: 90%;
+    top: 75%;
     right: 25%;
-    height: 50px;
-    width: 200px;
+    height: 200px;
+    width: 50px;
     display: flex;
     justify-content: center;
-    align-items: start;
+    align-items: center;
     color: #ffffff;
     flex-direction: column;
 }
 
 .containerNoise {
     border: #ffffff 5px solid;
-    height: 80%;
+    height: 150px;
+    padding: 5px;
     width: 90%;
     display: flex;
+    flex-direction: column-reverse;
     align-items: center;
+    justify-content: space-between;
 }
 
 .noiseBar {
-    height: 18px;
+    height: 14px;
     background-color: transparent;
-    width: 14px;
-    margin: 0 5px;
+    width: 18px;
+    margin: 0 1px;
 }
 
 .activeNoise {
@@ -1820,3 +1835,43 @@ div:not(.progress-container, .progressBarButton, .progressButtonVolume, .volumeB
     pointer-events: all;
 }
 
+#gameOverScreen_sa {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.5 ease;
+}
+
+.divErrorGameOver {
+    height: 50%;
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.imgErrorGameOver {
+    height: 100%;
+    width: 100%;
+}
+
+.buttonGameOver {
+    position: absolute;
+    width: 15%;
+    height: 15%;
+    bottom: 15%;
+    left: 30%;
+}
+
+.buttonGameOver img {
+    width: 100%;
+    height: 100%;
+}

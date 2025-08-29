@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let listaAberta = false
     let numeroMexido = 1;
     let audioEmExecucao = false;
+    let usedShock = 0
 
     const videoEstagio1 = document.createElement('video');
     const videoEstagio2 = document.createElement('video');
@@ -79,11 +80,9 @@ document.addEventListener('DOMContentLoaded', () => {
     displayVideo.appendChild(videoAtual);
     
     function playNextAudio() {
-        if (audioPrompt >= audios.length || audioEmExecucao) return;
-
         travarLista();
-
         audioEmExecucao = true
+
         const audio = audios[audioPrompt];
         audio.currentTime = 0;
         audio.play();
@@ -91,8 +90,17 @@ document.addEventListener('DOMContentLoaded', () => {
         audio.onended = () => {
             audioEmExecucao = false;
             destravarLista();
-        };
-        audioPrompt++;
+
+            if (audioPrompt === audios.length - 1) {
+                document.body.appendChild(telaPreta)
+                requestAnimationFrame(() => {
+                    telaPreta.style.opacity = '1';
+                    window.location.href = 'index.html'
+                }, 1000);
+            } else {
+                audioPrompt++;
+            }
+        }
     }
 
     function pauseAudio() {
@@ -103,11 +111,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function atualizarTela(novoEstado) {
-        if (novoEstado == null || novoEstado > videos.length) return; // segurança
-        if (novoEstado >= videos.length + 1) {
-            console.log("Game Over!");
-            return;
+        
+        if (novoEstado > videos.length) {
+            gameOver();
+            return
         }
+
         estadoAtual = novoEstado; // salva novo estado
         displayVideo.innerHTML = ""; // limpa vídeo anterior
         videoAtual = videos[estadoAtual - 1];
@@ -143,8 +152,6 @@ document.addEventListener('DOMContentLoaded', () => {
             playNextAudio();
         }
     })
-
-    let usedShock = 0
 
     const videoAnalogGlitch = document.createElement('video');
     videoAnalogGlitch.src = './assets/video/savagePrompt/tvStatic.mp4'
@@ -195,7 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
     function animatronicoSeMexeu() {
-        let riscoSavage = 0.6
+        let riscoSavage = 0.9
         if (Math.random() < riscoSavage) {
             if (Math.random() < 0.3) {
                 if (numeroMexido == 2) {
@@ -210,5 +217,16 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log(audioPrompt)
         proximoEstado = numeroMexido;
         atualizarTela(proximoEstado);
+    }
+
+    function gameOver() {
+        const gameOverScreen = document.getElementById("gameOverScreen");
+        gameOverScreen.classList.add("active");
+
+        document.querySelectorAll('audio').forEach(audio => {
+            audio.pause();
+            audio.currentTime = 0;
+            audio.muted = true;
+        })
     }
 })
