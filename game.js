@@ -1001,14 +1001,27 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         audioPressingButton.play()
     })
+
+    function circusBabyEspecial() {
+        const sorteio = [0, 1, 2, 3];
+        sorteio.sort(() => Math.random() - 0.5);
+        const escolhidos = sorteio.slice(0,2);
+
+        escolhidos.forEach(num => {
+            if (num === 0) sistemaTemperatura = false;
+            if (num === 1) sistemaTarefas = false;
+            if (num === 2) sistemaAudio = false;
+            if (num === 3) sistemaMusicBox = false;
+        })
+    }
     
     function atualizarBarulho() {
         nivelDeBarulho = 0;
 
         if (terminalLigado) nivelDeBarulho += 1;
         if (HeaterSystem) nivelDeBarulho += 1;
-        if (tarefaAtual) nivelDeBarulho += 4;
-        if (VentSystem) nivelDeBarulho += 1;
+        if (tarefaAtual) nivelDeBarulho += 3;
+        if (VentSystem) nivelDeBarulho += 2;
 
         if (nivelDeBarulho > 7) nivelDeBarulho = 7;
 
@@ -1198,13 +1211,17 @@ document.addEventListener("DOMContentLoaded", () => {
     MoltenFreddy.classList.add('player');
     let SpringTrapPosition = { x: 6, y: 0 }
     const SpringTrap = document.createElement('div');
-    SpringTrap.classList.add('player1')
+    SpringTrap.classList.add('player1');
+    let CircusBabyPosition = { x: 1, y: 0 };
+    const CircusBaby = document.createElement('div');
+    CircusBaby.classList.add('player2')
 
     //posições de animatrônicos
 
     const posicoesIniciais = {
         molten: { ...MoltenFreddyPosition },
-        springtrap: { ...SpringTrapPosition }
+        springtrap: { ...SpringTrapPosition },
+        circusbaby: { ...CircusBabyPosition}
     }
 
     function getBlockedCells() {
@@ -1430,10 +1447,22 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!movimentoFeito) {
                 const caminho = encontrarCaminho(animatronicPosition, salaDoPlayer, gridSizeX, gridSizeY, blocked);
                     // Molten Freddy
-                if (type === "molten" && caminho && caminho.length > 1) {
-                    const chanceDeRecuar = Math.min((temperatureOfTheRoom - 15) * 3, 85);
-                    const dado = Math.random() * 100;
+                
+                if (type === "circusBaby" && caminho && caminho.length > 1) {
+                    const chanceDeAproximar = nivelDeBarulho * 2;
+                    if (dadoMov < chanceDeAproximar) {
+                        newX = caminho[1].x;
+                        newY = caminho[1].y;
+                    }
+                }
 
+                if (type === "molten" && caminho && caminho.length > 1) {
+                    const dadomover = Math.random() * 100;
+                    const chanceMov = 60;
+                    
+                    if (dadomover < chanceMov) {
+                        const chanceDeRecuar = Math.min((temperatureOfTheRoom - 15) * 3, 85);
+                        const dado = Math.random() * 100;
                         if (dado < chanceDeRecuar) {
                             const caminhoAfastar = encontrarCaminho(animatronicPosition, posicoesIniciais.molten, gridSizeX, gridSizeY, blocked);
                             if (caminhoAfastar && caminhoAfastar.length > 1) {
@@ -1443,8 +1472,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         } else {
                             newX = caminho[1].x;
                             newY = caminho[1].y;
-                            // aproximar do player normalmente
                         }
+                    }
                 }
             }
 
@@ -1472,10 +1501,11 @@ document.addEventListener("DOMContentLoaded", () => {
             if (targetCell) targetCell.element.appendChild(animatronic);
 
             if (animatronicPosition.x == salaDoPlayer.x && animatronicPosition.y == salaDoPlayer.y) {
-                // if (type !== "circusBaby") {
-                //     circusBabyEspecial()
-                // }
-                gameOver()
+                if (type == "circusBaby") {
+                    circusBabyEspecial()
+                } else {
+                    gameOver()
+                }
             }
 
             if (animatronicPosition.y === salaDoPlayer.y) { 
@@ -1526,11 +1556,16 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log("starting")
             break;
         case 2:
-                        createAnimatronics(SpringTrap, SpringTrapPosition, gridSizeX, gridSizeY, "springtrap");
+            createAnimatronics(MoltenFreddy, MoltenFreddyPosition, gridSizeX, gridSizeY, "molten");
             break;
         case 3:
             createAnimatronics(MoltenFreddy, MoltenFreddyPosition, gridSizeX, gridSizeY, "molten");
+            createAnimatronics(SpringTrap, SpringTrapPosition, gridSizeX, gridSizeY, "springtrap");
             break;
+        case 4:
+            createAnimatronics(MoltenFreddy, MoltenFreddyPosition, gridSizeX, gridSizeY, "molten");
+            createAnimatronics(SpringTrap, SpringTrapPosition, gridSizeX, gridSizeY, "springtrap");
+            createAnimatronics(CircusBaby, CircusBabyPosition, gridSizeX, gridSizeY, "circusBaby");
         default:
             break;
     }
