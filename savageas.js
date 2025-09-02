@@ -11,6 +11,9 @@ document.addEventListener('DOMContentLoaded', () => {
         telaPreta.remove();
     }, 5000);
 
+    const currentMoney = document.getElementById("CurrentMoney");
+    currentMoney.innerText = `B$ ${money},00`
+
     const toogleButton = document.getElementById("toogleButton");
     const savageList = document.getElementById("savageListDiv");
     const savageShock = document.getElementById("buttonShock");
@@ -78,18 +81,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const displayVideo = document.getElementById("displayDoVideo");
     let videoAtual = videoEstagio1;
     displayVideo.appendChild(videoAtual);
+
+    let currentAudio = null;
     
     function playNextAudio() {
         travarLista();
-        audioEmExecucao = true
-
         const audio = audios[audioPrompt];
+        if (!audio) return;
+        
+        currentAudio = audio;
+        audioEmExecucao = true
         audio.currentTime = 0;
         audio.play();
 
         audio.onended = () => {
             audioEmExecucao = false;
             destravarLista();
+            currentAudio = null;
 
             if (audioPrompt === audios.length - 1) {
                 document.body.appendChild(telaPreta)
@@ -104,9 +112,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function pauseAudio() {
-        if (audioEmExecucao) {
-            const audio = audios[audioPrompt - 1];
-            audio.pause();
+        if (currentAudio) {
+            currentAudio.pause();
+            audioEmExecucao = false;
         }
     }
 
@@ -146,9 +154,13 @@ document.addEventListener('DOMContentLoaded', () => {
         videoAtual.play();
 
         if (audioEmExecucao) {
-            const audio = audios[audioPrompt - 1];
-            audio.play();
-        } else if (audioPrompt < audios.length) {
+            travarLista();
+            audioEmExecucao = true;
+            currentAudio.play();
+            return;
+        }
+
+        if (!audioEmExecucao && audioEmExecucao < audios.length) {
             playNextAudio();
         }
     })
@@ -223,7 +235,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const gameOverScreen = document.getElementById("gameOverScreen");
         gameOverScreen.classList.add("active");
 
-        document.querySelectorAll('audio').forEach(audio => {
+        audios.forEach(audio => {
             audio.pause();
             audio.currentTime = 0;
             audio.muted = true;

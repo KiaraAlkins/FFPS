@@ -1002,7 +1002,7 @@ document.addEventListener("DOMContentLoaded", () => {
         audioPressingButton.play()
     })
 
-    function circusBabyEspecial() {
+    function circusBabyEspecial(animatronicPosition) {
         const sorteio = [0, 1, 2, 3];
         sorteio.sort(() => Math.random() - 0.5);
         const escolhidos = sorteio.slice(0,2);
@@ -1013,6 +1013,9 @@ document.addEventListener("DOMContentLoaded", () => {
             if (num === 2) sistemaAudio = false;
             if (num === 3) sistemaMusicBox = false;
         })
+
+        animatronicPosition.x = posicoesIniciais.circusbaby.x;
+        animatronicPosition.y = posicoesIniciais.circusbaby.y;
     }
     
     function atualizarBarulho() {
@@ -1502,7 +1505,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (animatronicPosition.x == salaDoPlayer.x && animatronicPosition.y == salaDoPlayer.y) {
                 if (type == "circusBaby") {
-                    circusBabyEspecial()
+                    circusBabyEspecial(animatronicPosition)
                 } else {
                     gameOver()
                 }
@@ -1555,17 +1558,17 @@ document.addEventListener("DOMContentLoaded", () => {
         case 1: 
             console.log("starting")
             break;
-        case 2:
-            createAnimatronics(MoltenFreddy, MoltenFreddyPosition, gridSizeX, gridSizeY, "molten");
-            break;
-        case 3:
-            createAnimatronics(MoltenFreddy, MoltenFreddyPosition, gridSizeX, gridSizeY, "molten");
-            createAnimatronics(SpringTrap, SpringTrapPosition, gridSizeX, gridSizeY, "springtrap");
-            break;
-        case 4:
-            createAnimatronics(MoltenFreddy, MoltenFreddyPosition, gridSizeX, gridSizeY, "molten");
-            createAnimatronics(SpringTrap, SpringTrapPosition, gridSizeX, gridSizeY, "springtrap");
-            createAnimatronics(CircusBaby, CircusBabyPosition, gridSizeX, gridSizeY, "circusBaby");
+            case 2:
+                createAnimatronics(MoltenFreddy, MoltenFreddyPosition, gridSizeX, gridSizeY, "molten");
+                break;
+                case 3:
+                    createAnimatronics(MoltenFreddy, MoltenFreddyPosition, gridSizeX, gridSizeY, "molten");
+                    createAnimatronics(SpringTrap, SpringTrapPosition, gridSizeX, gridSizeY, "springtrap");
+                    break;
+                case 4:
+                    createAnimatronics(MoltenFreddy, MoltenFreddyPosition, gridSizeX, gridSizeY, "molten");
+                    createAnimatronics(SpringTrap, SpringTrapPosition, gridSizeX, gridSizeY, "springtrap");
+                    createAnimatronics(CircusBaby, CircusBabyPosition, gridSizeX, gridSizeY, "circusBaby");
         default:
             break;
     }
