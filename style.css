@@ -1340,6 +1340,28 @@ div:not(.progress-container, .progressBarButton, .progressButtonVolume, .volumeB
     border: #FFFFFF 2px solid;
 }
 
+.onOffButton-white:hover {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #FFFFFF;
+    width: 50%;
+    color: #00FF00;
+    border: #FFFFFF 2px solid;
+    font-size: 24px;
+}
+
+.onOffButton-black:hover {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #1A1F37;
+    width: 50%;
+    color: #00FF00;
+    font-size: 24px;
+    border: #FFFFFF 2px solid;
+}
+
 .grid {
     margin-top: 50px;
     display: grid;

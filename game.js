@@ -947,6 +947,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.log('poco')
             }, 4000)
         } else {
+            clearInterval(loopTemperatura)
+            loopTemperatura = null
             loopTemperatura = setInterval(() => {
                 atualizarTemp()
                 console.log('ponto')
@@ -964,6 +966,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (sistemaTemperatura) {
             HeaterSystem = true; 
             VentSystem = false;
+            temperaturaResidual = false;
+            temperaturaAmbiente();
             atualizarBotoes();
             audioPressingButtonTwo.play()
         }
@@ -975,11 +979,17 @@ document.addEventListener("DOMContentLoaded", () => {
             temperaturaAmbiente()
             audioPressingButtonTwo.play()
         }
+        if (!HeaterSystem && !VentSystem) {
+            temperaturaResidual = true;
+            temperaturaAmbiente();
+        }
     })
     butVentilationOn.addEventListener('click', () => {
         if (sistemaTemperatura) {
             VentSystem = true;
-            HeaterSystem = false; 
+            HeaterSystem = false;
+            temperaturaResidual = false;
+            temperaturaAmbiente();
             atualizarBotoes(); 
             temperaturaAmbiente()
             audioPressingButtonTwo.play()
@@ -990,6 +1000,10 @@ document.addEventListener("DOMContentLoaded", () => {
             VentSystem = false;
             atualizarBotoes();
             audioPressingButtonTwo.play()
+        }
+        if (!HeaterSystem && !VentSystem) {
+            temperaturaResidual = true;
+            temperaturaAmbiente();
         }
     })
     atualizarBotoes();
@@ -1464,7 +1478,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     const chanceMov = 60;
                     
                     if (dadomover < chanceMov) {
-                        const chanceDeRecuar = Math.min((temperatureOfTheRoom - 15) * 3, 85);
+                        const chanceDeRecuar = Math.min(((temperatureOfTheRoom - 15) / (30 - 15)) * 85, 85);
                         const dado = Math.random() * 100;
                         if (dado < chanceDeRecuar) {
                             const caminhoAfastar = encontrarCaminho(animatronicPosition, posicoesIniciais.molten, gridSizeX, gridSizeY, blocked);

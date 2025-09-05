@@ -103,6 +103,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.body.appendChild(telaPreta)
                 requestAnimationFrame(() => {
                     telaPreta.style.opacity = '1';
+                    switch (nightNumber) {
+                        case 1:
+                            money += 500;
+                            break;
+                        case 2:
+                            money += 500;
+                            break;
+                        case 3: 
+                            money += 900;
+                            break;
+                        default:
+                            break;
+                    }
+                    localStorage.setItem("money", JSON.stringify(money))
                     window.location.href = 'index.html'
                 }, 1000);
             } else {
